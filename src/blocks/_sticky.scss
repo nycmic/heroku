@@ -1,0 +1,219 @@
+.b-sticky {
+
+  .captcha {
+    background: transparent;
+  }
+
+  .webform-component-select {
+
+    label {
+      display: none;
+    }
+  }
+
+  .select2-container {
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 12px;
+
+    @media (min-width: $bp-small) {
+      font-size: 13px;
+    }
+
+    @media (min-width: $bp-middle) {
+      font-size: 14px;
+    }
+  }
+
+  h6 {
+    margin-bottom: 25px;
+  }
+
+  .contact, a[href^="mailto"], a[href^="tel"] {
+    font-family: $chrono-bold;
+    font-size: 16px;
+    word-break: break-all;
+    color: $color-1;
+
+    @media (min-width: $bp-small) {
+      font-size: 20px;
+      word-break: normal;
+    }
+  }
+
+  .contact {
+    margin-bottom: 30px;
+  }
+
+  a[href^="mailto"], a[href^="tel"] {
+    text-decoration: none;
+  }
+
+  .sticky-fade {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity .5s;
+    z-index: -1;
+
+    &:before {
+      @include pseudo-block($top: 0, $left: 0);
+      height: 100%;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+    }
+  }
+
+  .inner-wrap {
+    position: fixed;
+    left: 100%;
+    top: 50%;
+    transform: translate(0, -50%);
+    z-index: 501;
+    transition: transform .5s;
+  }
+
+  .form-contact {
+    background: $color-5;
+    border: 2px solid $color-2;
+    border-right: none;
+    position: relative;
+    width: 270px;
+    padding: 40px 10px;
+    max-height: 100vh;
+    overflow: auto;
+
+    @media (min-width: $bp-small) {
+      width: 400px;
+      padding: 15px;
+    }
+
+    @media (min-width: $bp-middle) {
+      width: 430px;
+      padding: 20px;
+    }
+
+    @media (min-width: $bp-large) {
+      width: 473px;
+      padding: 30px 27px;
+    }
+
+  }
+
+  .sticky-btn {
+    display: inline-block;
+    text-decoration: none;
+    font-family: $chrono-bold;
+    color: $color-2;
+    line-height: 1.2;
+    text-transform: uppercase;
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    white-space: nowrap;
+    transform: translate(7px, -50%) rotate(-90deg);
+    transform-origin: 100% 100%;
+    margin: -85px 2px 0 0;
+    transition: transform .3s;
+    backface-visibility: hidden;
+    font-size: 15px;
+    //padding: 10px 15px 15px;
+    padding: 10px 15px 15px 35px;
+
+    @media (min-width: $bp-small) {
+      top: 0;
+      transform: translate(7px, 0) rotate(-90deg);
+      margin: -9px 2px 0 0;
+      font-size: 20px;
+      //padding: 15px 20px 20px;
+      padding: 15px 20px 20px 45px;
+    }
+
+    @media (min-width: $bp-middle) {
+      font-size: 24px;
+      //padding: 18px 25px 25px;
+      padding: 18px 25px 25px 46px;
+    }
+
+    &:after {
+      @include pseudo-block($top: 50%, $left: 15px);
+      width: 14px;
+      height: 14px;
+      border: 4px solid $color-2;
+      transform: translate(0, -50%) rotate(45deg);
+      margin-top: -4px;
+      border-top: none;
+      border-right: none;
+
+      @media (min-width: $bp-small) {
+        left: 20px;
+        width: 18px;
+        height: 18px;
+      }
+
+      @media (min-width: $bp-middle) {
+        width: 20px;
+        height: 20px;
+        margin-top: -5px;
+      }
+    }
+
+    &:before {
+      @include pseudo-block($top: 0, $left: 0, $bottom: -7px);
+      width: 100%;
+      background: $color-1;
+      z-index: -1;
+    }
+
+    &:hover {
+
+      @media (min-width: $bp-small) {
+        transform: translate(0, 0) rotate(-90deg);
+      }
+    }
+  }
+
+  &.sticky-open {
+
+    .sticky-fade {
+      z-index: 199;
+      opacity: 1;
+    }
+
+    .inner-wrap {
+      transform: translate(-100%, -50%);
+    }
+
+    .sticky-btn:after {
+      border: 4px solid $color-2;
+      margin-left: -7px;
+      border-bottom: none;
+      border-left: none;
+
+      @media (min-width: $bp-small) {
+        margin-left: -10px;
+      }
+    }
+  }
+
+  .form .form-item {
+    margin: 0 0 5px;
+
+    @media (min-width: $bp-small) {
+      margin: 0 0 7px;
+    }
+
+    @media (min-width: $bp-middle) {
+      margin: 0 0 10px;
+    }
+
+    @media (min-width: $bp-large) {
+      margin: 0 0 14px;
+    }
+  }
+}

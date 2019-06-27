@@ -1,0 +1,127 @@
+.b-info {
+  background: $bg-color-3;
+  text-align: center;
+  color: $color-1;
+  font-size: 14px;
+  font-family: $chrono-regular;
+  line-height: 1.4;
+  margin-bottom: 20px;
+  padding: 20px;
+
+  @media (min-width: $bp-small) {
+    font-size: 18px;
+  }
+
+  @media (min-width: $bp-middle) {
+    margin-bottom: 30px;
+    padding: 27px 30px;
+    font-size: 20px;
+  }
+
+  @media (min-width: $bp-large) {
+    margin-bottom: 65px;
+    padding: 37px 40px;
+    font-size: 24px;
+  }
+
+  p {
+    margin: 0 0 4px;
+  }
+
+  a:not(.btn) {
+    color: $color-1;
+  }
+
+  strong {
+
+    a[href^="mailto"], a[href^="tel"] {
+      font-family: $chrono-bold;
+    }
+  }
+
+  a[href^="mailto"], a[href^="tel"] {
+    text-decoration: none;
+    font-family: $chrono-regular;
+    color: $color-1;
+  }
+
+  & > *:last-child {
+    margin-bottom: 0;
+  }
+
+  .btn-wrap {
+    margin-top: 13px;
+  }
+
+  &.style-a {
+    background: $bg-color-5;
+    color: $color-2;
+    text-align: left;
+    @include clearfix();
+    margin-bottom: 20px;
+    padding: 20px;
+
+    @media (min-width: $bp-small) {
+      margin-bottom: 30px;
+      padding: 20px;
+    }
+
+    @media (min-width: $bp-middle) {
+      margin-bottom: 40px;
+      padding: 24px 30px;
+    }
+
+    @media (min-width: $bp-large) {
+      margin-bottom: 50px;
+      padding: 24px 40px;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: $color-2;
+
+      @media (min-width: $bp-small) {
+        margin: 9px 0 0;
+        font-size: 20px;
+      }
+
+      @media (min-width: $bp-middle) {
+        font-size: 26px;
+      }
+
+      @media (min-width: $bp-large) {
+        font-size: 30px;
+      }
+    }
+
+    .left-part {
+      margin-bottom: 15px;
+
+      @media (min-width: $bp-small) {
+        float: left;
+        width: 436px;
+        margin-right: 5px;
+        margin-bottom: 0;
+      }
+
+      @media (min-width: $bp-middle) {
+        width: 657px;
+      }
+
+      @media (min-width: $bp-large) {
+        width: 833px;
+      }
+    }
+
+    .btn-wrap {
+      margin: 0;
+      text-align: center;
+
+      @media (min-width: $bp-small) {
+        text-align: left;
+        overflow: hidden;
+      }
+    }
+  }
+}

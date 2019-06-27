@@ -1,0 +1,107 @@
+.b-team {
+  color: $color-2;
+  line-height: 1.2;
+  text-align: center;
+  margin: 0 -13px;
+
+  @media (min-width: $bp-large) {
+    text-align: left;
+    margin: 0 -15px 0 3px;
+  }
+
+  .item {
+    width: 241px;
+    height: 314px;
+    margin: 0 13px 28px;
+    position: relative;
+    text-align: center;
+    display: inline-block;
+
+    @media (min-width: $bp-large) {
+      display: block;
+      float: left;
+      margin: 0 15px 28px;
+    }
+  }
+
+  .team-link {
+    display: block;
+    height: 100%;
+    position: relative;
+
+    &:before {
+      @include pseudo-block($top:0, $left: 0);
+      width: 100%;
+      height: 100%;
+      background: #000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .3s;
+
+      .desktop & {
+        transition: opacity .3s, visibility .3s;
+      }
+    }
+
+    &:hover {
+
+      &:before {
+        opacity: .60;
+        visibility: visible;
+      }
+
+      .title {
+        height: 90px;
+      }
+    }
+  }
+
+  .img, .img img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .title {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: table;
+    height: 72px;
+    transition: height .3s;
+
+    &:before {
+      @include pseudo-block($top:0, $left: 0);
+      width: 100%;
+      height: 100%;
+      background: $color-1;
+      opacity: .75;
+    }
+
+    .title-inner {
+      display: table-cell;
+      vertical-align: middle;
+      padding: 9px 10px;
+      position: relative;
+    }
+  }
+
+  .name, .position {
+    text-transform: uppercase;
+    color: $color-2;
+    display: block;
+  }
+
+  .name {
+    font-family: $chrono-regular;
+    font-size: 18px;
+  }
+
+  .position {
+    font-family: $chrono-bold;
+    font-size: 14px;
+  }
+
+
+
+}

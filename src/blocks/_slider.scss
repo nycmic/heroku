@@ -1,0 +1,93 @@
+.b-slider {
+
+  .slick-dots {
+    text-align: center;
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0 0 3px;
+    list-style: none;
+
+    li {
+      margin: 0 5px 0;
+      display: inline-block;
+      padding: 0;
+      position: relative;
+      cursor: pointer;
+      vertical-align: middle;
+
+      @media (min-width: $bp-small) {
+        margin: 0 3px 0;
+      }
+
+      @media (min-width: $bp-middle) {
+        margin: 0 5px 0;
+      }
+
+      &:hover {
+
+        button {
+
+          &:hover, &:focus {
+            outline: none;
+          }
+        }
+      }
+
+      &.slick-active {
+
+        button {
+          background: $color-2;
+
+          @media (min-width: $bp-small) {
+            background: transparent;
+          }
+        }
+
+        button:after {
+
+          @media (min-width: $bp-small) {
+            height: 100%;
+          }
+        }
+      }
+    }
+
+    button {
+      @include text-hide();
+      width: 14px;
+      height: 14px;
+      background-color: transparent;
+      transition: background .3s, border .3s;
+      border-radius: 50%;
+      border: 1px solid $color-2;
+      display: block;
+      padding: 0;
+      cursor: pointer;
+      color: transparent;
+      outline: none;
+      position: relative;
+      overflow: hidden;
+
+      @media (min-width: $bp-small) {
+        width: 14px;
+        height: 14px;
+        border: 2px solid $color-2;
+      }
+
+      &:after {
+        @include pseudo-block($bottom: 0, $left: 0);
+        height: 0;
+        width: 100%;
+        background-color: $color-2;
+        transition: height 0.3s;
+        display: none;
+
+        @media (min-width: $bp-small) {
+         display: block;
+        }
+      }
+    }
+  }
+}

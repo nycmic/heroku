@@ -1,0 +1,185 @@
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+  line-height: 1.2;
+}
+
+h1 {
+  font-family: $chrono-light;
+  font-size: 30px;
+  color: $color-1;
+  margin: 0 0 23px;
+
+  @media (min-width: $bp-middle) {
+    font-size: 45px;
+  }
+
+  @media (min-width: $bp-large) {
+    font-size: 54px;
+  }
+}
+
+h2 {
+  font-family: $chrono-bold;
+  color: $color-1;
+  font-size: 18px;
+  margin: 0 0 20px;
+
+  @media (min-width: $bp-middle) {
+    font-size: 20px;
+  }
+
+  @media (min-width: $bp-middle) {
+    font-size: 26px;
+    margin: 0 0 26px;
+  }
+
+  @media (min-width: $bp-large) {
+    font-size: 30px;
+    margin: 0 0 30px;
+  }
+}
+
+h3 {
+  font-family: $chrono-light;
+  font-size: 20px;
+  color: $color-1;
+  margin: 0 0 6px;
+
+  @media (min-width: $bp-small) {
+    font-size: 24px;
+  }
+
+  @media (min-width: $bp-middle) {
+    font-size: 30px;
+  }
+
+  @media (min-width: $bp-large) {
+    font-size: 36px;
+  }
+}
+
+h4 {
+  font-family: $chrono-medium;
+  font-size: 18px;
+  color: $color-1;
+  margin: 0 0 16px;
+
+  @media (min-width: $bp-middle) {
+    font-size: 20px;
+  }
+
+  @media (min-width: $bp-middle) {
+    font-size: 22px;
+    margin: 0 0 18px;
+  }
+
+  @media (min-width: $bp-large) {
+    font-size: 24px;
+    margin: 0 0 23px;
+  }
+}
+
+h5 {
+  font-family: $chrono-bold;
+  font-size: 16px;
+  color: $color-1;
+  margin: 0 0 16px;
+
+  @media (min-width: $bp-small) {
+    font-size: 18px;
+  }
+
+  @media (min-width: $bp-middle) {
+    margin: 0 0 23px;
+  }
+}
+
+h6 {
+  margin: 0;
+  font-family: $chrono-bold;
+  line-height: 1.2;
+  color: $color;
+  font-size: 16px;
+
+  @media (min-width: $bp-small) {
+    font-size: 20px;
+  }
+}
+
+p {
+  margin: 0 0 16px;
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0 0 0 16px;
+
+  li {
+    margin: 0 0 16px;
+    padding: 0;
+  }
+}
+
+a {
+  color: $color-link;
+  text-decoration: none;
+  transition: all .3s;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  & > svg {
+    display: block;
+
+    path, rect {
+      fill: currentColor;
+    }
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: top;
+}
+
+table {
+  font-size: 12px;
+
+  @media (min-width: $bp-small) {
+    font-size: 15px;
+  }
+
+  @media (min-width: $bp-middle) {
+    font-size: 16px;
+  }
+
+  @media (max-width: $bp-middle - 1) {
+    width: auto !important;
+  }
+
+  tbody, th, tr {
+    border: none;
+    background: none;
+    padding: 0;
+  }
+
+  td {
+    vertical-align: middle;
+    padding: 3px;
+
+    @media (min-width: $bp-middle) {
+      padding: 0;
+    }
+  }
+
+  th {
+    vertical-align: top;
+    padding: 3px;
+
+    @media (min-width: $bp-middle) {
+      padding: 0;
+    }
+  }
+}

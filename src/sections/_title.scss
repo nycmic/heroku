@@ -1,0 +1,119 @@
+.section-title {
+  text-align: center;
+  position: relative;
+  padding: 21px 0 36px;
+
+  .front & {
+    padding: 0 0 20px;
+
+    @media (min-width: $bp-small) {
+      padding: 20px 0 110px;
+    }
+
+    @media (min-width: $bp-middle) {
+      padding: 50px 0 120px;
+    }
+
+    @media (min-width: $bp-large) {
+      padding: 67px 0 143px;
+    }
+  }
+
+  .breadcrumb {
+    font-family: $chrono-bold;
+    font-size: 20px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    line-height: 1.2;
+    color: $color-1;
+    padding: 0;
+
+    .delimiter {
+      display: none;
+
+      & + .inline {
+        position: relative;
+        padding-left: 17px;
+
+        &:before {
+          @include pseudo-block($top:50%, $left: 0);
+          transform: translate(0, -50%);
+          content: '>';
+        }
+
+      }
+    }
+
+    a {
+      color: $color-1;
+      font-family: $chrono-bold;
+    }
+  }
+
+  h1 {
+    display: inline-block;
+    padding-bottom: 10px;
+    position: relative;
+    margin: 0;
+    text-transform: uppercase;
+
+    @media (min-width: $bp-small) {
+      padding-bottom: 15px;
+    }
+
+    @media (min-width: $bp-middle) {
+      padding-bottom: 20px;
+    }
+
+    @media (min-width: $bp-large) {
+      padding-bottom: 23px;
+    }
+
+    &:after {
+      @include pseudo-block($bottom: 0, $left: 50%);
+      border-bottom: 2px solid $color-1;
+      width: 150px;
+      transform: translate(-50%, 0);
+
+      @media (min-width: $bp-small) {
+        width: 200px;
+      }
+
+      @media (min-width: $bp-middle) {
+        width: 250px;
+      }
+
+      @media (min-width: $bp-large) {
+        width: 285px;
+      }
+    }
+
+    .front & {
+      font-family: $chrono-medium;
+      font-size: 18px;
+      color: $color;
+      padding: 0;
+      margin: 0 auto;
+      line-height: 1.25;
+      display: block;
+      text-align: center;
+      max-width: 912px;
+
+      @media (min-width: $bp-small) {
+        font-size: 20px;
+      }
+
+      @media (min-width: $bp-middle) {
+        font-size: 22px;
+      }
+
+      @media (min-width: $bp-large) {
+        font-size: 24px;
+      }
+
+      &:after {
+        display: none;
+      }
+    }
+  }
+}

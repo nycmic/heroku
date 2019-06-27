@@ -1,0 +1,44 @@
+//base styles
+@import "common/mixins";
+@import "common/fonts";
+@import "common/settings";
+@import "common/normalize";
+@import "common/helpers";
+@import "common/defaults";
+@import "common/typography";
+
+//modules
+@import "modules/grid";
+@import "modules/bootstrap-modal";
+@import "modules/slick";
+@import "modules/select2";
+
+//layout
+@import "layout/header";
+@import "layout/wrappers";
+@import "layout/content";
+@import "layout/footer";
+@import "layout/btns";
+@import "layout/sidebar";
+@import "layout/drupal-styles";
+
+//forms
+@import "forms/forms";
+@import "forms/search";
+@import "forms/contact";
+
+//sections
+@import "sections/sections";
+@import "sections/top";
+@import "sections/title";
+@import "sections/bottom";
+
+//blocks
+@import "blocks/modal";
+@import "blocks/slider";
+@import "blocks/nav-links";
+@import "blocks/news";
+@import "blocks/info";
+@import "blocks/sticky";
+@import "blocks/team";
+@import "blocks/img-gallery";

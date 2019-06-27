@@ -1,0 +1,29 @@
+.outer-wrapper {
+  overflow: hidden;
+  min-height: 100%;
+  background: $color-2;
+  position: relative;
+  padding-bottom: 191px;
+
+  @media (min-width: $bp-small) {
+    padding-bottom: 141px;
+  }
+}
+
+.content-wrapper {
+  padding: 31px 0 0;
+}
+
+.inner-wrapper {
+  position: relative;
+  z-index: 1;
+
+  &:before {
+    @include pseudo-block($top: 0, $left: 0);
+    width: 100%;
+    //height: 800px;
+    height: 900px;
+    background: url("./images/bg/bg-dots.png");
+    z-index: -1;
+  }
+}

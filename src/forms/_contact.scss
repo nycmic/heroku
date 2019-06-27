@@ -1,0 +1,86 @@
+.form-contact {
+
+  h5 {
+    margin-bottom: 11px;
+  }
+
+  input[type="checkbox"],
+  input[type="radio"] {
+
+    & + label {
+      backface-visibility: hidden;
+
+      &:before, &:after {
+        transform: none;
+      }
+
+      &:before {
+        @include pseudo-block($left: 0, $top: 6px);
+
+      }
+
+      &:after {
+        @include pseudo-block($left: 3px, $top: 9px);
+
+        @media (min-width: $bp-small) {
+          left: 5px;
+          top: 11px;
+        }
+      }
+
+      span {
+        font-size: 13px;
+        display: block;
+
+        @media (min-width: $bp-small) {
+          font-size: 14px;
+        }
+
+        @media (min-width: $bp-middle) {
+          font-size: 15px;
+        }
+
+        @media (min-width: $bp-large) {
+          font-size: 16px;
+        }
+
+        a[href^="tel"] {
+          color: $color-1;
+        }
+      }
+    }
+  }
+
+  textarea {
+    resize: none;
+    min-height: 60px;
+
+    @media (min-width: $bp-small) {
+      min-height: 100px;
+    }
+
+    @media (min-width: $bp-middle) {
+      min-height: 150px;
+    }
+
+    @media (min-width: $bp-large) {
+      min-height: 192px;
+    }
+  }
+
+  .messages.error {
+
+    ul li {
+      margin: 0 0 5px;
+
+
+      @media (min-width: $bp-small) {
+        margin: 0 0 10px;
+      }
+
+      @media (min-width: $bp-middle) {
+        margin: 0 0 16px;
+      }
+    }
+  }
+}

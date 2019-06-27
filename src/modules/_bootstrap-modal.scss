@@ -1,0 +1,143 @@
+/*!
+ * Bootstrap v3.3.5 (http://getbootstrap.com)
+ * Copyright 2011-2016 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+
+/*!
+ * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=2e4afc8ce58d3f54f0fa77a23df3cd8c)
+ * Config saved to config.json and https://gist.github.com/2e4afc8ce58d3f54f0fa77a23df3cd8c
+ */
+/*!
+ * Bootstrap v3.3.6 (http://getbootstrap.com)
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+
+//http://getbootstrap.com/javascript/#modals
+
+//<a href="#" data-toggle="modal" data-target="#myModal">Launch modal</a>
+
+//<div class="b-modal modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+//  <div class="modal-dialog">
+//    <div class="modal-content">
+//      <div class="modal-header">
+//        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+//        <h4>Modal title</h4>
+//      </div>
+//      <div class="modal-body">
+//        ...
+//      </div>
+//      <div class="modal-footer">
+//        <button type="button" class="btn" data-dismiss="modal">Close</button>
+//        <button type="button" class="btn">Save</button>
+//      </div>
+//    </div>
+//  </div>
+//</div>
+
+.fade {
+  opacity: 0;
+  -webkit-transition: opacity 0.15s linear;
+  -o-transition: opacity 0.15s linear;
+  transition: opacity 0.15s linear;
+}
+.fade.show {
+  opacity: 1;
+}
+.modal-open {
+  overflow: hidden;
+}
+.modal {
+  display: none;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
+.modal.fade .modal-dialog {
+  -webkit-transform: translate(0, -25%);
+  -ms-transform: translate(0, -25%);
+  -o-transform: translate(0, -25%);
+  transform: translate(0, -25%);
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  -o-transition: -o-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+}
+.modal.show .modal-dialog {
+  -webkit-transform: translate(0, 0);
+  -ms-transform: translate(0, 0);
+  -o-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+.modal-open .modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 10px;
+}
+.modal-content {
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 6px;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  outline: 0;
+  padding: 20px;
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  //background-color: #000000;
+  background: rgba(0, 0, 0, 0.85);
+}
+.modal-backdrop.fade {
+  opacity: 0;
+}
+.modal-backdrop.show {
+  opacity: 1;
+}
+.modal-scrollbar-measure {
+  position: absolute;
+  top: -9999px;
+  width: 50px;
+  height: 50px;
+  overflow: scroll;
+}
+@media (min-width: 768px) {
+  .modal-dialog {
+    width: 600px;
+    margin: 30px auto;
+  }
+}
+
+.close {
+  cursor: pointer;
+  position: relative;
+  z-index: 5;
+}
+
+.modal-header:before,
+.modal-header:after,
+.modal-footer:before,
+.modal-footer:after {
+  content: " ";
+  display: table;
+}
+
+.modal-header:after,
+.modal-footer:after {
+  clear: both;
+}

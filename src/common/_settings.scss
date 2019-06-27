@@ -1,0 +1,63 @@
+//color
+$color: #58585a;
+$color-1: #b11c21;
+$color-2: #fff;
+$color-3: #7b8184;
+$color-4: #7f1115;
+$color-5: #e3e3e3;
+$color-6: #3c3c3c;
+$color-7: #c9c8c8;
+$color-8: #ececec;
+$color-9: #231f20;
+$color-10: #b7b7b7;
+$color-11: #acacac;
+
+$bg-color-1: $color-1;
+$bg-color-2: $color-4;
+$bg-color-3: $color-5;
+$bg-color-4: $color-6;
+$bg-color-5: $color;
+$bg-color-6: $color-7;
+$bg-color-7: $color-8;
+
+$color-link: $color-1;
+
+//fonts
+$chrono-medium: chrono-medium;
+$chrono-light: chrono-light;
+$chrono-bold: chrono-bold;
+$chrono-medium-italic: chrono-medium-italic;
+$chrono-regular: chrono-regular;
+$chrono-bold-italic: chrono-bold-italic;
+
+//grid vars
+//widths
+$width-xsmall: 90%;
+//xs < $bp-small
+$bp-small: 768px;
+$width-small: 730px;
+//$bp-middle > sm >= $bp-small
+$bp-middle: 992px;
+$width-middle: 970px;
+//$bp-large > md >= $bp-middle
+$bp-large: 1300px;
+$width-large: 1166px;
+
+//offsets
+$container-padding-left: 0;
+$container-padding-right: 0;
+
+$container-fluid-padding-left: 0;
+$container-fluid-padding-right: 0;
+
+$row-margin-left: -10px;
+$row-margin-right: -10px;
+
+$col-padding-left: 10px;
+$col-padding-right: 10px;
+
+$row-form-left: -10px;
+$row-form-right: -10px;
+
+$col-form-padding-left: 10px;
+$col-form-padding-right: 10px;

@@ -1,0 +1,90 @@
+ul li.leaf {
+  list-style: none;
+}
+
+.logged-in {
+
+  div.tabs, .contextual-links-wrapper {
+
+    a {
+      opacity: 1 !important;
+      color: #000 !important;
+    }
+  }
+
+  .contextual-links-wrapper {
+    font-size: 13px;
+
+    li {
+      background: none !important;
+      font-weight: normal;
+      text-decoration: none;
+      text-transform: none;
+      margin: 0 !important;
+      font-family: Arial, "Helvetica CY", "Nimbus Sans L", sans-serif;
+      padding: 0 !important;
+      display: block !important;
+      float: none !important;
+      width: auto !important;
+
+      a {
+        text-decoration: none;
+        text-transform: none;
+        background: none !important;
+        padding: 5px 10px;
+        margin: 0;
+      }
+    }
+  }
+
+  div.tabs {
+    position: absolute;
+    z-index: 500;
+    right: 0;
+    top: 28px;
+    font-size: 13px;
+    text-align: center;
+
+    .tabs {
+      border-bottom: none;
+      padding: 0;
+
+      li {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 2px;
+        margin-bottom: 0;
+
+        &.active a {
+          border: none;
+        }
+      }
+
+      a {
+        border: none;
+        margin: 0;
+        padding: 5px 18px;
+        display: block;
+      }
+    }
+  }
+}
+
+.field-collection-container {
+  margin-bottom: 0;
+  border-bottom: none;
+
+  .field-items .field-item {
+    margin-bottom: 0;
+  }
+}
+
+.field-collection-view {
+  padding: 0;
+  margin: 0;
+  border-bottom: none;
+
+  .entity-field-collection-item {
+    float: none;
+  }
+}

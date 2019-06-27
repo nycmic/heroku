@@ -1,0 +1,23 @@
+.form-search, .search-form, .block-search {
+  position: relative;
+
+  .form-item {
+    margin: 0;
+  }
+
+  input:not([type=submit]):not([type=checkbox]):not([type=radio]) {
+    @include input-placeholder($color-9);
+    color: $color-9;
+    font-size: 14px;
+    padding: 7px 6px;
+    width: 100%;
+    border-radius: 0;
+    font-family: $chrono-regular;
+    background: $color-2;
+    border: 2px solid $color-10;
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}

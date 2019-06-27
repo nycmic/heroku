@@ -1,0 +1,153 @@
+.b-modal {
+
+  .modal-dialog {
+    margin: 20px auto;
+    width: $width-xsmall;
+
+    @media (min-width: $bp-small) {
+      margin: 0 auto;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 767px;
+    }
+  }
+
+  &.modal {
+
+    &.fade .modal-dialog {
+
+      @media (min-width: $bp-small) {
+        transform: translate(-50%, -100%);
+      }
+    }
+
+    &.show .modal-dialog {
+
+      @media (min-width: $bp-small) {
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+
+  .modal__edit-btn {
+    text-align: right;
+    margin-bottom: 12px;
+
+    a {
+      display: inline-block;
+      text-decoration: none;
+      font-family: $chrono-bold;
+      color: $color-2;
+      background: $color-1;
+      border: 1px solid $color-1;
+      line-height: 1.2;
+      text-transform: uppercase;
+      backface-visibility: hidden;
+      font-size: 15px;
+      padding: 10px 14px;
+      transition: all .3s;
+
+      &:hover {
+        color: $color-1;
+        background: $color-2;
+      }
+    }
+  }
+
+  .modal-content {
+    border-radius: 0;
+    padding: 0;
+    background: $color-2;
+  }
+
+  .modal-header {
+    background: $color-1;
+    padding: 15px 35px 15px 20px;
+    color: $color-2;
+
+    .close {
+      margin: 0;
+      padding: 0;
+      background: url("./images/bg/close-btn.png") no-repeat;
+      width: 22px;
+      height: 22px;
+      border: none;
+      line-height: 1;
+      position: absolute;
+      right: 7px;
+      top: 7px;
+      transition: background .3s;
+      @include text-hide();
+
+      &:hover {
+        background: url("./images/bg/close-btn-a.png") no-repeat;
+      }
+    }
+  }
+
+  .modal-body {
+    padding: 20px;
+    font-family: $chrono-regular;
+    font-size: 14px;
+    color: #000;
+    line-height: 1.25;
+
+    @media (min-width: $bp-small) {
+      font-size: 16px;
+    }
+
+    strong {
+      font-family: $chrono-bold;
+    }
+  }
+
+  &_team {
+
+    .title {
+      font-family: $chrono-bold;
+      font-size: 14px;
+      text-transform: uppercase;
+
+      @media (min-width: $bp-small) {
+        font-size: 17px;
+      }
+
+      @media (min-width: $bp-middle) {
+        font-size: 20px;
+      }
+    }
+
+    .name {
+      font-size: 18px;
+
+      @media (min-width: $bp-small) {
+        font-size: 22px;
+      }
+
+      @media (min-width: $bp-middle) {
+        font-size: 28px;
+      }
+    }
+
+    .modal-body {
+      @include clearfix();
+
+      .img {
+        margin: 0 auto 18px;
+        width: 181px;
+        height: 235px;
+
+        @media (min-width: $bp-small) {
+          float: left;
+          margin: 0 18px 18px 0;
+        }
+
+          img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}

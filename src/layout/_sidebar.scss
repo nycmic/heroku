@@ -1,0 +1,19 @@
+.sidebar {
+  padding: 20px;
+  background: $bg-color-6;
+  font-family: $chrono-medium-italic;
+
+  @media (min-width: $bp-small) {
+    float: right;
+    width: 200px;
+    padding: 27px 20px 26px 23px;
+  }
+
+  @media (min-width: $bp-middle) {
+    width: 230px;
+  }
+
+  @media (min-width: $bp-large) {
+    width: 259px;
+  }
+}
