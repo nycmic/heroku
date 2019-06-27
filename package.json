@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "engines": {
-    "node": "12.x"
+    "node": "11.14.0"
   },
   "dependencies": {
     "@material-ui/core": "^3.4.0",
