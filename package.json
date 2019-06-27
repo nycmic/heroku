@@ -6,7 +6,7 @@
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "engines": {
     "node": "12.x"
-  }
+  },
   "dependencies": {
     "@material-ui/core": "^3.4.0",
     "bootstrap": "^4.3.1",
