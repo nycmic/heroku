@@ -12,13 +12,7 @@ export default ({ children, nodeId }) => {
               node {
                 relationships {
                   field_columns_images {
-                    localFile {
-                      childImageSharp {
-                        fluid {
-                          ...GatsbyImageSharpFluid
-                        }
-                      }
-                    }
+                    ...ImgLocalFile
                   }
                 }
                 parent_id

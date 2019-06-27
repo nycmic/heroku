@@ -6,6 +6,7 @@ import SectionTop from "../components/SectionTop";
 import SectionTitle from "../components/SectionTitle";
 import InnerWrapper from "../components/InnerWrapper";
 import ParagraphTwoImagesInColumns from "../components/ParagraphTwoImagesInColumns";
+import ParagraphSimplePageInfo from "../components/ParagraphSimplePageInfo";
 
 export default ({data: {nodeCareers: page, nodeCareers: {fields: {drupalInternalNid: pageId}}}}) => {
 
@@ -20,6 +21,7 @@ export default ({data: {nodeCareers: page, nodeCareers: {fields: {drupalInternal
     <Layout nodeId={pageId}>
       <SectionTop imgTop={imgTop.localFile.childImageSharp.fluid} />
       <SectionTitle title={page.title}/>
+
 
       <InnerWrapper>
 
@@ -48,20 +50,7 @@ export default ({data: {nodeCareers: page, nodeCareers: {fields: {drupalInternal
 
           <div className="inner-wrap">
 
-
-          </div>
-
-          <div className="b-info">
-            {contactsText}
-
-            <div className="btn-wrap">
-              <a href={contactsLinkUrl}
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className='btn'>
-                {contactsLinkText}
-              </a>
-            </div>
+            <ParagraphSimplePageInfo nodeId={pageId}/>
           </div>
 
         </div>
