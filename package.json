@@ -4,9 +4,6 @@
   "description": "A simple starter to get up and developing quickly with Gatsby",
   "version": "0.1.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
-  "engines": {
-    "node": "11.14.0"
-  },
   "dependencies": {
     "@material-ui/core": "^3.4.0",
     "bootstrap": "^4.3.1",
@@ -44,7 +41,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "gatsby develop",
+    "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "npm run develop",

@@ -1,12 +1,11 @@
 import React from "react"
 import {graphql} from "gatsby"
 import Layout from "../components/layout"
-import DOMPurify from "dompurify";
-import parse from 'html-react-parser';
+import {getProp} from "../helpers";
 
 export default ({ data: {nodeNews: page}}) => {
   let imgContentData = page.relationships.field_news_content_image;
-  let bodyValue = parse(DOMPurify.sanitize(page.body.value));
+  let bodyValue = getProp(page, 'body.value');
 
   return (
     <Layout>

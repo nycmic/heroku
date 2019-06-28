@@ -54,8 +54,6 @@ export default ({ children, nodeId }) => {
 
       <div className="b-nav-links style-b">
 
-        {console.log(component)}
-
         {component.dataArr.map(({isProp, id, props: item}, i) => (
 
             <React.Fragment key={i}>

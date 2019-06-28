@@ -12,8 +12,7 @@ import ParagraphSimpleLogoFieldColl from "../components/ParagraphSimpleLogoField
 import ParagraphColumnsWithLinksList from "../components/ParagraphColumnsWithLinksList";
 import InnerWrapper from "../components/InnerWrapper";
 import BlockContentInfoBlock from "../components/BlockContentInfoBlock";
-import AllNodeTeamMember from "../components/AllNodeTeamMember";
-
+import BlockContentTeam from "../components/BlockContentTeam";
 
 export default ({data: {nodeSimplePage: page, nodeSimplePage: {fields: {drupalInternalNid: pageId}}}}) => {
 
@@ -47,8 +46,7 @@ export default ({data: {nodeSimplePage: page, nodeSimplePage: {fields: {drupalIn
 
               <ParagraphSimplePageInfo nodeId={pageId}/>
               <ParagraphImageAndText nodeId={pageId}/>
-
-              <AllNodeTeamMember nodeId='all'/>
+              <BlockContentTeam nodeId={pageId}/>
 
             </div>
 

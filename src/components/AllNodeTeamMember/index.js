@@ -3,7 +3,7 @@ import {useStaticQuery, graphql} from "gatsby"
 import {createCompObj} from "../../helpers";
 import ModalTeam from "../modal/ModalTeam";
 
-export default ({children, nodeId}) => {
+const NodeTeamMember = ({children, nodeId}) => {
   const data = useStaticQuery(
     graphql`
         query {
@@ -52,7 +52,7 @@ export default ({children, nodeId}) => {
   const Body = ({ item}) => {
 
     return (
-      <span onClick={handleClick} style={{color: `red`}}>
+      <span onClick={handleClick} style={{position: `absolute`}}>
         {item.name}
       </span>
     )
@@ -112,3 +112,5 @@ export default ({children, nodeId}) => {
     </>
   )
 }
+
+export default NodeTeamMember;

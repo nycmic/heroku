@@ -1,16 +1,15 @@
 import React from "react"
 import {graphql} from "gatsby"
 import Layout from "../components/layout"
-import parse from "html-react-parser";
-import DOMPurify from "dompurify";
 import SectionTop from "../components/SectionTop";
 import SectionTitle from "../components/SectionTitle";
 import InnerWrapper from "../components/InnerWrapper";
 import FormCustomHook from "../components/FormCustomHook";
+import {getProp} from "../helpers";
 
 export default ({data: {nodeContacts: page}}) => {
   let imgTop = page.relationships.field_basic_top_image;
-  let bodyValue = parse(DOMPurify.sanitize(page.body && page.body.value));
+  let bodyValue = getProp(page, 'body.value');
 
   return (
     <Layout>

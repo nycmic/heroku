@@ -1,5 +1,5 @@
 import parse from "html-react-parser";
-import DOMPurify from "dompurify";
+// import DOMPurify from "dompurify";
 import _ from 'lodash';
 
 export function createCompObj (component, array, nodeId, props) {
@@ -58,7 +58,9 @@ export function checkObjForEmpty (obg) {
 }
 
 export function htmlIn (el) {
-  return parse(DOMPurify.sanitize(el));
+
+  // return parse(DOMPurify.sanitize(el));
+  return parse(el);
 }
 
 export function getProp (obg, el) {
