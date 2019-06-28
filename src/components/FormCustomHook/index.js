@@ -55,7 +55,7 @@ export default ({ children }) => {
 
     console.log(formData);
 
-    fetch('http://decoupled.devstages.com/webform_rest/submit?_format=json', {
+    fetch('https://decoupled.devstages.com/webform_rest/submit?_format=json', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

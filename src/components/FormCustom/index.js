@@ -19,7 +19,7 @@ export default class FormCustom extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    fetch('http://decoupled.devstages.com/webform_rest/submit?_format=json', {
+    fetch('https://decoupled.devstages.com/webform_rest/submit?_format=json', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

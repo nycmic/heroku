@@ -28,7 +28,7 @@ import CustomMenu from "./CustomMenu"
 // });
 
 const drupalOauthClient = new drupalOauth({
-    drupal_root: 'http://decoupled.devstages.com',
+    drupal_root: 'https://decoupled.devstages.com',
     client_id: 'd2beb1a1-d27e-44cc-835e-6c4d94c57403',
     client_secret: 'admin',
 });
