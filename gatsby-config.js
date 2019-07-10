@@ -11,8 +11,11 @@
     {
       resolve: `gatsby-source-drupal`,
       options: {
-        baseUrl: `http://decoupled.devstages.com`,
+        baseUrl: `https://decoupled.devstages.com`,
         apiBase: `api`,
+        headers: {
+          Authorization: "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k", // any valid request header here
+        },
       },
     },
     {
@@ -47,3 +50,4 @@
     // `gatsby-plugin-offline`,
   ],
 }
+

@@ -58,8 +58,9 @@ export default ({ children }) => {
     fetch('https://decoupled.devstages.com/webform_rest/submit?_format=json', {
       method: 'POST',
       headers: {
+        'Authorization' : 'Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k',
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(formData)
     })
