@@ -11,6 +11,11 @@ function encode(data) {
 }
 
 export default ({ children }) => {
+
+    constructor(props) 
+    {
+        this.state = {};
+    }
   const data = useStaticQuery(
     graphql`
         query {
