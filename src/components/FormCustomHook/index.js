@@ -4,6 +4,12 @@ import { navigateTo } from "gatsby-link";
 import yaml from 'js-yaml';
 import _ from 'lodash';
 
+function encode(data) {
+    return Object.keys(data)
+        .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+        .join("&");
+}
+
 export default ({ children }) => {
   const data = useStaticQuery(
     graphql`
@@ -104,7 +110,7 @@ export default ({ children }) => {
 
       <h5>{data.form.title}</h5>
 
-      <form name="contact" method="post" data-netlify="true" onSubmit={handleSubmit}>
+      <form name="contact" action="/" method="post" data-netlify="true" onSubmit={handleSubmit}>
           <input type="hidden" name="form-name" value="contact" />
           <input type="text" name="name" size="60"/>
         {formArrElms.map((item, i) => (
