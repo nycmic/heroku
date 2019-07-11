@@ -89,11 +89,10 @@ export default ({ children }) => {
       <h5>{data.form.title}</h5>
 
       <form name="contact" method="post" data-netlify="true" onSubmit={handleSubmit}>
-
+          <input type="hidden" name="form-name" value="contact" />
         {formArrElms.map((item, i) => (
         <React.Fragment key={i}>
 
-          <input type="hidden" name="form-name" value="contact" />
           {item.type === 'textfield' &&
           <div className='form-item'>
             <label>
