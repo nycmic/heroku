@@ -54,9 +54,9 @@ export default ({ children }) => {
     form.setState[name](value);
   };
 
-    const handleSubmit = e => {
-        e.preventDefault();
-        console.log(e.target)
+    // const handleSubmit = e => {
+    //     e.preventDefault();
+    //     console.log(e.target)
         // const formData = form.elms;
         // fetch("/", {
         //     method: "POST",
@@ -66,9 +66,9 @@ export default ({ children }) => {
         //         ...formData
         //     })
         // })
-        //     .then(() => navigateTo(formData.getAttribute("action")))
+        //     .then(() => alert('Your message submit successfully'))
         //     .catch(error => alert(error));
-    };
+    // };
 
   // const handleSubmit = event => {
   //
@@ -187,7 +187,7 @@ export default ({ children }) => {
             </label>
           </div>
           }
-          <div data-netlify-recaptcha="true"/>
+            <div data-netlify-recaptcha="true"></div>
           {item.type === 'webform_actions' &&
           <div className='form-actions'>
 
