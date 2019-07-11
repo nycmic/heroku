@@ -111,7 +111,7 @@ export default ({ children }) => {
 
       <h5>{data.form.title}</h5>
 
-      <form name="contact" method="post" data-netlify-recaptcha="true" data-netlify="true"  onSubmit={handleSubmit}>
+      <form name="contact" method="post" data-netlify-recaptcha="true" data-netlify="true">
           <input type="hidden" name="form-name" value="contact" />
         {formArrElms.map((item, i) => (
         <React.Fragment key={i}>
