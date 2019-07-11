@@ -57,7 +57,7 @@ export default ({ children }) => {
     form.setState[name](value);
   };
   const handleRecaptcha = value => {
-        this.setState({ "g-recaptcha-response": value });
+        form.setState({ "g-recaptcha-response": value });
     };
 
     const handleSubmit = e => {
