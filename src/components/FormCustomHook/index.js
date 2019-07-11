@@ -11,11 +11,6 @@ function encode(data) {
 }
 
 export default ({ children }) => {
-
-    constructor(props) 
-    {
-        this.state = {};
-    }
   const data = useStaticQuery(
     graphql`
         query {
@@ -61,13 +56,13 @@ export default ({ children }) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        const form = e.target;
+        const formData = e.target;
         fetch("/", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: encode({
-                "form-name": form.getAttribute("name"),
-                ...this.state
+                "form-name": formData.getAttribute("name"),
+                ...form.state
             })
         })
             .then(() => navigateTo(form.getAttribute("action")))
