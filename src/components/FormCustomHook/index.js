@@ -54,20 +54,21 @@ export default ({ children }) => {
     form.setState[name](value);
   };
 
-    const handleSubmit = e => {
-        e.preventDefault();
-        const formData = form.elms;
-        fetch("/", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: encode({
-                "form-name": formData.getAttribute("name"),
-                formData
-            })
-        })
-            .then(() => navigateTo(formData.getAttribute("action")))
-            .catch(error => alert(error));
-    };
+    // const handleSubmit = e => {
+    //     e.preventDefault();
+    //     const formData = form.elms;
+    //     formData.webform_id = "contact";
+    //     fetch("/", {
+    //         method: "POST",
+    //         headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    //         body: encode({
+    //             "form-name": formData.getAttribute("name"),
+    //             formData
+    //         })
+    //     })
+    //         .then(() => navigateTo(formData.getAttribute("action")))
+    //         .catch(error => alert(error));
+    // };
 
   // const handleSubmit = event => {
   //
@@ -110,7 +111,7 @@ export default ({ children }) => {
 
       <h5>{data.form.title}</h5>
 
-      <form name="contact" action="/" method="post" data-netlify="true" onSubmit={handleSubmit}>
+      <form name="contact" action="/" method="post" data-netlify="true">
           <input type="hidden" name="form-name" value="contact" />
           <input type="text" name="name" size="60"/>
         {formArrElms.map((item, i) => (
