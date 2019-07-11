@@ -62,10 +62,10 @@ export default ({ children }) => {
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: encode({
                 "form-name": formData.getAttribute("name"),
-                ...form.state
+                ...formData.state
             })
         })
-            .then(() => navigateTo(form.getAttribute("action")))
+            .then(() => navigateTo(formData.getAttribute("action")))
             .catch(error => alert(error));
     };
 
