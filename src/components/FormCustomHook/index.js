@@ -1,9 +1,12 @@
 import React, { useState } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import { navigateTo } from "gatsby-link";
+import Recaptcha from "react-google-recaptcha";
 import yaml from 'js-yaml';
 import _ from 'lodash';
 
+
+const RECAPTCHA_KEY = process.env.SITE_RECAPTCHA_KEY;
 function encode(data) {
     return Object.keys(data)
         .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
@@ -53,6 +56,9 @@ export default ({ children }) => {
 
     form.setState[name](value);
   };
+  const handleRecaptcha = value => {
+        this.setState({ "g-recaptcha-response": value });
+    };
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -187,7 +193,12 @@ export default ({ children }) => {
             </label>
           </div>
           }
-            <div data-netlify-recaptcha="true"></div>
+
+            <Recaptcha
+                ref="recaptcha"
+                sitekey={RECAPTCHA_KEY}
+                onChange={handleRecaptcha}
+            />
           {item.type === 'webform_actions' &&
           <div className='form-actions'>
 
