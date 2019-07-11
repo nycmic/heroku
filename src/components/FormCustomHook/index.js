@@ -54,21 +54,21 @@ export default ({ children }) => {
     form.setState[name](value);
   };
 
-    // const handleSubmit = e => {
-    //     e.preventDefault();
-    //     console.log(e.target)
-        // const formData = form.elms;
-        // fetch("/", {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        //     body: encode({
-        //         "form-name": formData.getAttribute("name"),
-        //         ...formData
-        //     })
-        // })
-        //     .then(() => alert('Your message submit successfully'))
-        //     .catch(error => alert(error));
-    // };
+    const handleSubmit = e => {
+        e.preventDefault();
+        console.log(e.target)
+        const formData = form.elms;
+        fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: encode({
+                "form-name": formData.getAttribute("name"),
+                ...formData
+            })
+        })
+            .then(() => alert('Your message submit successfully'))
+            .catch(error => alert(error));
+    };
 
   // const handleSubmit = event => {
   //
