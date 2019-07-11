@@ -119,6 +119,11 @@ export default ({ children }) => {
 
       <form name="contact" method="post" data-netlify-recaptcha="true" data-netlify="true">
           <input type="hidden" name="form-name" value="contact" />
+            <Recaptcha
+                ref="recaptcha"
+                sitekey={RECAPTCHA_KEY}
+                onChange={handleRecaptcha}
+            />
         {formArrElms.map((item, i) => (
         <React.Fragment key={i}>
 
@@ -194,11 +199,6 @@ export default ({ children }) => {
           </div>
           }
 
-            <Recaptcha
-                ref="recaptcha"
-                sitekey={RECAPTCHA_KEY}
-                onChange={handleRecaptcha}
-            />
           {item.type === 'webform_actions' &&
           <div className='form-actions'>
 
