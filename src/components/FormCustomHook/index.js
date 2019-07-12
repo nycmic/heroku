@@ -256,19 +256,16 @@ export default class FormCustom extends React.Component {
     };
 
     handleRecaptcha = value => {
-        this.setState({ "g-recaptcha-response": value });
+        this.setState({ ["g-recaptcha-response"]: value });
     };
 
     handleSubmit = event => {
         event.preventDefault();
         fetch('/', {
             method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: JSON.stringify({
-                "webform_id": "contact",
+                "form-name": "contact",
                 "name": "test",
                 "email": "test@est.test",
                 "subject": "test",
@@ -300,7 +297,7 @@ export default class FormCustom extends React.Component {
                             <input type="hidden" name="form-name" value="contact" />
                             <Recaptcha
                                 sitekey="6LceP60UAAAAAAJraGxoXitOcUeJxQN0enAWiCXJ"
-                                onChange={this.handleInputChange}
+                                onChange={this.handleRecaptcha}
                             />
                             <label>
                                 First name
