@@ -61,8 +61,8 @@
 //
 //   const handleRecaptcha = value => {
 //       console.log(value);
-//         const formData = form.elms;
-//         console.log(formData);
+//       const formData = form.elms;
+//       console.log(formData);
 //       formData({ "g-recaptcha-response": value });
 //       console.log(value);
 //     };
@@ -86,46 +86,46 @@
 //             .then(() => alert('Your message submit successfully'))
 //             .catch(error => alert(error));
 //     };
-//
-//   // const handleSubmit = event => {
-//   //
-//   //
-//   //   event.preventDefault();
-//   //
-//   //   const formData = form.elms;
-//   //   formData.webform_id = "contact";
-//   //
-//   //   formData.grant_type = "password";
-//   //   formData.client_id = "2e2d73d0-520d-43b7-9363-a22ffc37e2f8";
-//   //   formData.client_secret = "gatsby";
-//   //   formData.username = "funnel";
-//   //   formData.password = "admin";
-//   //
-//   //   console.log(formData);
-//   //
-//   //   // fetch('https://decoupled.devstages.com/oauth/token', {
-//   //   //     method: 'POST',
-//   //   //     headers: {
-//   //   //         'Accept': 'application/json',
-//   //   //         'Content-Type': 'multipart/form-data'
-//   //   //     },
-//   //   //     body: JSON.stringify(formData)
-//   //   // })
-//   //   //
-//   //   // fetch('https://decoupled.devstages.com/webform_rest/submit?_format=json', {
-//   //   //   method: 'POST',
-//   //   //   headers: {
-//   //   //     "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjA4OGU2OGFlZjFhN2E3MTBkMmQ2ZTIxYjQxN2U0MWIwOTBhNDQ1ZjEyMjhkYzk2MTljYWZlZmYwNDZiMzVjMmU1YmJiODRhNDczNjAwNDNmIn0.eyJhdWQiOiIyZTJkNzNkMC01MjBkLTQzYjctOTM2My1hMjJmZmMzN2UyZjgiLCJqdGkiOiIwODhlNjhhZWYxYTdhNzEwZDJkNmUyMWI0MTdlNDFiMDkwYTQ0NWYxMjI4ZGM5NjE5Y2FmZWZmMDQ2YjM1YzJlNWJiYjg0YTQ3MzYwMDQzZiIsImlhdCI6MTU2MjgzOTg3MywibmJmIjoxNTYyODM5ODczLCJleHAiOjE1NjI4ODQ1MTMsInN1YiI6IjEiLCJzY29wZXMiOlsiYXV0aGVudGljYXRlZCJdfQ.PCrbBc5J0Ks-S5Rl_sfSkNgLZT1INOdsqzcXoXpO6hsmrX51P1hP9JcORziwU3SVcQS2T-GGYShWb-9nzrfLntjJhnGysQxHcTITf87CxNQEAbqZDRGyqs7c3QklnkFctuLbdWRW5rkgD30AGwJE7ZfA0CSGPCTnXOjOk38accMFgPwCtdKI-NoYFA0tZ7Nwd_B4CpHWYpwclr6MDmPHd6epoiSmNodlelyF1LyDLTzMIVQsjUGdhK3mKGqcvjHZNUEbS_NHFMwjprtlCe_Oto_HGwaHGmOvtpJiHtkJgin8iS1SGXgx00SJ1omFuYy177-r2AVETT2V860r_hz5nZ6WrUm5KptG0jZRkSvnSLY17HYhiB8Z3cbzOfkso46i4gNkRh0J47byimayfdRO9GbGP7tloeBzcfJMIG7E9kpn7OqYPN7bzIO4lQW633IhbfAn4KU8HaImuqPLdNWez1oLsOfcZ0VNkgkzPHSj33aJv13T-m9y0IKyYNK-iuEJnRvljtbBXJHDlzAQHLeY6vQx4uIJHcyuL8e4NPHK36vtVDjVYwNLEknG2NL9Xyvi08otRFS-XOHTndoOhnQ9yztd8QMd50j5dNikNwiV2Z5grYBPekAOvgN7O7ufhGhZQp5YHZX6Zxax2arKTTis-f7t11dlwaxWoCb1LaWJmPM",
-//   //   //     'Accept': 'application/json',
-//   //   //     'Content-Type': 'application/json'
-//   //   //   },
-//   //   //   body: JSON.stringify(formData)
-//   //   // })
-//   // };
-//
-//
-//
-//
+
+  // const handleSubmit = event => {
+  //
+  //
+  //   event.preventDefault();
+  //
+  //   const formData = form.elms;
+  //   formData.webform_id = "contact";
+  //
+  //   formData.grant_type = "password";
+  //   formData.client_id = "2e2d73d0-520d-43b7-9363-a22ffc37e2f8";
+  //   formData.client_secret = "gatsby";
+  //   formData.username = "funnel";
+  //   formData.password = "admin";
+  //
+  //   console.log(formData);
+  //
+  //   // fetch('https://decoupled.devstages.com/oauth/token', {
+  //   //     method: 'POST',
+  //   //     headers: {
+  //   //         'Accept': 'application/json',
+  //   //         'Content-Type': 'multipart/form-data'
+  //   //     },
+  //   //     body: JSON.stringify(formData)
+  //   // })
+  //   //
+  //   // fetch('https://decoupled.devstages.com/webform_rest/submit?_format=json', {
+  //   //   method: 'POST',
+  //   //   headers: {
+  //   //     "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjA4OGU2OGFlZjFhN2E3MTBkMmQ2ZTIxYjQxN2U0MWIwOTBhNDQ1ZjEyMjhkYzk2MTljYWZlZmYwNDZiMzVjMmU1YmJiODRhNDczNjAwNDNmIn0.eyJhdWQiOiIyZTJkNzNkMC01MjBkLTQzYjctOTM2My1hMjJmZmMzN2UyZjgiLCJqdGkiOiIwODhlNjhhZWYxYTdhNzEwZDJkNmUyMWI0MTdlNDFiMDkwYTQ0NWYxMjI4ZGM5NjE5Y2FmZWZmMDQ2YjM1YzJlNWJiYjg0YTQ3MzYwMDQzZiIsImlhdCI6MTU2MjgzOTg3MywibmJmIjoxNTYyODM5ODczLCJleHAiOjE1NjI4ODQ1MTMsInN1YiI6IjEiLCJzY29wZXMiOlsiYXV0aGVudGljYXRlZCJdfQ.PCrbBc5J0Ks-S5Rl_sfSkNgLZT1INOdsqzcXoXpO6hsmrX51P1hP9JcORziwU3SVcQS2T-GGYShWb-9nzrfLntjJhnGysQxHcTITf87CxNQEAbqZDRGyqs7c3QklnkFctuLbdWRW5rkgD30AGwJE7ZfA0CSGPCTnXOjOk38accMFgPwCtdKI-NoYFA0tZ7Nwd_B4CpHWYpwclr6MDmPHd6epoiSmNodlelyF1LyDLTzMIVQsjUGdhK3mKGqcvjHZNUEbS_NHFMwjprtlCe_Oto_HGwaHGmOvtpJiHtkJgin8iS1SGXgx00SJ1omFuYy177-r2AVETT2V860r_hz5nZ6WrUm5KptG0jZRkSvnSLY17HYhiB8Z3cbzOfkso46i4gNkRh0J47byimayfdRO9GbGP7tloeBzcfJMIG7E9kpn7OqYPN7bzIO4lQW633IhbfAn4KU8HaImuqPLdNWez1oLsOfcZ0VNkgkzPHSj33aJv13T-m9y0IKyYNK-iuEJnRvljtbBXJHDlzAQHLeY6vQx4uIJHcyuL8e4NPHK36vtVDjVYwNLEknG2NL9Xyvi08otRFS-XOHTndoOhnQ9yztd8QMd50j5dNikNwiV2Z5grYBPekAOvgN7O7ufhGhZQp5YHZX6Zxax2arKTTis-f7t11dlwaxWoCb1LaWJmPM",
+  //   //     'Accept': 'application/json',
+  //   //     'Content-Type': 'application/json'
+  //   //   },
+  //   //   body: JSON.stringify(formData)
+  //   // })
+  // };
+
+
+
+
 //   return (
 //     <>
 //
@@ -272,12 +272,12 @@ export default class FormCustom extends React.Component {
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: encode({
                 "form-name": "contact",
-                "name": "test",
-                "email": "test@est.test",
-                "subject": "test",
-                "message": "test"
+                "firstName": "test",
+                "lastName": "test@est.test",
             })
         })
+                    .then(() => alert('Your message submit successfully'))
+            .catch(error => alert(error));
     };
 
     render() {
