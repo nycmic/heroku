@@ -57,7 +57,8 @@ export default ({ children }) => {
     form.setState[name](value);
   };
   const handleRecaptcha = value => {
-        form.setState({ "g-recaptcha-response": value });
+      console.log(value);
+      form.setState({ "g-recaptcha-response": value });
     };
 
     const handleSubmit = e => {
@@ -67,6 +68,7 @@ export default ({ children }) => {
         //     alert("Thank you!");
         // });
         const formData = form.elms;
+        console.log(formData);
         fetch("/", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
