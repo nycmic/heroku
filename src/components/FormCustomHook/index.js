@@ -75,7 +75,11 @@ export default ({ children }) => {
         fetch("/", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: encode({
+            // body: encode({
+            //     "form-name": "contact",
+            //     ...formData
+            // })
+            body: JSON.stringify({
                 "form-name": "contact",
                 ...formData
             })
