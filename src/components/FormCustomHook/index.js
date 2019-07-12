@@ -97,6 +97,7 @@ export default ({ children }) => {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: encode({
+                "no-cache" : "1",
                 "form-name": "contact",
                 ...formData
             })
@@ -149,12 +150,13 @@ export default ({ children }) => {
 
             <h5>{data.form.title}</h5>
 
-            <form name="contact" method="post" data-netlify-recaptcha="true" data-netlify="true" onSubmit={handleSubmit}>
+            <form name="contact" method="post" data-netlify="true">
                 <input type="hidden" name="form-name" value="contact" />
                 {/*<Recaptcha*/}
                 {/*sitekey="6LceP60UAAAAAAJraGxoXitOcUeJxQN0enAWiCXJ"*/}
                 {/*onChange={handleRecaptcha}*/}
                 {/*/>*/}
+                
                 {formArrElms.map((item, i) => (
                     <React.Fragment key={i}>
 
