@@ -36,6 +36,8 @@
     "react-google-recaptcha": "^0.11.1"
   },
   "devDependencies": {
+    "dotenv": "^5.0.1",
+    "gh-pages": "^0.12.0",
     "prettier": "^1.17.0"
   },
   "keywords": [
