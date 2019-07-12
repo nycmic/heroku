@@ -58,7 +58,9 @@ export default ({ children }) => {
   };
   const handleRecaptcha = value => {
       console.log(value);
-      form.setState({ "g-recaptcha-response": value });
+        const formData = form.elms;
+        console.log(formData);
+      formData({ "g-recaptcha-response": value });
       console.log(value);
     };
 
