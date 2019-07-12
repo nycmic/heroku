@@ -1,91 +1,91 @@
-// import React, { useState } from "react"
-// import { useStaticQuery, graphql } from "gatsby"
-// import { navigateTo } from "gatsby-link";
-// import Recaptcha from "react-google-recaptcha";
-// import yaml from 'js-yaml';
-// import _ from 'lodash';
-//
-//
-// const RECAPTCHA_KEY = process.env.SITE_RECAPTCHA_KEY;
-// function encode(data) {
-//     return Object.keys(data)
-//         .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-//         .join("&");
-// }
-//
-//
-//
-// export default ({ children }) => {
-//   const data = useStaticQuery(
-//     graphql`
-//         query {
-//           form: webformWebform {
-//             elements
-//             title
-//           }
-//         }
-//       `
-//   )
-//
-//   const formElms = yaml.safeLoad(data.form.elements);
-//
-//   const form = {
-//     setState: {},
-//     elms: {}
-//   };
-//   const formArrElms = [];
-//
-//   _.forOwn(formElms, function (value, name) {
-//
-//     _.forOwn(formElms[name], function (value, name, obj) {
-//       let nameWithoutHash = name.replace('#', '');
-//       obj[nameWithoutHash] = obj[name];
-//       delete obj[name];
-//     });
-//
-//     if(name !== 'actions') {
-//       [form.elms[name], form.setState[name]] = useState("");
-//     }
-//
-//     formElms[name].name = name;
-//     formArrElms.push(formElms[name]);
-//   } );
-//
-//   const handleInputChange = event => {
-//     const target = event.target;
-//     const value = target.value;
-//     const name = target.name;
-//
-//     form.setState[name](value);
-//   };
-//
-//   const handleRecaptcha = value => {
-//       console.log(value);
-//       const formData = form.elms;
-//       console.log(formData);
-//       formData({ "g-recaptcha-response": value });
-//       console.log(value);
-//     };
-//
-//     const handleSubmit = e => {
-//         e.preventDefault();
-//         // var $form = $(this);
-//         // $.post($form.attr("action"), $form.serialize()).then(function() {
-//         //     alert("Thank you!");
-//         // });
-//         const formData = form.elms;
-//         console.log(formData);
-//         fetch("/", {
-//             method: "POST",
-//             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-//             body: encode({
-//                 "form-name": "contact",
-//                 ...form.setState
-//             })
-//         })
-//             .then(() => alert('Your message submit successfully'))
-//             .catch(error => alert(error));
-//     };
+import React, { useState } from "react"
+import { useStaticQuery, graphql } from "gatsby"
+import { navigateTo } from "gatsby-link";
+import Recaptcha from "react-google-recaptcha";
+import yaml from 'js-yaml';
+import _ from 'lodash';
+
+
+const RECAPTCHA_KEY = process.env.SITE_RECAPTCHA_KEY;
+function encode(data) {
+    return Object.keys(data)
+        .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+        .join("&");
+}
+
+
+
+export default ({ children }) => {
+  const data = useStaticQuery(
+    graphql`
+        query {
+          form: webformWebform {
+            elements
+            title
+          }
+        }
+      `
+  )
+
+  const formElms = yaml.safeLoad(data.form.elements);
+
+  const form = {
+    setState: {},
+    elms: {}
+  };
+  const formArrElms = [];
+
+  _.forOwn(formElms, function (value, name) {
+
+    _.forOwn(formElms[name], function (value, name, obj) {
+      let nameWithoutHash = name.replace('#', '');
+      obj[nameWithoutHash] = obj[name];
+      delete obj[name];
+    });
+
+    if(name !== 'actions') {
+      [form.elms[name], form.setState[name]] = useState("");
+    }
+
+    formElms[name].name = name;
+    formArrElms.push(formElms[name]);
+  } );
+
+  const handleInputChange = event => {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    form.setState[name](value);
+  };
+
+  // const handleRecaptcha = value => {
+  //     console.log(value);
+  //     const formData = form.elms;
+  //     console.log(formData);
+  //     formData({ "g-recaptcha-response": value });
+  //     console.log(value);
+  //   };
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        // var $form = $(this);
+        // $.post($form.attr("action"), $form.serialize()).then(function() {
+        //     alert("Thank you!");
+        // });
+        const formData = form.elms;
+        console.log(formData);
+        fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: encode({
+                "form-name": "contact",
+                ...form.setState
+            })
+        })
+            .then(() => alert('Your message submit successfully'))
+            .catch(error => alert(error));
+    };
 
   // const handleSubmit = event => {
   //
@@ -126,210 +126,210 @@
 
 
 
-//   return (
-//     <>
+  return (
+    <>
+
+      <h5>{data.form.title}</h5>
+
+      <form name="contact" method="post" data-netlify-recaptcha="true" data-netlify="true" onSubmit={handleSubmit}>
+          <input type="hidden" name="form-name" value="contact" />
+          <Recaptcha
+              sitekey="6LceP60UAAAAAAJraGxoXitOcUeJxQN0enAWiCXJ"
+              onChange={handleRecaptcha}
+          />
+        {formArrElms.map((item, i) => (
+        <React.Fragment key={i}>
+
+          {item.type === 'textfield' &&
+          <div className='form-item'>
+            <label>
+
+              <input
+                {... {'required': item.required}}
+                type="text"
+                name={item.name}
+                placeholder = {item.title}
+                value={form.elms[item.name]}
+                onChange={handleInputChange}
+                size="60"
+                maxLength="128"
+                className={'form-text' + (item.required ? " required" : "")}
+              />
+            </label>
+          </div>
+          }
+
+          {item.type === 'tel' &&
+          <div className='form-item'>
+            <label>
+              <input
+                {... {'required': item.required}}
+                type="phone"
+                name={item.name}
+                placeholder = {item.title}
+                value={form.elms[item.name]}
+                onChange={handleInputChange}
+                size="60"
+                className={'form-text' + (item.required ? " required" : "")}
+              />
+            </label>
+          </div>
+          }
+
+          {item.type === 'email' &&
+          <div className='form-item'>
+            <label>
+
+              <input
+                {... {'required': item.required}}
+                type="mail"
+                name={item.name}
+                placeholder = {item.title}
+                value={form.elms[item.name]}
+                onChange={handleInputChange}
+                size="60"
+                className={'form-text' + (item.required ? " required" : "")}
+              />
+            </label>
+          </div>
+          }
+
+          {item.type === 'textarea' &&
+          <div className='form-item'>
+            <label>
+
+              <textarea
+                {... {'required': item.required}}
+                name={item.name}
+                placeholder = {item.title}
+                value={form.elms[item.name]}
+                onChange={handleInputChange}
+                cols="60"
+                rows="5"
+                className={'form-textarea' + (item.required ? " required" : "")}
+              />
+            </label>
+          </div>
+          }
+          {item.type === 'webform_actions' &&
+          <div className='form-actions'>
+
+            <div className="form-submit-wrap">
+              <input
+                className="form-submit"
+                type="submit"
+                name={item.title}
+                value={item.submit__label}/>
+            </div>
+
+          </div>
+          }
+
+        </React.Fragment>
+        ))
+        }
+      </form>
+
+    </>
+
+  )
+}
+
+// import React from "react"
+// import { StaticQuery, graphql } from "gatsby"
+// import Recaptcha from "react-google-recaptcha";
 //
-//       <h5>{data.form.title}</h5>
-//
-//       <form name="contact" method="post" data-netlify-recaptcha="true" data-netlify="true" onSubmit={handleSubmit}>
-//           <input type="hidden" name="form-name" value="contact" />
-//           <Recaptcha
-//               sitekey="6LceP60UAAAAAAJraGxoXitOcUeJxQN0enAWiCXJ"
-//               onChange={handleRecaptcha}
-//           />
-//         {formArrElms.map((item, i) => (
-//         <React.Fragment key={i}>
-//
-//           {item.type === 'textfield' &&
-//           <div className='form-item'>
-//             <label>
-//
-//               <input
-//                 {... {'required': item.required}}
-//                 type="text"
-//                 name={item.name}
-//                 placeholder = {item.title}
-//                 value={form.elms[item.name]}
-//                 onChange={handleInputChange}
-//                 size="60"
-//                 maxLength="128"
-//                 className={'form-text' + (item.required ? " required" : "")}
-//               />
-//             </label>
-//           </div>
-//           }
-//
-//           {item.type === 'tel' &&
-//           <div className='form-item'>
-//             <label>
-//               <input
-//                 {... {'required': item.required}}
-//                 type="phone"
-//                 name={item.name}
-//                 placeholder = {item.title}
-//                 value={form.elms[item.name]}
-//                 onChange={handleInputChange}
-//                 size="60"
-//                 className={'form-text' + (item.required ? " required" : "")}
-//               />
-//             </label>
-//           </div>
-//           }
-//
-//           {item.type === 'email' &&
-//           <div className='form-item'>
-//             <label>
-//
-//               <input
-//                 {... {'required': item.required}}
-//                 type="mail"
-//                 name={item.name}
-//                 placeholder = {item.title}
-//                 value={form.elms[item.name]}
-//                 onChange={handleInputChange}
-//                 size="60"
-//                 className={'form-text' + (item.required ? " required" : "")}
-//               />
-//             </label>
-//           </div>
-//           }
-//
-//           {item.type === 'textarea' &&
-//           <div className='form-item'>
-//             <label>
-//
-//               <textarea
-//                 {... {'required': item.required}}
-//                 name={item.name}
-//                 placeholder = {item.title}
-//                 value={form.elms[item.name]}
-//                 onChange={handleInputChange}
-//                 cols="60"
-//                 rows="5"
-//                 className={'form-textarea' + (item.required ? " required" : "")}
-//               />
-//             </label>
-//           </div>
-//           }
-//           {item.type === 'webform_actions' &&
-//           <div className='form-actions'>
-//
-//             <div className="form-submit-wrap">
-//               <input
-//                 className="form-submit"
-//                 type="submit"
-//                 name={item.title}
-//                 value={item.submit__label}/>
-//             </div>
-//
-//           </div>
-//           }
-//
-//         </React.Fragment>
-//         ))
-//         }
-//       </form>
-//
-//     </>
-//
-//   )
+// function encode(data) {
+//     return Object.keys(data)
+//         .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+//         .join("&");
 // }
-
-import React from "react"
-import { StaticQuery, graphql } from "gatsby"
-import Recaptcha from "react-google-recaptcha";
-
-function encode(data) {
-    return Object.keys(data)
-        .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-        .join("&");
-}
-
-export default class FormCustom extends React.Component {
-    state = {
-        firstName: "",
-        lastName: "",
-    };
-
-    handleInputChange = event => {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-        console.log(name);
-        this.setState({
-            [name]: value,
-        })
-    };
-
-    handleRecaptcha = value => {
-        this.setState({ ["g-recaptcha-response"]: value });
-    };
-
-    handleSubmit = event => {
-        event.preventDefault();
-        fetch('/', {
-            method: 'POST',
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: encode({
-                "form-name": "contact",
-                "firstName": "test",
-                "lastName": "test@est.test",
-            })
-        })
-                    .then(() => alert('Your message submit successfully'))
-            .catch(error => alert(error));
-    };
-
-    render() {
-
-        return (
-
-            <StaticQuery
-                query={graphql`
-            query {
-              form: webformWebform {
-                elements
-                title
-              }
-            }
-          `}
-                render={data => (
-                    <>
-                        {/*{*/}
-                        {/*console.log( getForm(data.form.elements))*/}
-                        {/*}*/}
-
-                        <form name="contact" method="post"  data-netlify="true" onSubmit={this.handleSubmit}>
-                            <input type="hidden" name="form-name" value="contact" />
-                            {/*<Recaptcha*/}
-                                {/*sitekey="6LceP60UAAAAAAJraGxoXitOcUeJxQN0enAWiCXJ"*/}
-                                {/*onChange={this.handleRecaptcha}*/}
-                            {/*/>*/}
-                            <label>
-                                First name
-                                <input
-                                    type="text"
-                                    name="firstName"
-                                    value={this.state.firstName}
-                                    onChange={this.handleInputChange}
-                                />
-                            </label>
-                            <label>
-                                Last name
-                                <input
-                                    type="text"
-                                    name="lastName"
-                                    value={this.state.lastName}
-                                    onChange={this.handleInputChange}
-                                />
-                            </label>
-                            <button type="submit" className="form-submit">Submit</button>
-                        </form>
-
-                    </>
-                )}
-            />
-
-        )
-    }
-}
+//
+// export default class FormCustom extends React.Component {
+//     state = {
+//         firstName: "",
+//         lastName: "",
+//     };
+//
+//     handleInputChange = event => {
+//         const target = event.target;
+//         const value = target.value;
+//         const name = target.name;
+//         console.log(name);
+//         this.setState({
+//             [name]: value,
+//         })
+//     };
+//
+//     handleRecaptcha = value => {
+//         this.setState({ ["g-recaptcha-response"]: value });
+//     };
+//
+//     handleSubmit = event => {
+//         event.preventDefault();
+//         fetch('/', {
+//             method: 'POST',
+//             headers: { "Content-Type": "application/x-www-form-urlencoded" },
+//             body: encode({
+//                 "form-name": "contact",
+//                 "firstName": "test",
+//                 "lastName": "test@est.test",
+//             })
+//         })
+//                     .then(() => alert('Your message submit successfully'))
+//             .catch(error => alert(error));
+//     };
+//
+//     render() {
+//
+//         return (
+//
+//             <StaticQuery
+//                 query={graphql`
+//             query {
+//               form: webformWebform {
+//                 elements
+//                 title
+//               }
+//             }
+//           `}
+//                 render={data => (
+//                     <>
+//                         {/*{*/}
+//                         {/*console.log( getForm(data.form.elements))*/}
+//                         {/*}*/}
+//
+//                         <form name="contact" method="post"  data-netlify="true" onSubmit={this.handleSubmit}>
+//                             <input type="hidden" name="form-name" value="contact" />
+//                             {/*<Recaptcha*/}
+//                                 {/*sitekey="6LceP60UAAAAAAJraGxoXitOcUeJxQN0enAWiCXJ"*/}
+//                                 {/*onChange={this.handleRecaptcha}*/}
+//                             {/*/>*/}
+//                             <label>
+//                                 First name
+//                                 <input
+//                                     type="text"
+//                                     name="firstName"
+//                                     value={this.state.firstName}
+//                                     onChange={this.handleInputChange}
+//                                 />
+//                             </label>
+//                             <label>
+//                                 Last name
+//                                 <input
+//                                     type="text"
+//                                     name="lastName"
+//                                     value={this.state.lastName}
+//                                     onChange={this.handleInputChange}
+//                                 />
+//                             </label>
+//                             <button type="submit" className="form-submit">Submit</button>
+//                         </form>
+//
+//                     </>
+//                 )}
+//             />
+//
+//         )
+//     }
+// }
