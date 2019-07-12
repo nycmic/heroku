@@ -74,7 +74,9 @@ export default ({ children }) => {
         //     alert("Thank you!");
         // });
         const formData = form.elms;
-        console.log(formData);
+        console.log(encode({
+            "form-name": "contact",
+            formData}));
         fetch("/", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
