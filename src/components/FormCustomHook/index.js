@@ -239,6 +239,12 @@ import React from "react"
 import { StaticQuery, graphql } from "gatsby"
 import Recaptcha from "react-google-recaptcha";
 
+function encode(data) {
+    return Object.keys(data)
+        .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+        .join("&");
+}
+
 export default class FormCustom extends React.Component {
     state = {
         firstName: "",
@@ -264,7 +270,7 @@ export default class FormCustom extends React.Component {
         fetch('/', {
             method: 'POST',
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: JSON.stringify({
+            body: encode({
                 "form-name": "contact",
                 "name": "test",
                 "email": "test@est.test",
@@ -293,12 +299,12 @@ export default class FormCustom extends React.Component {
                         {/*console.log( getForm(data.form.elements))*/}
                         {/*}*/}
 
-                        <form name="contact" method="post" data-netlify-recaptcha="true" data-netlify="true" onSubmit={this.handleSubmit}>
+                        <form name="contact" method="post"  data-netlify="true" onSubmit={this.handleSubmit}>
                             <input type="hidden" name="form-name" value="contact" />
-                            <Recaptcha
-                                sitekey="6LceP60UAAAAAAJraGxoXitOcUeJxQN0enAWiCXJ"
-                                onChange={this.handleRecaptcha}
-                            />
+                            {/*<Recaptcha*/}
+                                {/*sitekey="6LceP60UAAAAAAJraGxoXitOcUeJxQN0enAWiCXJ"*/}
+                                {/*onChange={this.handleRecaptcha}*/}
+                            {/*/>*/}
                             <label>
                                 First name
                                 <input
