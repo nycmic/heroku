@@ -129,7 +129,6 @@ export default ({ children }) => {
       <form name="contact" method="post" data-netlify-recaptcha="true" data-netlify="true" onSubmit={handleSubmit}>
           <input type="hidden" name="form-name" value="contact" />
           <Recaptcha
-              ref={ ref => this.recaptcha = ref }
               sitekey="6LceP60UAAAAAAJraGxoXitOcUeJxQN0enAWiCXJ"
               onChange={handleRecaptcha}
           />
