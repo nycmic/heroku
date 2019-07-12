@@ -72,11 +72,12 @@ export default ({ children }) => {
         // var $form = $(this);
         // $.post($form.attr("action"), $form.serialize()).then(function() {
         //     alert("Thank you!");
-        // });
         const formData = form.elms;
+        // });
+        const data = JSON.stringify(formData);
         console.log(encode({
             "form-name": "contact",
-            formData}));
+            data}));
         fetch("/", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
