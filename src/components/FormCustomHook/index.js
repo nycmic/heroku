@@ -75,6 +75,7 @@ export default ({ children }) => {
         const formData = form.elms;
         // });
         const data = JSON.stringify(formData);
+	console.log(data);
         console.log(encode({
             "form-name": "contact",
             data}));
