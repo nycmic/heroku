@@ -62,21 +62,21 @@ export default ({ children }) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        var $form = $(this);
-        $.post($form.attr("action"), $form.serialize()).then(function() {
-            alert("Thank you!");
-        });
-        // const formData = form.elms;
-        // fetch("/", {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        //     body: encode({
-        //         "form-name": formData.getAttribute("name"),
-        //         ...formData
-        //     })
-        // })
-        //     .then(() => alert('Your message submit successfully'))
-        //     .catch(error => alert(error));
+        // var $form = $(this);
+        // $.post($form.attr("action"), $form.serialize()).then(function() {
+        //     alert("Thank you!");
+        // });
+        const formData = form.elms;
+        fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: encode({
+                "form-name": formData.getAttribute("name"),
+                ...formData
+            })
+        })
+            .then(() => alert('Your message submit successfully'))
+            .catch(error => alert(error));
     };
 
   // const handleSubmit = event => {
