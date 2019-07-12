@@ -59,7 +59,7 @@ export default class FormCustom extends React.Component {
                             <input type="hidden" name="form-name" value="contact" />
                             <Recaptcha
                                 ref="recaptcha"
-                                sitekey={RECAPTCHA_KEY}
+                                sitekey="6LceP60UAAAAAAJraGxoXitOcUeJxQN0enAWiCXJ"
                                 onChange={handleRecaptcha}
                             />
                             <label>
