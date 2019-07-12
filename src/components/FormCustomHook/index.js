@@ -249,7 +249,7 @@ export default class FormCustom extends React.Component {
         const target = event.target;
         const value = target.value;
         const name = target.name;
-
+        console.log(name);
         this.setState({
             [name]: value,
         })
@@ -300,7 +300,7 @@ export default class FormCustom extends React.Component {
                             <input type="hidden" name="form-name" value="contact" />
                             <Recaptcha
                                 sitekey="6LceP60UAAAAAAJraGxoXitOcUeJxQN0enAWiCXJ"
-                                onChange={this.handleRecaptcha}
+                                onChange={this.handleInputChange}
                             />
                             <label>
                                 First name
