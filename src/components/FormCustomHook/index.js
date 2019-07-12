@@ -1,5 +1,6 @@
 import React from "react"
 import { StaticQuery, graphql } from "gatsby"
+import Recaptcha from "react-google-recaptcha";
 
 export default class FormCustom extends React.Component {
     state = {
