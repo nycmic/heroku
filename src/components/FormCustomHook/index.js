@@ -95,7 +95,7 @@ export default ({ children }) => {
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: encode({
                 "form-name": "contact",
-                formData
+                ...formData
             })
         })
             .then(() => alert('Your message submit successfully'))
