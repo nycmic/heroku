@@ -18,6 +18,10 @@ export default class FormCustom extends React.Component {
         })
     };
 
+    handleRecaptcha = value => {
+        this.setState({ "g-recaptcha-response": value });
+    };
+
     handleSubmit = event => {
         event.preventDefault();
         fetch('https://decoupled.devstages.com/webform_rest/submit?_format=json', {
@@ -60,7 +64,7 @@ export default class FormCustom extends React.Component {
                             <Recaptcha
                                 ref="recaptcha"
                                 sitekey="6LceP60UAAAAAAJraGxoXitOcUeJxQN0enAWiCXJ"
-                                onChange={handleRecaptcha}
+                                onChange={this.handleRecaptcha}
                             />
                             <label>
                                 First name
