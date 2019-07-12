@@ -62,18 +62,21 @@ export default ({ children }) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        console.log(e.target)
-        const formData = form.elms;
-        fetch("/", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: encode({
-                "form-name": formData.getAttribute("name"),
-                ...formData
-            })
-        })
-            .then(() => alert('Your message submit successfully'))
-            .catch(error => alert(error));
+        var $form = $(this);
+        $.post($form.attr("action"), $form.serialize()).then(function() {
+            alert("Thank you!");
+        });
+        // const formData = form.elms;
+        // fetch("/", {
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        //     body: encode({
+        //         "form-name": formData.getAttribute("name"),
+        //         ...formData
+        //     })
+        // })
+        //     .then(() => alert('Your message submit successfully'))
+        //     .catch(error => alert(error));
     };
 
   // const handleSubmit = event => {
@@ -120,10 +123,10 @@ export default ({ children }) => {
 
       <h5>{data.form.title}</h5>
 
-      <form name="contact" method="post" data-netlify-recaptcha="true" data-netlify="true">
+      <form name="contact" method="post" data-netlify-recaptcha="true" data-netlify="true" onSubmit={handleSubmit}>
           <input type="hidden" name="form-name" value="contact" />
           <Recaptcha
-              sitekey="6LceP60UAAAAAAJraGxoXitOcUeJxQN0enAWiCXJ"
+              sitekey={RECAPTCHA_KEY}
               onChange={handleRecaptcha}
           />
         {formArrElms.map((item, i) => (
