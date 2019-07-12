@@ -132,7 +132,7 @@ export default ({ children }) => {
           <input type="hidden" name="form-name" value="contact" />
           <Recaptcha
               sitekey="6LceP60UAAAAAAJraGxoXitOcUeJxQN0enAWiCXJ"
-              onChange={handleRecaptcha}
+              onResolved={ () => console.log( 'Human detected.' ) }
           />
         {formArrElms.map((item, i) => (
         <React.Fragment key={i}>
