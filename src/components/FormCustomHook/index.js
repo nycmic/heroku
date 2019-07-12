@@ -89,8 +89,11 @@ export default ({ children }) => {
         const formData = form.elms;
         // });
         const data1 = encode(formData);
-        console.log(data1);
-        fetch("/", {
+        console.log(encode({
+            "form-name": "contact",
+            ...formData
+        }));
+        fetch("contact", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: encode({
