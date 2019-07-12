@@ -111,6 +111,7 @@ export default ({ children }) => {
                                 <input
                                     {... {'required': item.required}}
                                     type="tel"
+                                    pattern="[0-9]"
                                     name={item.name}
                                     placeholder = {item.title}
                                     value={form.elms[item.name]}
