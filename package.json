@@ -33,7 +33,6 @@
     "react-jss": "^8.6.1",
     "react-slick": "^0.24.0",
     "react-async-script": "^0.9.1",
-    "react-slick": "^0.24.0",
     "react-google-recaptcha": "^1.0.5"
   },
   "devDependencies": {
@@ -54,4 +53,3 @@
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
   }
 }
-
