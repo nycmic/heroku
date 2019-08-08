@@ -43,6 +43,8 @@ export default ({ children }) => {
 
                 <div className="teaser">
 
+                  {console.log(node.body.value)}
+
                   {htmlIn(excerptHtml(getPropSafe(node, 'body.value'), {
                     moreRegExp:  /\s*<!--\s*more\s*-->/i,  // Search for the slug
                     stripTags:   true, // Set to false to get html code

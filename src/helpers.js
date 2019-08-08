@@ -17,12 +17,9 @@ export function createCompObj (component, array, nodeId, props) {
 
     let newProps = {};
 
-    for (let k in props) {
-
-      if (props.hasOwnProperty(k)) {
-        newProps[k] = getData(props[k])
-      }
-    }
+    _.forOwn(props, function (value, k) {
+      newProps[k] = getData(value);
+    });
 
     function getData(value){
       return getProp(node, value);
@@ -65,10 +62,18 @@ export function htmlIn (el) {
 
 export function getProp (obg, el) {
 
-  let dataProp = _.get(obg, el);
+  let dataProp;
 
-  if (typeof dataProp === 'string') {
-    dataProp = htmlIn(dataProp);
+  if (~el.indexOf('excerpt')) {
+    dataProp = _.get(obg, el.replace('excerpt.', ''));
+
+  } else {
+
+    dataProp = _.get(obg, el);
+
+    if (typeof dataProp === 'string') {
+      dataProp = htmlIn(dataProp);
+    }
   }
 
   return dataProp;

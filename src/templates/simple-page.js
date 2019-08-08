@@ -13,6 +13,7 @@ import ParagraphColumnsWithLinksList from "../components/ParagraphColumnsWithLin
 import InnerWrapper from "../components/InnerWrapper";
 import BlockContentInfoBlock from "../components/BlockContentInfoBlock";
 import BlockContentTeam from "../components/BlockContentTeam";
+import NodeNews from "../components/allNodeNews";
 
 export default ({data: {nodeSimplePage: page, nodeSimplePage: {fields: {drupalInternalNid: pageId}}}}) => {
 
@@ -48,6 +49,22 @@ export default ({data: {nodeSimplePage: page, nodeSimplePage: {fields: {drupalIn
               <ParagraphImageAndText nodeId={pageId}/>
               <BlockContentTeam nodeId={pageId}/>
 
+              {page.fields.slug === '/news' &&
+                <div className='b-news'>
+                  <div className="sidebar">
+
+                  </div>
+                  <div className="items-wrap">
+
+                    <div className="items">
+                      <NodeNews nodeId='all' />
+                    </div>
+
+                  </div>
+
+                </div>
+              }
+
             </div>
 
             <ParagraphBasicContactsFieldColl nodeId={pageId}/>
@@ -56,7 +73,9 @@ export default ({data: {nodeSimplePage: page, nodeSimplePage: {fields: {drupalIn
 
         </InnerWrapper>
 
-      <BlockContentInfoBlock nodeId={pageId}/>
+      {page.fields.slug !== '/news' &&
+        <BlockContentInfoBlock nodeId={pageId}/>
+      }
 
     </Layout>
   )
@@ -71,6 +90,7 @@ export const query = graphql`
       }
       fields {
         drupalInternalNid
+        slug
       }      
       relationships {
         field_basic_top_image {
