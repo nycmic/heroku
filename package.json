@@ -11,6 +11,7 @@
     "excerpt-html": "^1.2.1",
     "gatsby": "^2.3.25",
     "gatsby-image": "^2.0.39",
+    "gatsby-paginate": "^1.1.1",
     "gatsby-plugin-lodash": "^3.1.0",
     "gatsby-plugin-manifest": "^2.0.29",
     "gatsby-plugin-offline": "^2.0.25",
@@ -27,13 +28,13 @@
     "node-sass": "^4.12.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
+    "react-async-script": "^0.9.1",
     "react-bootstrap": "^1.0.0-beta.9",
     "react-dom": "^16.8.6",
+    "react-google-recaptcha": "^1.0.5",
     "react-helmet": "^5.2.0",
     "react-jss": "^8.6.1",
-    "react-slick": "^0.24.0",
-    "react-async-script": "^0.9.1",
-    "react-google-recaptcha": "^1.0.5"
+    "react-slick": "^0.24.0"
   },
   "devDependencies": {
     "dotenv": "^5.0.1",
