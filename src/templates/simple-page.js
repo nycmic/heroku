@@ -56,9 +56,7 @@ export default ({data: {nodeSimplePage: page, nodeSimplePage: {fields: {drupalIn
                   </div>
                   <div className="items-wrap">
 
-                    <div className="items">
-                      <NodeNews nodeId='all' />
-                    </div>
+                      <NodeNews nodeId='all' perPage={10} />
 
                   </div>
 
