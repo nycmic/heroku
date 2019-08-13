@@ -1,4 +1,5 @@
-const path = require(`path`)
+const path = require(`path`);
+const createPaginatedPages = require('gatsby-paginate');
 
 // Create a slug for each recipe and set it as a field on the node.
 exports.onCreateNode = ({ node, getNode, actions }) => {
@@ -104,6 +105,16 @@ exports.createPages = ({ actions, graphql }) => {
     if (result.errors) {
       throw result.errors
     }
+
+    createPaginatedPages({
+      edges: result.data.allNodeNews.edges,
+      createPage: createPage,
+      pageTemplate: 'src/templates/newsssTest.js',
+      pageLength: 5,
+      pathPrefix: 'newsssTest',
+      buildPath: (index, pathPrefix) =>
+        index > 1 ? `${pathPrefix}/${index}` : `/${pathPrefix}`, // This is optional and this is the default
+    })
 
     // Create pages.
     result.data.allNodeCareers.edges.forEach(({ node }) => {
