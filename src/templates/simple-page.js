@@ -32,7 +32,7 @@ export default ({data: {nodeSimplePage: page, nodeSimplePage: {fields: {drupalIn
 
           <div className="content-inner">
 
-            <div className="inner-wrap">
+            <div className={page.fields.slug !== '/news' && 'inner-wrap'}>
 
               <ParagraphSimpleLogoFieldColl nodeId={pageId}/>
               <ParagraphColumnsWithLinksList nodeId={pageId}/>
@@ -49,21 +49,21 @@ export default ({data: {nodeSimplePage: page, nodeSimplePage: {fields: {drupalIn
               <ParagraphImageAndText nodeId={pageId}/>
               <BlockContentTeam nodeId={pageId}/>
 
-              {page.fields.slug === '/news' &&
-                <div className='b-news'>
-                  <div className="sidebar">
+            </div>
 
-                  </div>
-                  <div className="items-wrap">
-
-                      <NodeNews nodeId='all' perPage={4} />
-
-                  </div>
+            {page.fields.slug === '/news' &&
+              <div className='b-news'>
+                <div className="sidebar">
 
                 </div>
-              }
+                <div className="items-wrap">
 
-            </div>
+                  <NodeNews nodeId='all' perPage={4} />
+
+                </div>
+
+              </div>
+            }
 
             <ParagraphBasicContactsFieldColl nodeId={pageId}/>
 
