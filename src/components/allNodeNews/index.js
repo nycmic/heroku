@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState,useEffect} from "react"
 import {useStaticQuery, graphql} from "gatsby"
 import {createCompObj, getPropSafe, htmlIn} from "../../helpers";
 import excerptHtml from "excerpt-html";
@@ -37,13 +37,13 @@ const NodeNews = ({children, nodeId, perPage}) => {
 
   component = createCompObj(component, data.comp.edges, nodeId, props);
 
-  const NewsItems = ({children, component, start, end}) => {
+  const NewsItems = ({children, component}) => {
     return (
       <>
-        {component.isdData && component.isAllArrayHasValidProp &&
+        {/*{component.isdData && component.isAllArrayHasValidProp &&*/}
         <div className="items">
 
-          {component.dataArr.slice(start, end).map(({isProp, id, props: item}, i) => (
+          {component.map(({isProp, id, props: item}, i) => (
 
             <div key={i} className="item">
 
@@ -90,30 +90,83 @@ const NodeNews = ({children, nodeId, perPage}) => {
           ))}
 
         </div>
-        }
+        {/*}*/}
 
         {children}
       </>
     )
   };
 
+  //states
+  const [offset, setOffset] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
+  const [componentData, setComponentData] = useState([]);
+
+  let currentPage = undefined;
+  let winSearch = window.location.search;
+  if (winSearch && ~winSearch.indexOf('?page=')) {
+    currentPage = +window.location.search.replace('?page=', '') - 1;
+  }
+  //endStates
+
+  useEffect(() => {
+    updateNewsItems();
+  }, [offset]);
+
+  function updateNewsItems() {
+    let start = offset;
+    let end =  offset + perPage;
+
+    console.log(start, 'start');
+    console.log(end, 'end');
+
+    console.log( component.dataArr.slice(start, end));
+
+    setComponentData(component.dataArr.slice(start, end));
+    setPageCount(Math.ceil(component.dataArr.length / perPage));
+
+  }
+
+   const handlePageClick = data => {
+    let selected = data.selected;
+    let offset = Math.ceil(selected * perPage);
+
+     console.log(selected, 'selected');
+     console.log(offset, 'offset');
+
+    window.history.pushState(null, null, '?page=' + (+(selected) + 1));
+
+    setOffset(offset);
+  }
+
+  console.log(component);
+
   return (
     <>
-      <NewsItems component={component} start={0} end={3} />
-      {/*<ReactPaginate*/}
-      {/*  initialPage={this.state.currentPage}*/}
-      {/*  previousLabel={'previous'}*/}
-      {/*  nextLabel={'next'}*/}
-      {/*  breakLabel={'...'}*/}
-      {/*  breakClassName={'break-me'}*/}
-      {/*  pageCount={this.state.pageCount}*/}
-      {/*  marginPagesDisplayed={2}*/}
-      {/*  pageRangeDisplayed={5}*/}
-      {/*  onPageChange={this.handlePageClick}*/}
-      {/*  containerClassName={'pagination'}*/}
-      {/*  subContainerClassName={'pages pagination'}*/}
-      {/*  activeClassName={'active'}*/}
-      {/*/>*/}
+      <NewsItems component={componentData}/>
+
+      <div className="pager-wrapper">
+        <div className="item-list">
+          <ReactPaginate
+            initialPage={currentPage}
+            previousLabel={'‹ previous'}
+            nextLabel={'next ›'}
+            breakLabel={'...'}
+            breakClassName={'break-me'}
+            pageCount={pageCount}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClick}
+            containerClassName={'pager'}
+            subContainerClassName={'pages pagination'}
+            activeClassName={'pager-current'}
+            hrefBuilder={()=> {
+              return '#';
+            }}
+          />
+        </div>
+      </div>
+
     </>
   )
 };

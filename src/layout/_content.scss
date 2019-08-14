@@ -388,11 +388,30 @@
           display: none;
         }
 
+        &.disabled {
+          opacity: .3;
+          cursor: default;
+
+          a {
+            text-decoration: none;
+          }
+        }
+
         &.pager-current {
           font-family: $chrono-bold;
           color: $color-1;
           padding: 0 7px;
           cursor: default;
+
+          a {
+            font-family: $chrono-bold;
+            color: #b11c21;
+            padding: 0;
+
+            &:hover {
+              text-decoration: none;
+            }
+          }
         }
 
         a {
@@ -401,6 +420,7 @@
           color: #5c6162;
           padding: 0 7px;
           display: inline-block;
+          transition: color .3s;
 
           @media (min-width: $bp-middle) {
             font-size: 17px;
