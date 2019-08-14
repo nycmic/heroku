@@ -15,7 +15,7 @@ import BlockContentInfoBlock from "../components/BlockContentInfoBlock";
 import BlockContentTeam from "../components/BlockContentTeam";
 import NodeNews from "../components/allNodeNews";
 
-export default ({data: {nodeSimplePage: page, nodeSimplePage: {fields: {drupalInternalNid: pageId}}}}) => {
+export default ({location, data: {nodeSimplePage: page, nodeSimplePage: {fields: {drupalInternalNid: pageId}}}}) => {
 
   let {relationships: relPage} = page;
   let imgTop = relPage.field_basic_top_image;
@@ -60,8 +60,7 @@ export default ({data: {nodeSimplePage: page, nodeSimplePage: {fields: {drupalIn
 
                 </div>
                 <div className="items-wrap">
-
-                  <NodeNews nodeId='all' perPage={4} />
+                  <NodeNews nodeId='all' perPage={4} location={location}/>
 
                 </div>
 

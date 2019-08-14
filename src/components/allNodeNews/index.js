@@ -4,7 +4,7 @@ import {createCompObj, getPropSafe, htmlIn} from "../../helpers";
 import excerptHtml from "excerpt-html";
 import ReactPaginate from 'react-paginate';
 
-const NodeNews = ({children, nodeId, perPage}) => {
+const NodeNews = ({children, nodeId, perPage, location}) => {
   const data = useStaticQuery(
     graphql`
         query {
@@ -105,9 +105,9 @@ const NodeNews = ({children, nodeId, perPage}) => {
   const [componentData, setComponentData] = useState([]);
 
   let currentPage = undefined;
-  let winSearch = window.location.search;
-  if (winSearch && ~winSearch.indexOf('?page=')) {
-    currentPage = +window.location.search.replace('?page=', '') - 1;
+
+  if (location.search && ~location.search.indexOf('?page=')) {
+    currentPage = +location.search.replace('?page=', '') - 1;
   }
   //endStates
 
