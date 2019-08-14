@@ -3,6 +3,7 @@ import {useStaticQuery, graphql} from "gatsby"
 import {createCompObj, getPropSafe, htmlIn} from "../../helpers";
 import excerptHtml from "excerpt-html";
 import ReactPaginate from 'react-paginate';
+import _ from 'lodash';
 
 const NodeNews = ({children, nodeId, perPage, location}) => {
   const data = useStaticQuery(
@@ -99,6 +100,27 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
     )
   };
 
+  const YearsTags = ({component}) => {
+
+    return (
+      <div className='archive'>
+        <h5>SORT BY YEAR</h5>
+        <div className="fblog-archive">
+          <ul className="fblog-archive-list">
+            {component.dataArrTagsYears.map((item, i) => (
+              <li key={i}>
+                <a href={'?year=' + item} className='link-dropdown'>
+                  {item}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+      </div>
+    )
+  }
+
   //states
   const [offset, setOffset] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -115,11 +137,32 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
     updateNewsItems();
   }, [offset]);
 
+  sortByYear();
+
+  function sortByYear() {
+    component.dataObjYears = {};
+    component.dataArrTagsYears = [];
+
+    component.dataArr.forEach((item, i)=> {
+
+      if (item.props.years) {
+
+        if (!component.dataObjYears[item.props.years]) {
+          component.dataObjYears[item.props.years] = [];
+        }
+
+        component.dataArrTagsYears.push(item.props.years);
+        component.dataObjYears[item.props.years].push(item);
+      }
+    });
+
+    component.dataArrTagsYears = _.sortedUniq( component.dataArrTagsYears);
+    console.log(component);
+  }
+
   function updateNewsItems() {
     let start = offset;
     let end =  offset + perPage;
-
-    console.log(component.dataArr.slice(start, end));
 
     setComponentData(component.dataArr.slice(start, end));
     setPageCount(Math.ceil(component.dataArr.length / perPage));
@@ -134,32 +177,38 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
   }
 
   return (
-    <>
-      <NewsItems component={componentData}/>
+    <div className='b-news'>
+      <div className="sidebar">
+        <YearsTags component={component}/>
+      </div>
 
-      <div className="pager-wrapper">
-        <div className="item-list">
-          <ReactPaginate
-            initialPage={currentPage}
-            previousLabel={'‹ previous'}
-            nextLabel={'next ›'}
-            breakLabel={'...'}
-            breakClassName={'break-me'}
-            pageCount={pageCount}
-            marginPagesDisplayed={1}
-            pageRangeDisplayed={5}
-            onPageChange={handlePageClick}
-            containerClassName={'pager'}
-            subContainerClassName={'pages pagination'}
-            activeClassName={'pager-current'}
-            hrefBuilder={()=> {
-              return '#';
-            }}
-          />
+      <div className="items-wrap">
+        <NewsItems component={componentData}/>
+
+        <div className="pager-wrapper">
+          <div className="item-list">
+            <ReactPaginate
+              initialPage={currentPage}
+              previousLabel={'‹ previous'}
+              nextLabel={'next ›'}
+              breakLabel={'...'}
+              breakClassName={'break-me'}
+              pageCount={pageCount}
+              marginPagesDisplayed={1}
+              pageRangeDisplayed={5}
+              onPageChange={handlePageClick}
+              containerClassName={'pager'}
+              subContainerClassName={'pages pagination'}
+              activeClassName={'pager-current'}
+              hrefBuilder={()=> {
+                return '#';
+              }}
+            />
+          </div>
         </div>
       </div>
 
-    </>
+    </div>
   )
 };
 

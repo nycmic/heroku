@@ -55,16 +55,9 @@ export default ({location, data: {nodeSimplePage: page, nodeSimplePage: {fields:
             }
 
             {page.fields.slug === '/news' &&
-              <div className='b-news'>
-                <div className="sidebar">
-
-                </div>
-                <div className="items-wrap">
-                  <NodeNews nodeId='all' perPage={4} location={location}/>
-
-                </div>
-
-              </div>
+              <>
+                 <NodeNews nodeId='all' perPage={4} location={location}/>
+              </>
             }
 
             <ParagraphBasicContactsFieldColl nodeId={pageId}/>
