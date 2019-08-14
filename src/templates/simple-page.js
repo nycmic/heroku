@@ -32,24 +32,27 @@ export default ({data: {nodeSimplePage: page, nodeSimplePage: {fields: {drupalIn
 
           <div className="content-inner">
 
-            <div className={page.fields.slug !== '/news' && 'inner-wrap'}>
+            {page.fields.slug !== '/news' &&
 
-              <ParagraphSimpleLogoFieldColl nodeId={pageId}/>
-              <ParagraphColumnsWithLinksList nodeId={pageId}/>
-              <ParagraphTwoImagesInColumns nodeId={pageId}/>
+              <div className='inner-wrap'>
 
-              {bodyValue &&
+                <ParagraphSimpleLogoFieldColl nodeId={pageId}/>
+                <ParagraphColumnsWithLinksList nodeId={pageId}/>
+                <ParagraphTwoImagesInColumns nodeId={pageId}/>
+
+                {bodyValue &&
                 <>
                   {bodyValue}
                   <hr/>
                 </>
-              }
+                }
 
-              <ParagraphSimplePageInfo nodeId={pageId}/>
-              <ParagraphImageAndText nodeId={pageId}/>
-              <BlockContentTeam nodeId={pageId}/>
+                <ParagraphSimplePageInfo nodeId={pageId}/>
+                <ParagraphImageAndText nodeId={pageId}/>
+                <BlockContentTeam nodeId={pageId}/>
 
-            </div>
+              </div>
+            }
 
             {page.fields.slug === '/news' &&
               <div className='b-news'>

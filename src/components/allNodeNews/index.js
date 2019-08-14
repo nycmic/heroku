@@ -16,6 +16,7 @@ const NodeNews = ({children, nodeId, perPage}) => {
                     value
                 }
                 field_news_date(formatString: "MMMM DD, YYYY")
+                years: field_news_date(formatString: "YYYY")
                 path {
                     alias
                 }                          
@@ -33,6 +34,7 @@ const NodeNews = ({children, nodeId, perPage}) => {
     desc: 'excerpt.body.value',
     date: 'field_news_date',
     path: 'path.alias',
+    years: 'years'
   };
 
   component = createCompObj(component, data.comp.edges, nodeId, props);
@@ -117,29 +119,19 @@ const NodeNews = ({children, nodeId, perPage}) => {
     let start = offset;
     let end =  offset + perPage;
 
-    console.log(start, 'start');
-    console.log(end, 'end');
-
-    console.log( component.dataArr.slice(start, end));
+    console.log(component.dataArr.slice(start, end));
 
     setComponentData(component.dataArr.slice(start, end));
     setPageCount(Math.ceil(component.dataArr.length / perPage));
-
   }
 
    const handlePageClick = data => {
     let selected = data.selected;
     let offset = Math.ceil(selected * perPage);
-
-     console.log(selected, 'selected');
-     console.log(offset, 'offset');
-
     window.history.pushState(null, null, '?page=' + (+(selected) + 1));
 
     setOffset(offset);
   }
-
-  console.log(component);
 
   return (
     <>
