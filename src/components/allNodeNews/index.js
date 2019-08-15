@@ -109,7 +109,7 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
           <ul className="fblog-archive-list">
             {component.dataArrTagsYears.map((item, i) => (
               <li key={i}>
-                <a href={'?year=' + item} className='link-dropdown'>
+                <a href={'?year=' + item} data-years={item} className='link-dropdown' onClick={handleYearsClick}>
                   {item}
                 </a>
               </li>
@@ -120,24 +120,6 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
       </div>
     )
   }
-
-  //states
-  const [offset, setOffset] = useState(0);
-  const [pageCount, setPageCount] = useState(0);
-  const [componentData, setComponentData] = useState([]);
-
-  let currentPage = undefined;
-
-  if (location.search && ~location.search.indexOf('?page=')) {
-    currentPage = +location.search.replace('?page=', '') - 1;
-  }
-  //endStates
-
-  useEffect(() => {
-    updateNewsItems();
-  }, [offset]);
-
-  sortByYear();
 
   function sortByYear() {
     component.dataObjYears = {};
@@ -157,23 +139,85 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
     });
 
     component.dataArrTagsYears = _.sortedUniq( component.dataArrTagsYears);
-    console.log(component);
   }
 
-  function updateNewsItems() {
-    let start = offset;
-    let end =  offset + perPage;
+  sortByYear();
 
-    setComponentData(component.dataArr.slice(start, end));
-    setPageCount(Math.ceil(component.dataArr.length / perPage));
+  //checkSearchLocation
+  let currentPage = undefined;
+  let currentComponentData = component.dataArr;
+
+  if (location.search)  {
+
+    let search = location.search.replace('?', '');
+    let searchObj = {};
+
+    let searchArr = search.split('&');
+
+    searchArr.forEach((item) => {
+      let itemArr = item.split('=');
+      searchObj[itemArr[0]] = itemArr[1];
+    });
+
+    currentPage = searchObj.page ? +searchObj.page - 1 : undefined;
+    currentComponentData = searchObj.year ? component.dataObjYears[+searchObj.year] : component.dataArr;
+  }
+
+  //End checkSearchLocation
+
+  //states
+  const [offset, setOffset] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
+  const [curData, setCurData] = useState(currentComponentData);
+  const [componentData, setComponentData] = useState([]);
+  //endStates
+
+  useEffect(() => {
+    updateNewsItems();
+
+    console.log(curData, 'page curData');
+  }, [offset]);
+
+  useEffect(() => {
+    console.log(curData, 'years curData -- 1');
+
+    updateNewsItems(true);
+
+    console.log(curData, 'years curData');
+  }, [curData]);
+
+  function updateNewsItems(tag) {
+    let curOffset = tag ? 0 : offset;
+    let start = curOffset;
+    let end =  curOffset + perPage;
+
+    console.log(start, 'offset');
+    console.log(end, 'end');
+    console.log(curData.slice(start, end), '.slice(start, end)');
+
+    setComponentData(curData.slice(start, end));
+
+    setPageCount(Math.ceil(curData.length / perPage));
   }
 
    const handlePageClick = data => {
+    //data selected!!!!!
     let selected = data.selected;
     let offset = Math.ceil(selected * perPage);
+
     window.history.pushState(null, null, '?page=' + (+(selected) + 1));
 
     setOffset(offset);
+  }
+
+  const handleYearsClick = e => {
+    e.preventDefault();
+
+    let years = e.currentTarget.dataset.years;
+
+    window.history.pushState(null, null, '?year=' + +years);
+
+    setCurData(component.dataObjYears[+years]);
   }
 
   return (
