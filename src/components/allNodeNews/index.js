@@ -250,7 +250,7 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
       <div className="items-wrap">
         <NewsItems component={componentData}/>
 
-        <div className={'pager-wrapper page-counts-' + pageCount}>
+        <div className={`pager-wrapper page-counts-${pageCount}`}>
           <div className="item-list">
             <ReactPaginate
               forcePage={forcePage}
