@@ -101,7 +101,6 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
   };
 
   const YearsTags = ({component}) => {
-
     return (
       <div className='archive'>
         <h5>SORT BY YEAR</h5>
@@ -122,6 +121,7 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
   }
 
   function sortByYear() {
+    console.log('sortByYear');
     component.dataObjYears = {};
     component.dataArrTagsYears = [];
 
@@ -160,6 +160,7 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
     });
 
     currentPage = searchObj.page ? +searchObj.page - 1 : undefined;
+    console.log(currentPage, 'currentPage');
     currentComponentData = searchObj.year ? component.dataObjYears[+searchObj.year] : component.dataArr;
   }
 
@@ -170,20 +171,26 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
   const [pageCount, setPageCount] = useState(0);
   const [curData, setCurData] = useState(currentComponentData);
   const [componentData, setComponentData] = useState([]);
+  const [forcePage, setForcePage] = useState(currentPage);
+  const [firstRender, setFirstRender] = useState(true);
   //endStates
 
   useEffect(() => {
     updateNewsItems();
-
-    console.log(curData, 'page curData');
   }, [offset]);
 
   useEffect(() => {
-    console.log(curData, 'years curData -- 1');
 
-    updateNewsItems(true);
+    console.log(firstRender);
 
-    console.log(curData, 'years curData');
+    if (firstRender) {
+      setFirstRender(false);
+    } else {
+      updateNewsItems(true);
+      setForcePage(0);
+      setOffset(0);
+    }
+
   }, [curData]);
 
   function updateNewsItems(tag) {
@@ -191,22 +198,36 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
     let start = curOffset;
     let end =  curOffset + perPage;
 
-    console.log(start, 'offset');
-    console.log(end, 'end');
-    console.log(curData.slice(start, end), '.slice(start, end)');
+    console.log(start, end, tag, forcePage, 'start, end, tag, forcePage');
 
     setComponentData(curData.slice(start, end));
-
     setPageCount(Math.ceil(curData.length / perPage));
+
+    console.log(Math.ceil(curData.length / perPage), 'ages');
   }
 
-   const handlePageClick = data => {
-    //data selected!!!!!
+  const handlePageClick = data => {
     let selected = data.selected;
     let offset = Math.ceil(selected * perPage);
 
-    window.history.pushState(null, null, '?page=' + (+(selected) + 1));
+    let urlArr = window.location.search ? window.location.search.split('page=') : null;
+    let urlSearch;
 
+    if (urlArr) {
+
+      if (urlArr[0] === '?') {
+        urlSearch = '?page=' + (+(selected) + 1);
+      } else {
+        urlSearch = urlArr[0].replace('&', '') + '&page=' + (+(selected) + 1);
+      }
+
+    } else {
+      urlSearch = '?page=' + (+(selected) + 1);
+    }
+
+    window.history.pushState(null, null, urlSearch);
+
+    setForcePage(undefined);
     setOffset(offset);
   }
 
@@ -229,10 +250,12 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
       <div className="items-wrap">
         <NewsItems component={componentData}/>
 
-        <div className="pager-wrapper">
+        <div className={'pager-wrapper page-counts-' + pageCount}>
           <div className="item-list">
             <ReactPaginate
+              forcePage={forcePage}
               initialPage={currentPage}
+              //disableInitialCallback={true}
               previousLabel={'‹ previous'}
               nextLabel={'next ›'}
               breakLabel={'...'}

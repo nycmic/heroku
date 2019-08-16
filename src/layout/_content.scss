@@ -363,6 +363,10 @@
 
   .pager-wrapper {
 
+    &.page-counts-1 {
+      display: none;
+    }
+
     .pager {
       margin: 0;
       padding: 0;
@@ -389,12 +393,7 @@
         }
 
         &.disabled {
-          opacity: .3;
-          cursor: default;
-
-          a {
-            text-decoration: none;
-          }
+          display: none;
         }
 
         &.pager-current {
