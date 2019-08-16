@@ -121,7 +121,6 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
   }
 
   function sortByYear() {
-    console.log('sortByYear');
     component.dataObjYears = {};
     component.dataArrTagsYears = [];
 
@@ -160,7 +159,6 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
     });
 
     currentPage = searchObj.page ? +searchObj.page - 1 : undefined;
-    console.log(currentPage, 'currentPage');
     currentComponentData = searchObj.year ? component.dataObjYears[+searchObj.year] : component.dataArr;
   }
 
@@ -181,8 +179,6 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
 
   useEffect(() => {
 
-    console.log(firstRender);
-
     if (firstRender) {
       setFirstRender(false);
     } else {
@@ -198,12 +194,9 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
     let start = curOffset;
     let end =  curOffset + perPage;
 
-    console.log(start, end, tag, forcePage, 'start, end, tag, forcePage');
-
     setComponentData(curData.slice(start, end));
     setPageCount(Math.ceil(curData.length / perPage));
 
-    console.log(Math.ceil(curData.length / perPage), 'ages');
   }
 
   const handlePageClick = data => {
