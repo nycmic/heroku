@@ -4,6 +4,9 @@ import {createCompObj, getPropSafe, htmlIn} from "../../helpers";
 import excerptHtml from "excerpt-html";
 import ReactPaginate from 'react-paginate';
 import _ from 'lodash';
+import SearchInput, {createFilter} from 'react-search-input'
+
+
 
 const NodeNews = ({children, nodeId, perPage, location}) => {
   const data = useStaticQuery(
@@ -171,6 +174,9 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
   const [componentData, setComponentData] = useState([]);
   const [forcePage, setForcePage] = useState(currentPage);
   const [firstRender, setFirstRender] = useState(true);
+
+  // eslint-disable-next-line
+  const [searchTerm, setSearchTerm] = useState('');
   //endStates
 
   useEffect(() => {
@@ -189,6 +195,19 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
 
   }, [curData]);
 
+  const KEYS_TO_FILTERS = ['props.title', 'props.desc'];
+  let testArr = component.dataArr;
+
+  const searchUpdated = term => {
+    let testSearchArr = testArr.filter(createFilter(term, KEYS_TO_FILTERS));
+
+    setSearchTerm(term);
+
+    window.history.pushState(null, null, '?search=' + term);
+
+    setCurData(testSearchArr);
+  };
+
   function updateNewsItems(tag) {
     let curOffset = tag ? 0 : offset;
     let start = curOffset;
@@ -196,7 +215,6 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
 
     setComponentData(curData.slice(start, end));
     setPageCount(Math.ceil(curData.length / perPage));
-
   }
 
   const handlePageClick = data => {
@@ -237,6 +255,9 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
   return (
     <div className='b-news'>
       <div className="sidebar">
+        <div className="form form-search">
+          <SearchInput className="search-input" onChange={searchUpdated} />
+        </div>
         <YearsTags component={component}/>
       </div>
 
