@@ -18,8 +18,6 @@ const NewsssTest = ({data, pageContext}) => {
 
       <h4>{pageCount} Pages</h4>
 
-      {console.log(pageContext)}
-
       {group.map(({ node }, i) => (
         <div key={i} className="blogListing">
           {/*<div className="date">{node.frontmatter.date}</div>*/}
