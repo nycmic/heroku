@@ -1,5 +1,5 @@
 import React from "react"
-export default ({ children }) => {
+const InnerWrapper = ({ children }) => {
   return (
     <div className="inner-wrapper">
       <div className="content-wrapper container">
@@ -8,3 +8,5 @@ export default ({ children }) => {
     </div>
   )
 }
+
+export default InnerWrapper;

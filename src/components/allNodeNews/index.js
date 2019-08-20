@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from "react"
+import React, {useState, useEffect} from "react"
 import {useStaticQuery, graphql} from "gatsby"
 import {createCompObj, getPropSafe, htmlIn} from "../../helpers";
 import excerptHtml from "excerpt-html";
@@ -6,29 +6,27 @@ import ReactPaginate from 'react-paginate';
 import _ from 'lodash';
 import SearchInput, {createFilter} from 'react-search-input'
 
-
-
 const NodeNews = ({children, nodeId, perPage, location}) => {
   const data = useStaticQuery(
     graphql`
         query {
-          comp: allNodeNews(sort: {order: DESC, fields: field_news_date}) {
-            edges {
-              node {
-                title
-                body {
-                    value
+            comp: allNodeNews(sort: {order: DESC, fields: field_news_date}) {
+                edges {
+                    node {
+                        title
+                        body {
+                            value
+                        }
+                        field_news_date(formatString: "MMMM DD, YYYY")
+                        years: field_news_date(formatString: "YYYY")
+                        path {
+                            alias
+                        }
+                    }
                 }
-                field_news_date(formatString: "MMMM DD, YYYY")
-                years: field_news_date(formatString: "YYYY")
-                path {
-                    alias
-                }                          
-              }
             }
-          }                           
         }
-      `
+    `
   );
 
   //const component vars
@@ -42,6 +40,56 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
   };
 
   component = createCompObj(component, data.comp.edges, nodeId, props);
+
+  let currentPage = undefined;
+  let currentComponentData = component.dataArr;
+
+  function createArrForYears() {
+    component.dataObjYears = {};
+    component.dataArrTagsYears = [];
+
+    component.dataArr.forEach((item, i) => {
+
+      if (item.props.years) {
+
+        if (!component.dataObjYears[item.props.years]) {
+          component.dataObjYears[item.props.years] = [];
+        }
+
+        component.dataArrTagsYears.push(item.props.years);
+        component.dataObjYears[item.props.years].push(item);
+      }
+    });
+
+    component.dataArrTagsYears = _.sortedUniq(component.dataArrTagsYears);
+  }
+  function checkSearchLocation() {
+    if (location.search) {
+
+      let search = location.search.replace('?', '');
+      let searchObj = {};
+
+      let searchArr = search.split('&');
+
+      searchArr.forEach((item) => {
+        let itemArr = item.split('=');
+        searchObj[itemArr[0]] = itemArr[1];
+      });
+
+      currentPage = searchObj.page ? +searchObj.page - 1 : undefined;
+      currentComponentData = searchObj.year ? component.dataObjYears[+searchObj.year] : component.dataArr;
+    }
+  }
+
+  createArrForYears();
+  checkSearchLocation();
+
+  return (
+    <BNews component={component} perPage={perPage} currentPage={currentPage} currentComponentData={currentComponentData}/>
+  )
+};
+
+const BNews = ({component, perPage, currentPage, currentComponentData}) => {
 
   const NewsItems = ({children, component}) => {
     return (
@@ -71,8 +119,8 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
                 <div className="teaser">
 
                   {htmlIn(excerptHtml(getPropSafe(item, 'desc'), {
-                    moreRegExp:  /\s*<!--\s*more\s*-->/i,  // Search for the slug
-                    stripTags:   true, // Set to false to get html code
+                    moreRegExp: /\s*<!--\s*more\s*-->/i,  // Search for the slug
+                    stripTags: true, // Set to false to get html code
                     pruneLength: 149, // Amount of characters that the excerpt should contain
                     pruneString: ' ', // Character that will be added to the pruned string
                     pruneSeparator: ' ', // Separator to be used to separate words
@@ -123,50 +171,6 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
     )
   }
 
-  function sortByYear() {
-    component.dataObjYears = {};
-    component.dataArrTagsYears = [];
-
-    component.dataArr.forEach((item, i)=> {
-
-      if (item.props.years) {
-
-        if (!component.dataObjYears[item.props.years]) {
-          component.dataObjYears[item.props.years] = [];
-        }
-
-        component.dataArrTagsYears.push(item.props.years);
-        component.dataObjYears[item.props.years].push(item);
-      }
-    });
-
-    component.dataArrTagsYears = _.sortedUniq( component.dataArrTagsYears);
-  }
-
-  sortByYear();
-
-  //checkSearchLocation
-  let currentPage = undefined;
-  let currentComponentData = component.dataArr;
-
-  if (location.search)  {
-
-    let search = location.search.replace('?', '');
-    let searchObj = {};
-
-    let searchArr = search.split('&');
-
-    searchArr.forEach((item) => {
-      let itemArr = item.split('=');
-      searchObj[itemArr[0]] = itemArr[1];
-    });
-
-    currentPage = searchObj.page ? +searchObj.page - 1 : undefined;
-    currentComponentData = searchObj.year ? component.dataObjYears[+searchObj.year] : component.dataArr;
-  }
-
-  //End checkSearchLocation
-
   //states
   const [offset, setOffset] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -174,7 +178,6 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
   const [componentData, setComponentData] = useState([]);
   const [forcePage, setForcePage] = useState(currentPage);
   const [firstRender, setFirstRender] = useState(true);
-
   // eslint-disable-next-line
   const [searchTerm, setSearchTerm] = useState('');
   //endStates
@@ -211,7 +214,7 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
   function updateNewsItems(tag) {
     let curOffset = tag ? 0 : offset;
     let start = curOffset;
-    let end =  curOffset + perPage;
+    let end = curOffset + perPage;
 
     setComponentData(curData.slice(start, end));
     setPageCount(Math.ceil(curData.length / perPage));
@@ -240,6 +243,8 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
 
     setForcePage(undefined);
     setOffset(offset);
+
+    console.log('afterSet');
   }
 
   const handleYearsClick = e => {
@@ -256,7 +261,7 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
     <div className='b-news'>
       <div className="sidebar">
         <div className="form form-search">
-          <SearchInput className="search-input" onChange={searchUpdated} />
+          <SearchInput className="search-input" onChange={searchUpdated}/>
         </div>
         <YearsTags component={component}/>
       </div>
@@ -281,7 +286,7 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
               containerClassName={'pager'}
               subContainerClassName={'pages pagination'}
               activeClassName={'pager-current'}
-              hrefBuilder={()=> {
+              hrefBuilder={() => {
                 return '#';
               }}
             />
@@ -291,6 +296,7 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
 
     </div>
   )
-};
+}
+
 
 export default NodeNews;
