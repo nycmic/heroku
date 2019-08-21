@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react"
+import React, {useState} from "react"
 import {useStaticQuery, graphql} from "gatsby"
 import {createCompObj, getPropSafe, htmlIn} from "../../helpers";
 import excerptHtml from "excerpt-html";
@@ -63,6 +63,7 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
 
     component.dataArrTagsYears = _.sortedUniq(component.dataArrTagsYears);
   }
+
   function checkSearchLocation() {
     if (location.search) {
 
@@ -85,11 +86,13 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
   checkSearchLocation();
 
   return (
-    <BNews component={component} perPage={perPage} currentPage={currentPage} currentComponentData={currentComponentData}/>
+    <BNews component={component} perPage={perPage} currentPage={currentPage}
+           currentComponentData={currentComponentData}/>
   )
 };
 
 const BNews = ({component, perPage, currentPage, currentComponentData}) => {
+  console.log(perPage, currentPage, currentComponentData, 'perPage, currentPage, currentComponentData');
 
   const NewsItems = ({children, component}) => {
     return (
@@ -150,7 +153,6 @@ const BNews = ({component, perPage, currentPage, currentComponentData}) => {
       </>
     )
   };
-
   const YearsTags = ({component}) => {
     return (
       <div className='archive'>
@@ -169,60 +171,54 @@ const BNews = ({component, perPage, currentPage, currentComponentData}) => {
 
       </div>
     )
-  }
+  };
 
-  //states
-  const [offset, setOffset] = useState(0);
-  const [pageCount, setPageCount] = useState(0);
-  const [curData, setCurData] = useState(currentComponentData);
-  const [componentData, setComponentData] = useState([]);
-  const [forcePage, setForcePage] = useState(currentPage);
-  const [firstRender, setFirstRender] = useState(true);
+  let firstOffset = currentPage ? currentPage*perPage : 0;
+
+  const [pagination, setPagination] = useState(
+    {
+      forcePage: currentPage,
+      pageCount: Math.ceil(currentComponentData.length / perPage),
+      curData: currentComponentData,
+      componentData: currentComponentData.slice(firstOffset, firstOffset + perPage),
+    }
+  );
+
   // eslint-disable-next-line
   const [searchTerm, setSearchTerm] = useState('');
   //endStates
 
-  useEffect(() => {
-    updateNewsItems();
-  }, [offset]);
-
-  useEffect(() => {
-
-    if (firstRender) {
-      setFirstRender(false);
-    } else {
-      updateNewsItems(true);
-      setForcePage(0);
-      setOffset(0);
-    }
-
-  }, [curData]);
-
   const KEYS_TO_FILTERS = ['props.title', 'props.desc'];
-  let testArr = component.dataArr;
+  let arrForSearch = component.dataArr;
 
   const searchUpdated = term => {
-    let testSearchArr = testArr.filter(createFilter(term, KEYS_TO_FILTERS));
-
+    let searchArr = arrForSearch.filter(createFilter(term, KEYS_TO_FILTERS));
     setSearchTerm(term);
 
+    let offset = 0;
+    let curDataTemp = searchArr;
+
+    setPagination({
+      forcePage: 0,
+      componentData: curDataTemp.slice(offset, offset + perPage),
+      pageCount: Math.ceil(curDataTemp.length / perPage),
+      curData: curDataTemp,
+    });
+
     window.history.pushState(null, null, '?search=' + term);
-
-    setCurData(testSearchArr);
   };
-
-  function updateNewsItems(tag) {
-    let curOffset = tag ? 0 : offset;
-    let start = curOffset;
-    let end = curOffset + perPage;
-
-    setComponentData(curData.slice(start, end));
-    setPageCount(Math.ceil(curData.length / perPage));
-  }
 
   const handlePageClick = data => {
     let selected = data.selected;
     let offset = Math.ceil(selected * perPage);
+    let curDataTemp = pagination.curData;
+
+    setPagination({
+      forcePage: undefined,
+      pageCount: Math.ceil(curDataTemp.length / perPage),
+      componentData: curDataTemp.slice(offset, offset + perPage),
+      curData: curDataTemp,
+    });
 
     let urlArr = window.location.search ? window.location.search.split('page=') : null;
     let urlSearch;
@@ -240,46 +236,48 @@ const BNews = ({component, perPage, currentPage, currentComponentData}) => {
     }
 
     window.history.pushState(null, null, urlSearch);
-
-    setForcePage(undefined);
-    setOffset(offset);
-
-    console.log('afterSet');
-  }
+  };
 
   const handleYearsClick = e => {
     e.preventDefault();
 
     let years = e.currentTarget.dataset.years;
+    let offset = 0;
+    let curDataTemp = component.dataObjYears[+years];
+
+    setPagination({
+      forcePage: 0,
+      componentData: curDataTemp.slice(offset, offset + perPage),
+      pageCount: Math.ceil(curDataTemp.length / perPage),
+      curData: curDataTemp,
+    });
 
     window.history.pushState(null, null, '?year=' + +years);
-
-    setCurData(component.dataObjYears[+years]);
-  }
+  };
 
   return (
     <div className='b-news'>
       <div className="sidebar">
         <div className="form form-search">
-          <SearchInput className="search-input" onChange={searchUpdated}/>
+          <SearchInput className="search-input" onChange={searchUpdated} value={''}/>
         </div>
         <YearsTags component={component}/>
       </div>
 
       <div className="items-wrap">
-        <NewsItems component={componentData}/>
+        <NewsItems component={pagination.componentData}/>
 
-        <div className={`pager-wrapper page-counts-${pageCount}`}>
+        <div className={`pager-wrapper page-counts-${pagination.pageCount}`}>
           <div className="item-list">
             <ReactPaginate
-              forcePage={forcePage}
+              forcePage={pagination.forcePage}
               initialPage={currentPage}
-              //disableInitialCallback={true}
+              disableInitialCallback={true}
               previousLabel={'‹ previous'}
               nextLabel={'next ›'}
               breakLabel={'...'}
               breakClassName={'break-me'}
-              pageCount={pageCount}
+              pageCount={pagination.pageCount}
               marginPagesDisplayed={1}
               pageRangeDisplayed={5}
               onPageChange={handlePageClick}
