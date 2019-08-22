@@ -363,7 +363,7 @@
 
   .pager-wrapper {
 
-    &.page-counts-1 {
+    &.page-counts-1, &.page-counts-0 {
       display: none;
     }
 

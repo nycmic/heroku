@@ -41,8 +41,6 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
 
   component = createCompObj(component, data.comp.edges, nodeId, props);
 
-
-
   let currentPage = undefined;
   let currentComponentData = component.dataArr;
   let currentSearch = '';
@@ -301,6 +299,12 @@ const BNews = ({component, perPage, currentPage, currentComponentData, currentSe
 
       <div className="items-wrap">
         <NewsItems component={pagination.componentData}/>
+
+        {!pagination.pageCount &&
+        <div>
+          <h5 style={{textAlign: 'center', margin: '70px 0'}}>YOUR SEARCH YIELDED NO RESULTS</h5>
+        </div>
+        }
 
         <div className={`pager-wrapper page-counts-${pagination.pageCount}`}>
           <div className="item-list">
