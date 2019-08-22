@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useState, useRef} from "react"
 import {useStaticQuery, graphql} from "gatsby"
 import {createCompObj, getPropSafe, htmlIn} from "../../helpers";
 import excerptHtml from "excerpt-html";
@@ -194,14 +194,32 @@ const BNews = ({children, component, perPage, currentPage, currentComponentData,
 
   // eslint-disable-next-line
   const [inputVal, setInputVal] = useState(initSearchTerm);
+  const myRef = useRef(null);
   //endStates
 
-  useEffect(() => {
+  const scrollToRef = (ref) => {
+    window.scrollTo(0, ref.current.getBoundingClientRect().top + window.pageYOffset - 180);
+  };
 
+  const firstUpdate = useRef(true);
+
+  useEffect(() => {
     if (initSearchTerm) {
       searchUpdated(initSearchTerm);
     }
   }, []);
+
+  useEffect(() => {
+
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+
+    if (pageItems) {
+      scrollToRef(myRef);
+    }
+  }, );
 
   const KEYS_TO_FILTERS = ['props.title', 'props.desc'];
   let arrForSearch = component.dataArr;
@@ -297,7 +315,7 @@ const BNews = ({children, component, perPage, currentPage, currentComponentData,
       {children}
 
       {pageItems &&
-        <div className="items-wrap">
+        <div className="items-wrap" ref={myRef}>
         <NewsItems component={pagination.componentData}/>
 
         {!pagination.pageCount &&
