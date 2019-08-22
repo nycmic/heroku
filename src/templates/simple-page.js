@@ -56,7 +56,7 @@ export default ({location, data: {nodeSimplePage: page, nodeSimplePage: {fields:
 
             {page.fields.slug === '/news' &&
               <>
-                 <NodeNews nodeId='all' perPage={4} location={location}/>
+                 <NodeNews nodeId='all' perPage={4} location={location} pageItems={true}/>
               </>
             }
 

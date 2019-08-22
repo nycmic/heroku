@@ -2,8 +2,9 @@ import React from "react"
 import {graphql} from "gatsby"
 import Layout from "../components/layout"
 import {getProp} from "../helpers";
+import NodeNews from "../components/allNodeNews";
 
-export default ({ data: {nodeNews: page}}) => {
+export default ({location, data: {nodeNews: page}}) => {
   let imgContentData = page.relationships.field_news_content_image;
   let bodyValue = getProp(page, 'body.value');
 
@@ -15,11 +16,7 @@ export default ({ data: {nodeNews: page}}) => {
 
           <div className="content-inner">
 
-            <div className="b-news">
-
-              <aside className="sidebar">
-
-              </aside>
+            <NodeNews location={location} nodeId={'all'} perPage={4} pageItems={false}>
 
               <div className="items">
 
@@ -37,9 +34,9 @@ export default ({ data: {nodeNews: page}}) => {
 
                   <div className="text">
                     {imgContentData &&
-                      <div style = {{float: 'right'}}>
-                        <img src={imgContentData.localFile.publicURL} alt=""/>
-                      </div>
+                    <div style = {{float: 'right'}}>
+                      <img src={imgContentData.localFile.publicURL} alt=""/>
+                    </div>
                     }
                     {bodyValue}
 
@@ -50,8 +47,7 @@ export default ({ data: {nodeNews: page}}) => {
                 </div>
 
               </div>
-
-            </div>
+            </NodeNews>
 
           </div>
 

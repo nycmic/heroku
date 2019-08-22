@@ -6,7 +6,7 @@ import ReactPaginate from 'react-paginate';
 import _ from 'lodash';
 import SearchInput, {createFilter} from 'react-search-input'
 
-const NodeNews = ({children, nodeId, perPage, location}) => {
+const NodeNews = ({children, nodeId, perPage, location, pageItems}) => {
   const data = useStaticQuery(
     graphql`
         query {
@@ -93,11 +93,13 @@ const NodeNews = ({children, nodeId, perPage, location}) => {
            currentPage={currentPage}
            currentComponentData={currentComponentData}
            currentSearch={currentSearch}
+           children={children}
+           pageItems={pageItems}
     />
   )
 };
 
-const BNews = ({component, perPage, currentPage, currentComponentData, currentSearch}) => {
+const BNews = ({children, component, perPage, currentPage, currentComponentData, currentSearch, pageItems}) => {
 
   const NewsItems = ({children, component}) => {
     return (
@@ -166,7 +168,7 @@ const BNews = ({component, perPage, currentPage, currentComponentData, currentSe
           <ul className="fblog-archive-list">
             {component.dataArrTagsYears.map((item, i) => (
               <li key={i}>
-                <a href={'?year=' + item} data-years={item} className='link-dropdown' onClick={handleYearsClick}>
+                <a href={'/news/?year=' + item} data-years={item} className='link-dropdown' onClick={handleYearsClick}>
                   {item}
                 </a>
               </li>
@@ -190,8 +192,6 @@ const BNews = ({component, perPage, currentPage, currentComponentData, currentSe
     }
   );
 
-  console.log(pagination, 'pagination');
-
   // eslint-disable-next-line
   const [inputVal, setInputVal] = useState(initSearchTerm);
   //endStates
@@ -201,9 +201,6 @@ const BNews = ({component, perPage, currentPage, currentComponentData, currentSe
     if (initSearchTerm) {
       searchUpdated(initSearchTerm);
     }
-
-    console.log(initSearchTerm, 'initSearchTerm');
-
   }, []);
 
   const KEYS_TO_FILTERS = ['props.title', 'props.desc'];
@@ -213,8 +210,13 @@ const BNews = ({component, perPage, currentPage, currentComponentData, currentSe
 
     if (!term) return;
 
+    if (!pageItems) {
+
+      window.history.pushState(null, null, '/news/?search=' + term);
+      window.location.reload();
+    }
+
     let searchArr = arrForSearch.filter(createFilter(term, KEYS_TO_FILTERS));
-    console.log(term, 'searchUpdated term');
 
     let offset = 0;
     let curDataTemp = searchArr;
@@ -226,7 +228,6 @@ const BNews = ({component, perPage, currentPage, currentComponentData, currentSe
       pageCount: Math.ceil(curDataTemp.length / perPage),
       curData: curDataTemp,
     });
-    console.log(term, 'searchUpdated term after setPagination');
 
     window.history.pushState(null, null, '?search=' + term);
   };
@@ -236,16 +237,12 @@ const BNews = ({component, perPage, currentPage, currentComponentData, currentSe
     let offset = Math.ceil(selected * perPage);
     let curDataTemp = pagination.curData;
 
-    console.log( 'handlePageClick');
-
     setPagination({
       forcePage: undefined,
       pageCount: Math.ceil(curDataTemp.length / perPage),
       componentData: curDataTemp.slice(offset, offset + perPage),
       curData: curDataTemp,
     });
-
-    console.log( 'handlePageClick after');
 
     let urlArr = window.location.search ? window.location.search.split('page=') : null;
     let urlSearch;
@@ -266,6 +263,8 @@ const BNews = ({component, perPage, currentPage, currentComponentData, currentSe
   };
 
   const handleYearsClick = e => {
+    if (!pageItems) return;
+
     e.preventDefault();
 
     let years = e.currentTarget.dataset.years;
@@ -283,21 +282,22 @@ const BNews = ({component, perPage, currentPage, currentComponentData, currentSe
       curData: curDataTemp,
     });
 
-    console.log( 'handleYearsClick After');
-
     window.history.pushState(null, null, '?year=' + +years);
   };
 
   return (
     <div className='b-news'>
-      <div className="sidebar">
+      <aside className="sidebar">
         <div className="form form-search">
           <SearchInput placeholder={'Search News'} className="search-input" onChange={searchUpdated} value={inputVal}/>
         </div>
         <YearsTags component={component}/>
-      </div>
+      </aside>
 
-      <div className="items-wrap">
+      {children}
+
+      {pageItems &&
+        <div className="items-wrap">
         <NewsItems component={pagination.componentData}/>
 
         {!pagination.pageCount &&
@@ -330,6 +330,9 @@ const BNews = ({component, perPage, currentPage, currentComponentData, currentSe
           </div>
         </div>
       </div>
+      }
+
+
 
     </div>
   )
