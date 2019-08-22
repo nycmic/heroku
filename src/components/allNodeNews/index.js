@@ -81,6 +81,7 @@ const NodeNews = ({children, nodeId, perPage, location, pageItems}) => {
       currentSearch = searchObj.search ? searchObj.search : currentSearch;
       currentPage = searchObj.page ? +searchObj.page - 1 : undefined;
       currentComponentData = searchObj.year ? component.dataObjYears[+searchObj.year] : component.dataArr;
+      component.year = searchObj.year ? searchObj.year : '';
     }
   }
 
@@ -95,11 +96,12 @@ const NodeNews = ({children, nodeId, perPage, location, pageItems}) => {
            currentSearch={currentSearch}
            children={children}
            pageItems={pageItems}
+           locaton={location}
     />
   )
 };
 
-const BNews = ({children, component, perPage, currentPage, currentComponentData, currentSearch, pageItems}) => {
+const BNews = ({children, location, component, perPage, currentPage, currentComponentData, currentSearch, pageItems}) => {
 
   const NewsItems = ({children, component}) => {
     return (
@@ -161,6 +163,8 @@ const BNews = ({children, component, perPage, currentPage, currentComponentData,
     )
   };
   const YearsTags = ({component}) => {
+    console.log(component.year);
+
     return (
       <div className='archive'>
         <h5>SORT BY YEAR</h5>
@@ -168,7 +172,7 @@ const BNews = ({children, component, perPage, currentPage, currentComponentData,
           <ul className="fblog-archive-list">
             {component.dataArrTagsYears.map((item, i) => (
               <li key={i}>
-                <a href={'/news/?year=' + item} data-years={item} className='link-dropdown' onClick={handleYearsClick}>
+                <a href={'/news/?year=' + item} data-years={item} className={'link-dropdown' + (item === component.year ? ' active' : '')} onClick={handleYearsClick}>
                   {item}
                 </a>
               </li>
