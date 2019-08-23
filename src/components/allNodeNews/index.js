@@ -102,6 +102,7 @@ const NodeNews = ({children, nodeId, perPage, location, pageItems}) => {
 };
 
 const BNews = ({children, location, component, perPage, currentPage, currentComponentData, currentSearch, pageItems}) => {
+  console.log(component.dataArrTagsYears, 'component years');
 
   const NewsItems = ({children, component}) => {
     return (
@@ -163,7 +164,6 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
     )
   };
   const YearsTags = ({component}) => {
-    console.log(component.year);
 
     return (
       <div className='archive'>
@@ -172,7 +172,9 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
           <ul className="fblog-archive-list">
             {component.dataArrTagsYears.map((item, i) => (
               <li key={i}>
-                <a href={'/news/?year=' + item} data-years={item} className={'link-dropdown' + (item === component.year ? ' active' : '')} onClick={handleYearsClick}>
+
+                <a href={'/news/?year=' + item} data-years={item}
+                   className={'link-dropdown' + (item === component.year ? ' active' : '')} onClick={handleYearsClick}>
                   {item}
                 </a>
               </li>
@@ -184,33 +186,52 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
     )
   };
 
-  let firstOffset = currentPage ? currentPage*perPage : 0;
+  let firstOffset = currentPage ? currentPage * perPage : 0;
   let initSearchTerm = currentSearch;
 
+  let pagStateNull = {
+    forcePage: 0,
+    pageCount: 0,
+    curData: currentComponentData,
+    componentData: currentComponentData.slice(firstOffset, firstOffset + perPage),
+  };
+
+  let pagState = {
+    forcePage: currentPage,
+    pageCount: Math.ceil(currentComponentData.length / perPage),
+    curData: currentComponentData,
+    componentData: currentComponentData.slice(firstOffset, firstOffset + perPage),
+  };
+
   const [pagination, setPagination] = useState(
-    {
-      forcePage: currentPage,
-      pageCount: Math.ceil(currentComponentData.length / perPage),
-      curData: currentComponentData,
-      componentData: currentComponentData.slice(firstOffset, firstOffset + perPage),
-    }
+    pagState
   );
+
+  console.log(pagination, 'pagination');
 
   // eslint-disable-next-line
   const [inputVal, setInputVal] = useState(initSearchTerm);
   const myRef = useRef(null);
+  const firstUpdate = useRef(true);
+  const countOfRender = useRef(0);
   //endStates
 
   const scrollToRef = (ref) => {
     window.scrollTo(0, ref.current.getBoundingClientRect().top + window.pageYOffset - 180);
   };
 
-  const firstUpdate = useRef(true);
-
   useEffect(() => {
     if (initSearchTerm) {
       searchUpdated(initSearchTerm);
+    } else {
+
+      setPagination(
+        pagStateNull
+      );
     }
+
+    console.log('first');
+
   }, []);
 
   useEffect(() => {
@@ -220,10 +241,28 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
       return;
     }
 
-    if (pageItems) {
-      scrollToRef(myRef);
+    countOfRender.current = countOfRender.current + 1;
+    console.log(countOfRender.current);
+
+    if (countOfRender.current === 1) {
+
+      if (initSearchTerm) {
+        searchUpdated(initSearchTerm);
+      } else {
+
+        setPagination(
+          pagState
+        );
+      }
     }
-  }, );
+
+    if (countOfRender.current > 2) {
+      if (pageItems) {
+        scrollToRef(myRef);
+      }
+    }
+
+  });
 
   const KEYS_TO_FILTERS = ['props.title', 'props.desc'];
   let arrForSearch = component.dataArr;
@@ -295,7 +334,7 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
 
     setInputVal('');
 
-    console.log( 'handleYearsClick');
+    console.log('handleYearsClick');
 
     setPagination({
       forcePage: 0,
@@ -319,7 +358,7 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
       {children}
 
       {pageItems &&
-        <div className="items-wrap" ref={myRef}>
+      <div className="items-wrap" ref={myRef}>
         <NewsItems component={pagination.componentData}/>
 
         {!pagination.pageCount &&
@@ -327,6 +366,7 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
           <h5 style={{textAlign: 'center', margin: '70px 0'}}>YOUR SEARCH YIELDED NO RESULTS</h5>
         </div>
         }
+        {console.log(pagination.pageCount, 'pagination.pageCount')}
 
         <div className={`pager-wrapper page-counts-${pagination.pageCount}`}>
           <div className="item-list">
@@ -353,7 +393,6 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
         </div>
       </div>
       }
-
 
 
     </div>
