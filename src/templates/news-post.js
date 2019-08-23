@@ -34,8 +34,10 @@ export default ({location, data: {nodeNews: page}}) => {
 
                   <div className="text">
                     {imgContentData &&
-                    <div style = {{float: 'right'}}>
-                      <img src={imgContentData.localFile.publicURL} alt=""/>
+                    <div className='img-wrap'>
+                      <div className="img">
+                        <img src={imgContentData.localFile.publicURL} alt=""/>
+                      </div>
                     </div>
                     }
                     {bodyValue}
