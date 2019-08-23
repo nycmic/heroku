@@ -174,7 +174,7 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
               <li key={i}>
 
                 <a href={'/news/?year=' + item} data-years={item}
-                   className={'link-dropdown' + (item === component.year ? ' active' : '')} onClick={handleYearsClick}>
+                   className={'link-dropdown' + (item === pagination.years ? ' active' : '')} onClick={handleYearsClick}>
                   {item}
                 </a>
               </li>
@@ -201,6 +201,7 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
     pageCount: Math.ceil(currentComponentData.length / perPage),
     curData: currentComponentData,
     componentData: currentComponentData.slice(firstOffset, firstOffset + perPage),
+    years: component.year
   };
 
   const [pagination, setPagination] = useState(
@@ -288,6 +289,7 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
       componentData: curDataTemp.slice(offset, offset + perPage),
       pageCount: Math.ceil(curDataTemp.length / perPage),
       curData: curDataTemp,
+      years: ''
     });
 
     window.history.pushState(null, null, '?search=' + term);
@@ -303,6 +305,7 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
       pageCount: Math.ceil(curDataTemp.length / perPage),
       componentData: curDataTemp.slice(offset, offset + perPage),
       curData: curDataTemp,
+      years: pagination.years
     });
 
     let urlArr = window.location.search ? window.location.search.split('page=') : null;
@@ -341,6 +344,7 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
       componentData: curDataTemp.slice(offset, offset + perPage),
       pageCount: Math.ceil(curDataTemp.length / perPage),
       curData: curDataTemp,
+      years: years
     });
 
     window.history.pushState(null, null, '?year=' + +years);

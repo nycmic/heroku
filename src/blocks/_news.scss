@@ -84,10 +84,11 @@
         font-size: 14px;
         color: $color-9;
 
-        //&.active {
-        //  font-family: $chrono-bold-italic;
-        //  color: #b11c21;
-        //}
+        &.active {
+          font-family: $chrono-bold-italic;
+          color: #b11c21;
+          pointer-events: none;
+        }
       }
     }
   }
