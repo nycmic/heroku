@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 // import { navigateTo } from "gatsby-link";
-// import Recaptcha from "react-google-recaptcha";
+import Recaptcha from "react-google-recaptcha";
 import yaml from 'js-yaml';
 import _ from 'lodash';
 
@@ -71,6 +71,10 @@ export default ({ children }) => {
             .then(() => alert('Your message submit successfully'))
             .catch(error => alert(error));
     };
+
+    const handleRecaptcha= (value) => {
+        console.log(value);
+    }
     return (
         <>
 
@@ -78,10 +82,10 @@ export default ({ children }) => {
 
             <form name="contact" method="post" data-netlify="true" onSubmit={handleSubmit}>
                 <input type="hidden" name="form-name" value="contact" />
-                {/*<Recaptcha*/}
-                {/*sitekey="6LceP60UAAAAAAJraGxoXitOcUeJxQN0enAWiCXJ"*/}
-                {/*onChange={handleRecaptcha}*/}
-                {/*/>*/}
+                <Recaptcha
+                sitekey="6LceP60UAAAAAAJraGxoXitOcUeJxQN0enAWiCXJ"
+                onChange={handleRecaptcha}
+                />
 
                 {formArrElms.map((item, i) => (
                     <React.Fragment key={i}>

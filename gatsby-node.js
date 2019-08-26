@@ -110,7 +110,7 @@ exports.createPages = ({ actions, graphql }) => {
       edges: result.data.allNodeNews.edges,
       createPage: createPage,
       pageTemplate: 'src/templates/newsssTest.js',
-      pageLength: 5,
+      pageLength: 4,
       pathPrefix: 'newsssTest',
       buildPath: (index, pathPrefix) =>
         index > 1 ? `${pathPrefix}/${index}` : `/${pathPrefix}`, // This is optional and this is the default
@@ -144,6 +144,8 @@ exports.createPages = ({ actions, graphql }) => {
         context: {
           slug: node.fields.slug,
           drupalInternalNid: node.fields.drupalInternalNid,
+          limit: 0,
+          skip: 0,
         },
       })
     })
@@ -164,6 +166,25 @@ exports.createPages = ({ actions, graphql }) => {
         context: {
           slug: node.fields.slug,
           drupalInternalNid: node.fields.drupalInternalNid,
+        },
+      })
+    })
+
+    const posts = result.data.allNodeNews.edges
+    const postsPerPage = 4
+    const numPages = Math.ceil(posts.length / postsPerPage)
+    console.log(posts);
+
+    Array.from({ length: numPages }).forEach((_, i) => {
+      createPage({
+        path: i === 0 ? `/news` : `/news/page=${i + 1}`,
+        component: path.resolve("./src/templates/simple-page.js"),
+        context: {
+          slug: '/news',
+          limit: postsPerPage,
+          skip: i * postsPerPage, numPages,
+          currentPage: i + 1,
+          drupalInternalNid: '66',
         },
       })
     })

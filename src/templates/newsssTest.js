@@ -6,6 +6,8 @@ import SEO from "../components/seo"
 
 const NewsssTest = ({data, pageContext}) => {
 
+  console.log(pageContext);
+
   const { group, index, pageCount } = pageContext
   const previousUrl = index - 1 === 1 ? '/' : (index - 1).toString()
   const nextUrl = (index + 1).toString()
