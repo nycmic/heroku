@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useState, useRef} from "react"
 import {useStaticQuery, graphql} from "gatsby"
 // import { navigateTo } from "gatsby-link";
 import Recaptcha from "react-google-recaptcha";
@@ -65,15 +65,20 @@ export default ({children}) => {
       body: encode({
         "no-cache": "1",
         "form-name": "contact",
-        ...formData
+        "g-recaptcha-response": captchaVal.current,
+        ...formData,
       })
     })
       .then(() => alert('Your message submit successfully'))
       .catch(error => alert(error));
   };
 
+  const captchaVal = useRef(null);
+
   const handleRecaptcha = (value) => {
-    console.log(value);
+
+    captchaVal.current = value;
+    console.log(captchaVal.current);
   }
   return (
     <>
