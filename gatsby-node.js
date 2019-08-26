@@ -13,6 +13,16 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
       createSlug();
       createDrupalId();
     }
+
+    if (node.internal.type === `node__news`) {
+      console.log(node.field_news_date);
+
+      createNodeField({
+        node,
+        name: "field_news_date",
+        value: node.field_news_date,
+      })
+    }
   });
 
   if (node.internal.type === "menu_link_content__menu_link_content") {
@@ -54,7 +64,8 @@ exports.createPages = ({ actions, graphql }) => {
             node {              
               fields {
                 slug
-                 drupalInternalNid
+                drupalInternalNid
+                field_news_date
               }
             }
           }
@@ -134,6 +145,7 @@ exports.createPages = ({ actions, graphql }) => {
         context: {
           slug: node.fields.slug,
           drupalInternalNid: node.fields.drupalInternalNid,
+          field_news_date: node.fields.field_news_date,
         },
       })
     })
@@ -173,7 +185,6 @@ exports.createPages = ({ actions, graphql }) => {
     const posts = result.data.allNodeNews.edges
     const postsPerPage = 4
     const numPages = Math.ceil(posts.length / postsPerPage)
-    console.log(posts);
 
     Array.from({ length: numPages }).forEach((_, i) => {
       createPage({

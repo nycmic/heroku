@@ -22,6 +22,7 @@ export default (props) => {
   let imgTop = relPage.field_basic_top_image;
   let breadcrumbs = relPage.field_basic_breadcrumbs_term;
 
+
   let bodyValue = getProp(page, 'body.value');
 
   return (
@@ -114,6 +115,9 @@ export const query = graphql`
                     title
                     body {
                         value
+                    }
+                    fields {
+                        field_news_date
                     }
                     field_news_date(formatString: "MMMM DD, YYYY")
                     years: field_news_date(formatString: "YYYY")
