@@ -77,7 +77,7 @@ export default (props) => {
 }
 
 export const query = graphql`
-    query($slug: String!, $skip: Int!, $limit: Int!) {
+    query($slug: String!, $skip: Int!, $limit: Int!, $yearVar: String!) {
         nodeSimplePage(fields: { slug: { eq: $slug } }) {
             title
             body {
@@ -117,7 +117,29 @@ export const query = graphql`
                         value
                     }
                     fields {
-                        field_news_date
+                        dateYear
+                    }
+                    field_news_date(formatString: "MMMM DD, YYYY")
+                    years: field_news_date(formatString: "YYYY")
+                    path {
+                        alias
+                    }
+                }
+            }
+        }
+        yearsData: allNodeNews(
+            sort: {order: DESC, fields: field_news_date},
+            filter: {fields: {dateYear: {in: [$yearVar]}}}
+        ) {
+            totalCount
+            edges {
+                node {
+                    title
+                    body {
+                        value
+                    }
+                    fields {
+                        dateYear
                     }
                     field_news_date(formatString: "MMMM DD, YYYY")
                     years: field_news_date(formatString: "YYYY")

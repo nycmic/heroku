@@ -1,5 +1,6 @@
 const path = require(`path`);
 const createPaginatedPages = require('gatsby-paginate');
+const _ = require("lodash");
 
 // Create a slug for each recipe and set it as a field on the node.
 exports.onCreateNode = ({ node, getNode, actions }) => {
@@ -15,12 +16,16 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
     }
 
     if (node.internal.type === `node__news`) {
-      console.log(node.field_news_date);
+
+      let dateYearTemp = node.field_news_date ? node.field_news_date.slice(0,4): " ";
+      let dateYear = "year=" + dateYearTemp;
+
+      console.log(dateYear);
 
       createNodeField({
         node,
-        name: "field_news_date",
-        value: node.field_news_date,
+        name: "dateYear",
+        value: dateYear,
       })
     }
   });
@@ -65,9 +70,14 @@ exports.createPages = ({ actions, graphql }) => {
               fields {
                 slug
                 drupalInternalNid
-                field_news_date
+                dateYear
               }
             }
+          }
+        }
+        yearGroup: allNodeNews {
+          group(field: fields___dateYear) {
+            fieldValue
           }
         }
          allNodeCareers {
@@ -145,7 +155,7 @@ exports.createPages = ({ actions, graphql }) => {
         context: {
           slug: node.fields.slug,
           drupalInternalNid: node.fields.drupalInternalNid,
-          field_news_date: node.fields.field_news_date,
+          dateYear: node.fields.dateYear,
         },
       })
     })
@@ -158,6 +168,7 @@ exports.createPages = ({ actions, graphql }) => {
           drupalInternalNid: node.fields.drupalInternalNid,
           limit: 0,
           skip: 0,
+          yearVar: ' '
         },
       })
     })
@@ -196,8 +207,26 @@ exports.createPages = ({ actions, graphql }) => {
           skip: i * postsPerPage, numPages,
           currentPage: i + 1,
           drupalInternalNid: '66',
+          yearVar: ' '
         },
       })
     })
+
+    const years = result.data.yearGroup.group;
+
+    years.forEach(year => {
+      createPage({
+        path: `/years/${_.kebabCase(year.fieldValue)}/`,
+        component: path.resolve("./src/templates/simple-page.js"),
+        context: {
+          slug: '/news',
+          yearVar: year.fieldValue,
+          drupalInternalNid: '66',
+          limit: 0,
+          skip: 0,
+        },
+      })
+    })
+
   })
 }
