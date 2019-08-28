@@ -13,11 +13,10 @@ import ParagraphColumnsWithLinksList from "../components/ParagraphColumnsWithLin
 import InnerWrapper from "../components/InnerWrapper";
 import BlockContentInfoBlock from "../components/BlockContentInfoBlock";
 import BlockContentTeam from "../components/BlockContentTeam";
-import NodeNews from "../components/allNodeNews";
 
 export default (props) => {
-  let {location, data: {nodeSimplePage: page, nodeSimplePage: {fields: {drupalInternalNid: pageId}}}} = props;
- console.log(props)
+  console.log(props)
+  let {data: {nodeSimplePage: page, nodeSimplePage: {fields: {drupalInternalNid: pageId}}}} = props;
   let {relationships: relPage} = page;
   let imgTop = relPage.field_basic_top_image;
   let breadcrumbs = relPage.field_basic_breadcrumbs_term;
@@ -33,8 +32,6 @@ export default (props) => {
       <InnerWrapper>
 
         <div className="content-inner">
-
-          {page.fields.slug !== '/news' &&
 
           <div className='inner-wrap'>
 
@@ -54,13 +51,6 @@ export default (props) => {
             <BlockContentTeam nodeId={pageId}/>
 
           </div>
-          }
-
-          {page.fields.slug === '/news' &&
-          <>
-            <NodeNews nodeId='all' perPage={4} location={location} pageItems={true}/>
-          </>
-          }
 
           <ParagraphBasicContactsFieldColl nodeId={pageId}/>
 
@@ -68,16 +58,14 @@ export default (props) => {
 
       </InnerWrapper>
 
-      {page.fields.slug !== '/news' &&
       <BlockContentInfoBlock nodeId={pageId}/>
-      }
 
     </Layout>
   )
 }
 
 export const query = graphql`
-    query($slug: String!, $skip: Int!, $limit: Int!, $yearVar: String!) {
+    query($slug: String!) {
         nodeSimplePage(fields: { slug: { eq: $slug } }) {
             title
             body {
@@ -104,50 +92,6 @@ export const query = graphql`
                     name
                 }
             }
-        }
-        allNodeNews(
-            sort: {order: DESC, fields: field_news_date},
-            limit: $limit
-            skip: $skip
-        ) {
-            edges {
-                node {
-                    title
-                    body {
-                        value
-                    }
-                    fields {
-                        dateYear
-                    }
-                    field_news_date(formatString: "MMMM DD, YYYY")
-                    years: field_news_date(formatString: "YYYY")
-                    path {
-                        alias
-                    }
-                }
-            }
-        }
-        yearsData: allNodeNews(
-            sort: {order: DESC, fields: field_news_date},
-            filter: {fields: {dateYear: {in: [$yearVar]}}}
-        ) {
-            totalCount
-            edges {
-                node {
-                    title
-                    body {
-                        value
-                    }
-                    fields {
-                        dateYear
-                    }
-                    field_news_date(formatString: "MMMM DD, YYYY")
-                    years: field_news_date(formatString: "YYYY")
-                    path {
-                        alias
-                    }
-                }
-            }
-        }
+        }     
     }
 `

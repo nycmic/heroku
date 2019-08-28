@@ -6,7 +6,7 @@ const _ = require("lodash");
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions
 
-  let nodePage = [`node__news`,`node__careers`,`node__simple_page`,`node__partners`,`node__contacts`];
+  let nodePage = [`node__news_main`,`node__news`,`node__careers`,`node__simple_page`,`node__partners`,`node__contacts`];
 
   nodePage.forEach(function (item) {
 
@@ -19,8 +19,6 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
 
       let dateYearTemp = node.field_news_date ? node.field_news_date.slice(0,4): " ";
       let dateYear = "year=" + dateYearTemp;
-
-      console.log(dateYear);
 
       createNodeField({
         node,
@@ -58,12 +56,23 @@ exports.createPages = ({ actions, graphql }) => {
   const nodeCareersTemplate = path.resolve(`src/templates/careers.js`)
   const nodeNewsTemplate = path.resolve(`src/templates/news-post.js`)
   const nodeSimplePageTemplate = path.resolve(`src/templates/simple-page.js`)
+  const nodeNewsMainTemplate = path.resolve(`src/templates/news-main.js`)
   const nodePartnersTemplate = path.resolve(`src/templates/partners.js`)
   const nodeContactsTemplate = path.resolve(`src/templates/contacts.js`)
 
   return graphql(
     `
       {
+       allNodeNewsMain {
+          edges {
+            node {              
+              fields {
+                slug
+                drupalInternalNid
+              }
+            }
+          }
+        }
         allNodeNews {
           edges {
             node {              
@@ -78,6 +87,7 @@ exports.createPages = ({ actions, graphql }) => {
         yearGroup: allNodeNews {
           group(field: fields___dateYear) {
             fieldValue
+            totalCount
           }
         }
          allNodeCareers {
@@ -172,6 +182,19 @@ exports.createPages = ({ actions, graphql }) => {
         },
       })
     })
+    result.data.allNodeNewsMain.edges.forEach(({ node }) => {
+      createPage({
+        path: node.fields.slug,
+        component: nodeNewsMainTemplate,
+        context: {
+          slug: node.fields.slug,
+          drupalInternalNid: node.fields.drupalInternalNid,
+          limit: 0,
+          skip: 0,
+          yearVar: ' '
+        },
+      })
+    })
     result.data.allNodePartners.edges.forEach(({ node }) => {
       createPage({
         path: node.fields.slug,
@@ -200,13 +223,13 @@ exports.createPages = ({ actions, graphql }) => {
     Array.from({ length: numPages }).forEach((_, i) => {
       createPage({
         path: i === 0 ? `/news` : `/news/page=${i + 1}`,
-        component: path.resolve("./src/templates/simple-page.js"),
+        component: nodeNewsMainTemplate,
         context: {
           slug: '/news',
           limit: postsPerPage,
           skip: i * postsPerPage, numPages,
           currentPage: i + 1,
-          drupalInternalNid: '66',
+          drupalInternalNid: '67',
           yearVar: ' '
         },
       })
@@ -214,18 +237,43 @@ exports.createPages = ({ actions, graphql }) => {
 
     const years = result.data.yearGroup.group;
 
+    console.log(years, 'years group');
+
     years.forEach(year => {
-      createPage({
-        path: `/years/${_.kebabCase(year.fieldValue)}/`,
-        component: path.resolve("./src/templates/simple-page.js"),
-        context: {
-          slug: '/news',
-          yearVar: year.fieldValue,
-          drupalInternalNid: '66',
-          limit: 0,
-          skip: 0,
-        },
+
+      const postsPerPage = 4;
+      const numPages = Math.ceil(year.totalCount / postsPerPage);
+
+      console.log(year.totalCount, 'year.totalCount');
+      console.log(numPages, 'numPages');
+      console.log(year, 'year');
+
+      Array.from({ length: numPages }).forEach((test, i) => {
+        createPage({
+          path: i === 0 ? `/news/${_.kebabCase(year.fieldValue)}` : `/news/${_.kebabCase(year.fieldValue)}/page=${i + 1}`,
+          component: nodeNewsMainTemplate,
+          context: {
+            slug: '/news',
+            limit: postsPerPage,
+            skip: i * postsPerPage, numPages,
+            currentPage: i + 1,
+            drupalInternalNid: '67',
+            yearVar: year.fieldValue
+          },
+        })
       })
+
+      // createPage({
+      //   path: `/years/${_.kebabCase(year.fieldValue)}/`,
+      //   component: path.resolve("./src/templates/simple-page.js"),
+      //   context: {
+      //     slug: '/news',
+      //     yearVar: year.fieldValue,
+      //     drupalInternalNid: '66',
+      //     limit: 0,
+      //     skip: 0,
+      //   },
+      // })
     })
 
   })
