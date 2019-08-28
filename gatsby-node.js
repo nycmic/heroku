@@ -63,14 +63,10 @@ exports.createPages = ({ actions, graphql }) => {
   return graphql(
     `
       {
-       allNodeNewsMain {
-          edges {
-            node {              
-              fields {
-                slug
-                drupalInternalNid
-              }
-            }
+       nodeNewsMain {                     
+          fields {
+            slug
+            drupalInternalNid
           }
         }
         allNodeNews {
@@ -178,19 +174,6 @@ exports.createPages = ({ actions, graphql }) => {
         },
       })
     })
-    result.data.allNodeNewsMain.edges.forEach(({ node }) => {
-      createPage({
-        path: node.fields.slug,
-        component: nodeNewsMainTemplate,
-        context: {
-          slug: node.fields.slug,
-          drupalInternalNid: node.fields.drupalInternalNid,
-          limit: 0,
-          skip: 0,
-          yearVar: ' '
-        },
-      })
-    })
     result.data.allNodePartners.edges.forEach(({ node }) => {
       createPage({
         path: node.fields.slug,
@@ -213,6 +196,8 @@ exports.createPages = ({ actions, graphql }) => {
     })
 
     const years = result.data.yearGroup.group;
+    const newsSlag = result.data.nodeNewsMain.fields.slug;
+    const newsId = result.data.nodeNewsMain.fields.drupalInternalNid;
 
     years.forEach(year => {
 
@@ -223,14 +208,14 @@ exports.createPages = ({ actions, graphql }) => {
         let urlYear = `${_.kebabCase(year.fieldValue)}` === 'year-all' ? '': `/${_.kebabCase(year.fieldValue)}`;
 
         createPage({
-          path: i === 0 ? `/news${urlYear}` : `/news${urlYear}/page=${i + 1}`,
+          path: i === 0 ? `/${newsSlag}${urlYear}` : `/${newsSlag}${urlYear}/page=${i + 1}`,
           component: nodeNewsMainTemplate,
           context: {
-            slug: '/news',
+            slug: `/${newsSlag}`,
             limit: postsPerPage,
             skip: i * postsPerPage, numPages,
             currentPage: i + 1,
-            drupalInternalNid: '67',
+            drupalInternalNid: newsId,
             yearVar: year.fieldValue
           },
         })
