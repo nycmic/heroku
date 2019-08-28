@@ -50,32 +50,12 @@ export const query = graphql`
                     }
                 }                
             }
-        }
-        allNodeNews(
-            sort: {order: DESC, fields: field_news_date},
-            limit: $limit
-            skip: $skip
-        ) {
-            edges {
-                node {
-                    title
-                    body {
-                        value
-                    }
-                    fields {
-                        dateYear
-                    }
-                    field_news_date(formatString: "MMMM DD, YYYY")
-                    years: field_news_date(formatString: "YYYY")
-                    path {
-                        alias
-                    }
-                }
-            }
-        }
+        }      
         yearsData: allNodeNews(
             sort: {order: DESC, fields: field_news_date},
             filter: {fields: {dateYear: {in: [$yearVar]}}}
+            limit: $limit
+            skip: $skip
         ) {
             totalCount
             edges {
