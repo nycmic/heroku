@@ -208,10 +208,10 @@ exports.createPages = ({ actions, graphql }) => {
         let urlYear = `${_.kebabCase(year.fieldValue)}` === 'year-all' ? '': `/${_.kebabCase(year.fieldValue)}`;
 
         createPage({
-          path: i === 0 ? `/${newsSlag}${urlYear}` : `/${newsSlag}${urlYear}/page=${i + 1}`,
+          path: i === 0 ? `${newsSlag}${urlYear}` : `${newsSlag}${urlYear}/page=${i + 1}`,
           component: nodeNewsMainTemplate,
           context: {
-            slug: `/${newsSlag}`,
+            slug: `${newsSlag}`,
             limit: postsPerPage,
             skip: i * postsPerPage, numPages,
             currentPage: i + 1,
