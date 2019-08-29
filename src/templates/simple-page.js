@@ -73,17 +73,10 @@ export const query = graphql`
             }
             fields {
                 drupalInternalNid
-                slug
             }
             relationships {
                 field_basic_top_image {
-                    localFile {
-                        childImageSharp {
-                            fluid(maxWidth: 3000) {
-                                ...GatsbyImageSharpFluid
-                            }
-                        }
-                    }
+                    ...ImgLocalFile
                 }
                 field_basic_breadcrumbs_term {
                     path {
@@ -92,6 +85,6 @@ export const query = graphql`
                     name
                 }
             }
-        }     
+        }
     }
 `

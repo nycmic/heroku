@@ -34,17 +34,17 @@ export default (props) => {
 export const query = graphql`
     query($slug: String!, $skip: Int!, $limit: Int!, $yearVar: String!) {
         nodeNewsMain(fields: { slug: { eq: $slug } }) {
-            title         
+            title
             fields {
                 drupalInternalNid
                 slug
             }
             relationships {
                 field_basic_top_image {
-                   ...ImgLocalFile
-                }                
+                    ...ImgLocalFile
+                }
             }
-        }      
+        }
         yearsData: allNodeNews(
             sort: {order: DESC, fields: field_news_date},
             filter: {fields: {dateYear: {in: [$yearVar]}}}

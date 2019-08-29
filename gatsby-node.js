@@ -2,10 +2,10 @@ const path = require(`path`);
 const _ = require("lodash");
 
 // Create a slug for each recipe and set it as a field on the node.
-exports.onCreateNode = ({ node, getNode, actions }) => {
-  const { createNodeField } = actions
+exports.onCreateNode = ({node, getNode, actions}) => {
+  const {createNodeField} = actions
 
-  let nodePage = [`node__news_main`,`node__news`,`node__careers`,`node__simple_page`,`node__partners`,`node__contacts`];
+  let nodePage = [`node__news_main`, `node__news`, `node__careers`, `node__simple_page`, `node__partners`, `node__contacts`];
 
   nodePage.forEach(function (item) {
 
@@ -16,7 +16,7 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
 
     if (node.internal.type === `node__news`) {
 
-      let dateYearTemp = node.field_news_date ? node.field_news_date.slice(0,4): " ";
+      let dateYearTemp = node.field_news_date ? node.field_news_date.slice(0, 4) : " ";
       let dateYear = "year=" + dateYearTemp;
 
       createNodeField({
@@ -49,75 +49,72 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
 
 // Implement the Gatsby API “createPages”. This is called once the
 // data layer is bootstrapped to let plugins create pages from data.
-exports.createPages = ({ actions, graphql }) => {
-  const { createPage } = actions
+exports.createPages = ({actions, graphql}) => {
+  const {createPage} = actions
+
+  const newsNode =
+    `
+      nodeNewsMain {                     
+        fields {
+          slug
+          drupalInternalNid          
+        }
+      }     
+      yearGroup: allNodeNews {
+        group(field: fields___dateYear) {
+          fieldValue
+          totalCount
+        }
+      }
+    `
+
+  let nodeCommonTypeObj = [
+    {
+      nodeName: 'allNodeCareers',
+      templateName: `careers`
+    },
+    {
+      nodeName: 'allNodeNews',
+      templateName: `news-post`
+    },
+    {
+      nodeName: 'allNodeSimplePage',
+      templateName: `simple-page`
+    },
+    {
+      nodeName: 'allNodePartners',
+      templateName: `partners`
+    },
+    {
+      nodeName: 'allNodeContacts',
+      templateName: `contacts`
+    },
+  ];
+
+  let nodeCommonTypeQuery = '';
+
+  nodeCommonTypeObj.forEach(({nodeName}) => {
+
+      nodeCommonTypeQuery = nodeCommonTypeQuery
+        + `${nodeName} {
+            edges { 
+              node { 
+                fields {
+                  slug
+                  drupalInternalNid
+                }
+              }
+            }
+         }
+       `
+    }
+  )
 
   return graphql(
     `
       {
-       nodeNewsMain {                     
-          fields {
-            slug
-            drupalInternalNid
-          }
-        }
-        allNodeNews {
-          edges {
-            node {              
-              fields {
-                slug
-                drupalInternalNid
-                dateYear
-              }
-            }
-          }
-        }
-        yearGroup: allNodeNews {
-          group(field: fields___dateYear) {
-            fieldValue
-            totalCount
-          }
-        }
-         allNodeCareers {
-          edges {
-            node {              
-              fields {
-                slug
-                 drupalInternalNid
-              }
-            }
-          }
-        }
-        allNodeSimplePage {
-          edges {
-            node {              
-              fields {
-                slug
-                drupalInternalNid
-              }
-            }
-          }
-        }
-        allNodePartners {
-          edges {
-            node {              
-              fields {
-                slug
-                drupalInternalNid
-              }
-            }
-          }
-        }
-        allNodeContacts {
-          edges {
-            node {              
-              fields {
-                slug
-                drupalInternalNid
-              }
-            }
-          }
-        }
+        ${newsNode}
+        ${nodeCommonTypeQuery}       
       }
     `
   ).then(result => {
@@ -125,35 +122,13 @@ exports.createPages = ({ actions, graphql }) => {
       throw result.errors
     }
 
-    let dataArr = [
-      {
-        node: 'allNodeCareers',
-        component: path.resolve(`src/templates/careers.js`)
-      },
-      {
-        node: 'allNodeNews',
-        component: path.resolve(`src/templates/news-post.js`)
-      },
-      {
-        node: 'allNodeSimplePage',
-        component: path.resolve(`src/templates/simple-page.js`)
-      },
-      {
-        node: 'allNodePartners',
-        component: path.resolve(`src/templates/partners.js`)
-      },
-      {
-        node: 'allNodeContacts',
-        component: path.resolve(`src/templates/contacts.js`)
-      },
-    ]
+    //created all common pages with
+    nodeCommonTypeObj.forEach(({nodeName,templateName}) => {
 
-    dataArr.forEach((item) => {
-
-      result.data[item.node].edges.forEach(({ node }) => {
+      result.data[nodeName].edges.forEach(({node}) => {
         createPage({
           path: node.fields.slug,
-          component: item.component,
+          component: path.resolve(`src/templates/${templateName}.js`),
           context: {
             slug: node.fields.slug,
             drupalInternalNid: node.fields.drupalInternalNid,
@@ -161,6 +136,7 @@ exports.createPages = ({ actions, graphql }) => {
         })
       })
     })
+    //END: created all common pages with
 
     //created news page with pagination and year tags
     const years = result.data.yearGroup.group;
@@ -172,8 +148,8 @@ exports.createPages = ({ actions, graphql }) => {
       const postsPerPage = 4;
       const numPages = Math.ceil(year.totalCount / postsPerPage);
 
-      Array.from({ length: numPages }).forEach((test, i) => {
-        let urlYear = `${_.kebabCase(year.fieldValue)}` === 'year-all' ? '': `/${_.kebabCase(year.fieldValue)}`;
+      Array.from({length: numPages}).forEach((test, i) => {
+        let urlYear = `${_.kebabCase(year.fieldValue)}` === 'year-all' ? '' : `/${_.kebabCase(year.fieldValue)}`;
 
         createPage({
           path: i === 0 ? `${newsSlag}${urlYear}` : `${newsSlag}${urlYear}/page=${i + 1}`,
