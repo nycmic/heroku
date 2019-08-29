@@ -1,5 +1,4 @@
 const path = require(`path`);
-const createPaginatedPages = require('gatsby-paginate');
 const _ = require("lodash");
 
 // Create a slug for each recipe and set it as a field on the node.
@@ -52,13 +51,6 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
 // data layer is bootstrapped to let plugins create pages from data.
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
-
-  const nodeCareersTemplate = path.resolve(`src/templates/careers.js`)
-  const nodeNewsTemplate = path.resolve(`src/templates/news-post.js`)
-  const nodeSimplePageTemplate = path.resolve(`src/templates/simple-page.js`)
-  const nodeNewsMainTemplate = path.resolve(`src/templates/news-main.js`)
-  const nodePartnersTemplate = path.resolve(`src/templates/partners.js`)
-  const nodeContactsTemplate = path.resolve(`src/templates/contacts.js`)
 
   return graphql(
     `
@@ -133,68 +125,44 @@ exports.createPages = ({ actions, graphql }) => {
       throw result.errors
     }
 
-    createPaginatedPages({
-      edges: result.data.allNodeNews.edges,
-      createPage: createPage,
-      pageTemplate: 'src/templates/newsssTest.js',
-      pageLength: 4,
-      pathPrefix: 'newsssTest',
-      buildPath: (index, pathPrefix) =>
-        index > 1 ? `${pathPrefix}/${index}` : `/${pathPrefix}`, // This is optional and this is the default
-    })
+    let dataArr = [
+      {
+        node: 'allNodeCareers',
+        component: path.resolve(`src/templates/careers.js`)
+      },
+      {
+        node: 'allNodeNews',
+        component: path.resolve(`src/templates/news-post.js`)
+      },
+      {
+        node: 'allNodeSimplePage',
+        component: path.resolve(`src/templates/simple-page.js`)
+      },
+      {
+        node: 'allNodePartners',
+        component: path.resolve(`src/templates/partners.js`)
+      },
+      {
+        node: 'allNodeContacts',
+        component: path.resolve(`src/templates/contacts.js`)
+      },
+    ]
 
-    // Create pages.
-    result.data.allNodeCareers.edges.forEach(({ node }) => {
-      createPage({
-        path: node.fields.slug,
-        component: nodeCareersTemplate,
-        context: {
-          slug: node.fields.slug,
-          drupalInternalNid: node.fields.drupalInternalNid,
-        },
-      })
-    })
-    result.data.allNodeNews.edges.forEach(({ node }) => {
-      createPage({
-        path: node.fields.slug,
-        component: nodeNewsTemplate,
-        context: {
-          slug: node.fields.slug,
-          drupalInternalNid: node.fields.drupalInternalNid,
-        },
-      })
-    })
-    result.data.allNodeSimplePage.edges.forEach(({ node }) => {
-      createPage({
-        path: node.fields.slug,
-        component: nodeSimplePageTemplate,
-        context: {
-          slug: node.fields.slug,
-          drupalInternalNid: node.fields.drupalInternalNid,
-        },
-      })
-    })
-    result.data.allNodePartners.edges.forEach(({ node }) => {
-      createPage({
-        path: node.fields.slug,
-        component: nodePartnersTemplate,
-        context: {
-          slug: node.fields.slug,
-          drupalInternalNid: node.fields.drupalInternalNid,
-        },
-      })
-    })
-    result.data.allNodeContacts.edges.forEach(({ node }) => {
-      createPage({
-        path: node.fields.slug,
-        component: nodeContactsTemplate,
-        context: {
-          slug: node.fields.slug,
-          drupalInternalNid: node.fields.drupalInternalNid,
-        },
+    dataArr.forEach((item) => {
+
+      result.data[item.node].edges.forEach(({ node }) => {
+        createPage({
+          path: node.fields.slug,
+          component: item.component,
+          context: {
+            slug: node.fields.slug,
+            drupalInternalNid: node.fields.drupalInternalNid,
+          },
+        })
       })
     })
 
+    //created news page with pagination and year tags
     const years = result.data.yearGroup.group;
     const newsSlag = result.data.nodeNewsMain.fields.slug;
     const newsId = result.data.nodeNewsMain.fields.drupalInternalNid;
@@ -209,7 +177,7 @@ exports.createPages = ({ actions, graphql }) => {
 
         createPage({
           path: i === 0 ? `${newsSlag}${urlYear}` : `${newsSlag}${urlYear}/page=${i + 1}`,
-          component: nodeNewsMainTemplate,
+          component: path.resolve(`src/templates/news-main.js`),
           context: {
             slug: `${newsSlag}`,
             limit: postsPerPage,
@@ -221,6 +189,8 @@ exports.createPages = ({ actions, graphql }) => {
         })
       })
     })
+
+    //END: created news page with pagination and year tags
 
   })
 }

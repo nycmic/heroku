@@ -11,7 +11,6 @@
     "excerpt-html": "^1.2.1",
     "gatsby": "^2.3.25",
     "gatsby-image": "^2.0.39",
-    "gatsby-paginate": "^1.1.1",
     "gatsby-plugin-lodash": "^3.1.0",
     "gatsby-plugin-manifest": "^2.0.29",
     "gatsby-plugin-offline": "^2.0.25",
