@@ -14,7 +14,7 @@ import InnerWrapper from "../components/InnerWrapper";
 import BlockContentInfoBlock from "../components/BlockContentInfoBlock";
 import BlockContentTeam from "../components/BlockContentTeam";
 
-export default (props) => {
+const SimplePage = (props) => {
   console.log(props)
   let {data: {nodeSimplePage: page, nodeSimplePage: {fields: {drupalInternalNid: pageId}}}} = props;
   let {relationships: relPage} = page;
@@ -63,6 +63,8 @@ export default (props) => {
     </Layout>
   )
 }
+
+export default SimplePage;
 
 export const query = graphql`
     query($slug: String!) {
