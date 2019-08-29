@@ -41,13 +41,7 @@ export const query = graphql`
             }
             relationships {
                 field_basic_top_image {
-                    localFile {
-                        childImageSharp {
-                            fluid(maxWidth: 3000) {
-                                ...GatsbyImageSharpFluid
-                            }
-                        }
-                    }
+                   ...ImgLocalFile
                 }                
             }
         }      
