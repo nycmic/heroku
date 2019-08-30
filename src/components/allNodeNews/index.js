@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useMemo} from "react"
+import React, {useEffect, useState, useRef} from "react"
 import {useStaticQuery, graphql} from "gatsby"
 import {createCompObj, getPropSafe, htmlIn} from "../../helpers";
 import excerptHtml from "excerpt-html";
