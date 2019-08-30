@@ -16,7 +16,8 @@ import BlockContentTeam from "../components/BlockContentTeam";
 
 const SimplePage = (props) => {
   console.log(props)
-  let {data: {nodeSimplePage: page, nodeSimplePage: {fields: {drupalInternalNid: pageId}}}} = props;
+  let {pageContext: {drupalInternalNid: pageId}} = props;
+  let {data: {nodeSimplePage: page}} = props;
   let {relationships: relPage} = page;
   let imgTop = relPage.field_basic_top_image;
   let breadcrumbs = relPage.field_basic_breadcrumbs_term;
@@ -72,10 +73,7 @@ export const query = graphql`
             title
             body {
                 value
-            }
-            fields {
-                drupalInternalNid
-            }
+            }          
             relationships {
                 field_basic_top_image {
                     ...ImgLocalFile
