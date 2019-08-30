@@ -7,8 +7,10 @@ import InnerWrapper from "../components/InnerWrapper";
 import NodeNews from "../components/allNodeNews";
 
 export default (props) => {
-    console.log(props)
-  let {location, data: {nodeNewsMain: page, nodeNewsMain: {fields: {drupalInternalNid: pageId}}}} = props;
+  console.log(props)
+  let {pageContext} = props;
+  let {drupalInternalNid: pageId, currentPage, limit, numPages, slug} = pageContext;
+  let {location, data: {nodeNewsMain: page, yearsData}} = props;
 
   let {relationships: relPage} = page;
   let imgTop = relPage.field_basic_top_image;
@@ -22,7 +24,16 @@ export default (props) => {
       <InnerWrapper>
 
         <div className="content-inner">
-            <NodeNews nodeId='all' perPage={4} location={location} pageItems={true}/>
+            <NodeNews
+              nodeId='all'
+              currentComponent={yearsData}
+              numPages={numPages}
+              currentPage={currentPage}
+              perPage={limit}
+              location={location}
+              pageItems={true}
+              slug={slug}
+            />
         </div>
 
       </InnerWrapper>
@@ -34,11 +45,7 @@ export default (props) => {
 export const query = graphql`
     query($slug: String!, $skip: Int!, $limit: Int!, $yearVar: String!) {
         nodeNewsMain(fields: { slug: { eq: $slug } }) {
-            title
-            fields {
-                drupalInternalNid
-                slug
-            }
+            title           
             relationships {
                 field_basic_top_image {
                     ...ImgLocalFile

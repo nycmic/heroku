@@ -6,7 +6,7 @@ import ReactPaginate from 'react-paginate';
 import _ from 'lodash';
 import SearchInput, {createFilter} from 'react-search-input'
 
-const NodeNews = ({children, nodeId, perPage, location, pageItems}) => {
+const NodeNews = ({children, currentComponent, numPages, currentPage, perPage, nodeId, location, pageItems, slug}) => {
   const data = useStaticQuery(
     graphql`
         query {
@@ -31,6 +31,8 @@ const NodeNews = ({children, nodeId, perPage, location, pageItems}) => {
 
   //const component vars
   let component = {};
+  let currentComponentData = {};
+
   let props = {
     title: 'title',
     desc: 'excerpt.body.value',
@@ -40,9 +42,10 @@ const NodeNews = ({children, nodeId, perPage, location, pageItems}) => {
   };
 
   component = createCompObj(component, data.comp.edges, nodeId, props);
+  console.log(data.comp.edges, 'comp');
+  console.log(currentComponent.edges, 'curComp');
+  currentComponentData = createCompObj(currentComponentData, currentComponent.edges, nodeId, props);
 
-  let currentPage = undefined;
-  let currentComponentData = component.dataArr;
   let currentSearch = '';
 
   function createArrForYears() {
@@ -64,7 +67,6 @@ const NodeNews = ({children, nodeId, perPage, location, pageItems}) => {
 
     component.dataArrTagsYears = _.sortedUniq(component.dataArrTagsYears);
   }
-
   function checkSearchLocation() {
     if (location.search) {
 
@@ -79,8 +81,6 @@ const NodeNews = ({children, nodeId, perPage, location, pageItems}) => {
       });
 
       currentSearch = searchObj.search ? searchObj.search : currentSearch;
-      currentPage = searchObj.page ? +searchObj.page - 1 : undefined;
-      currentComponentData = searchObj.year ? component.dataObjYears[+searchObj.year] : component.dataArr;
       component.year = searchObj.year ? searchObj.year : '';
     }
   }
@@ -94,14 +94,15 @@ const NodeNews = ({children, nodeId, perPage, location, pageItems}) => {
            currentPage={currentPage}
            currentComponentData={currentComponentData}
            currentSearch={currentSearch}
+           numPages={numPages}
+
            children={children}
            pageItems={pageItems}
-           locaton={location}
     />
   )
 };
 
-const BNews = ({children, location, component, perPage, currentPage, currentComponentData, currentSearch, pageItems}) => {
+const BNews = ({children, component, numPages, perPage, currentPage, currentComponentData, currentSearch, pageItems, slug}) => {
   console.log(component.dataArrTagsYears, 'component years');
 
   const NewsItems = ({children, component}) => {
@@ -109,6 +110,7 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
       <>
         {/*{component.isdData && component.isAllArrayHasValidProp &&*/}
         <div className="items">
+          {console.log(component, 'component')}
 
           {component.map(({isProp, id, props: item}, i) => (
 
@@ -186,21 +188,13 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
     )
   };
 
-  let firstOffset = currentPage ? currentPage * perPage : 0;
   let initSearchTerm = currentSearch;
 
-  let pagStateNull = {
-    forcePage: 0,
-    pageCount: 0,
-    curData: currentComponentData,
-    componentData: currentComponentData.slice(firstOffset, firstOffset + perPage),
-  };
-
   let pagState = {
-    forcePage: currentPage,
-    pageCount: Math.ceil(currentComponentData.length / perPage),
-    curData: currentComponentData,
-    componentData: currentComponentData.slice(firstOffset, firstOffset + perPage),
+    forcePage: currentPage - 1,
+    pageCount: numPages,
+    curData: component.dataArr,
+    componentData: currentComponentData.dataArr,
     years: component.year
   };
 
@@ -214,7 +208,6 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
   const [inputVal, setInputVal] = useState(initSearchTerm);
   const myRef = useRef(null);
   const firstUpdate = useRef(true);
-  const countOfRender = useRef(0);
   //endStates
 
   const scrollToRef = (ref) => {
@@ -222,13 +215,9 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
   };
 
   useEffect(() => {
+
     if (initSearchTerm) {
       searchUpdated(initSearchTerm);
-    } else {
-
-      setPagination(
-        pagStateNull
-      );
     }
 
     console.log('first');
@@ -242,25 +231,8 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
       return;
     }
 
-    countOfRender.current = countOfRender.current + 1;
-    console.log(countOfRender.current);
-
-    if (countOfRender.current === 1) {
-
-      if (initSearchTerm) {
-        searchUpdated(initSearchTerm);
-      } else {
-
-        setPagination(
-          pagState
-        );
-      }
-    }
-
-    if (countOfRender.current > 2) {
-      if (pageItems) {
-        scrollToRef(myRef);
-      }
+    if (pageItems) {
+      scrollToRef(myRef);
     }
 
   });
@@ -308,22 +280,17 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
       years: pagination.years
     });
 
-    let urlArr = window.location.search ? window.location.search.split('page=') : null;
-    let urlSearch;
+    let urlNumberPage = +(selected) + 1;
+    let pathname = window.location.pathname;
+    let urlArr = '';
 
-    if (urlArr) {
-
-      if (urlArr[0] === '?') {
-        urlSearch = '?page=' + (+(selected) + 1);
-      } else {
-        urlSearch = urlArr[0].replace('&', '') + '&page=' + (+(selected) + 1);
-      }
-
+    if (~pathname.indexOf('page=')) {
+      urlArr = selected ? pathname.slice(0, pathname.indexOf('page=')) + 'page=' +  urlNumberPage + '/' : pathname;
     } else {
-      urlSearch = '?page=' + (+(selected) + 1);
+      urlArr = selected ? pathname + 'page=' + urlNumberPage + '/' : '';
     }
 
-    window.history.pushState(null, null, urlSearch);
+    window.history.pushState(null, null, urlArr);
   };
 
   const handleYearsClick = e => {
@@ -347,8 +314,24 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
       years: years
     });
 
-    window.history.pushState(null, null, '?year=' + +years);
+    let urlArr = '';
+    let pathname = window.location.pathname;
+
+    if (~pathname.indexOf('page=')) {
+      urlArr = pathname.slice(0, pathname.indexOf('page='));
+    } else {
+      urlArr = pathname;
+    }
+
+    if (~urlArr.indexOf('year-')) {
+      urlArr = urlArr.slice(0, urlArr.indexOf('year-')) + 'year-' +  +years + '/';
+    } else {
+      urlArr = urlArr + 'year-' + +years + '/';
+    }
+
+    window.history.pushState(null, null, urlArr);
   };
+
 
   return (
     <div className='b-news'>
@@ -376,7 +359,7 @@ const BNews = ({children, location, component, perPage, currentPage, currentComp
           <div className="item-list">
             <ReactPaginate
               forcePage={pagination.forcePage}
-              initialPage={currentPage}
+              initialPage={currentPage - 1}
               disableInitialCallback={true}
               previousLabel={'‹ previous'}
               nextLabel={'next ›'}
