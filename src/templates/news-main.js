@@ -11,9 +11,13 @@ export default (props) => {
   consoleLog(props , 'props');
 
   let {pageContext} = props;
-  let {drupalInternalNid: pageId, currentPage, limit, numPages, slug} = pageContext;
+  let {drupalInternalNid: pageId, currentPage, limit, numPages, slug, yearVar} = pageContext;
   let {location, data: {nodeNewsMain: page, yearsData}} = props;
 
+  let year = yearVar.split('=')[1] && yearVar.split('=')[1] !== 'all' ? yearVar.split('=')[1] : "";
+
+  console.log(yearVar);
+console.log(year);
   let {relationships: relPage} = page;
   let imgTop = relPage.field_basic_top_image;
   let breadcrumbs = relPage.field_basic_breadcrumbs_term;
@@ -35,6 +39,7 @@ export default (props) => {
               location={location}
               pageItems={true}
               slug={slug}
+              yearVar={year}
             />
         </div>
 
@@ -45,38 +50,38 @@ export default (props) => {
 }
 
 export const query = graphql`
-    query($slug: String!, $skip: Int!, $limit: Int!, $yearVar: String!) {
-        nodeNewsMain(fields: { slug: { eq: $slug } }) {
-            title           
-            relationships {
-                field_basic_top_image {
-                    ...ImgLocalFile
-                }
-            }
+  query($slug: String!, $skip: Int!, $limit: Int!, $yearVar: String!) {
+    nodeNewsMain(fields: { slug: { eq: $slug } }) {
+      title
+      relationships {
+        field_basic_top_image {
+          ...ImgLocalFile
         }
-        yearsData: allNodeNews(
-            sort: {order: DESC, fields: field_news_date},
-            filter: {fields: {dateYear: {in: [$yearVar]}}}
-            limit: $limit
-            skip: $skip
-        ) {
-            totalCount
-            edges {
-                node {
-                    title
-                    body {
-                        value
-                    }
-                    fields {
-                        dateYear
-                    }
-                    field_news_date(formatString: "MMMM DD, YYYY")
-                    years: field_news_date(formatString: "YYYY")
-                    path {
-                        alias
-                    }
-                }
-            }
-        }
+      }
     }
+    yearsData: allNodeNews(
+      sort: {order: DESC, fields: field_news_date},
+      filter: {fields: {dateYear: {in: [$yearVar]}}}
+      limit: $limit
+      skip: $skip
+    ) {
+      totalCount      
+      edges {
+        node {
+          title
+          body {
+            value
+          }
+          fields {
+            dateYear
+          }
+          field_news_date(formatString: "MMMM DD, YYYY")
+          years: field_news_date(formatString: "YYYY")
+          path {
+            alias
+          }
+        }
+      }
+    }
+  }
 `

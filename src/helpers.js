@@ -10,6 +10,8 @@ export const consoleLog  = (item) => {
 
 export function createCompObj (component, array, nodeId, props) {
 
+  console.log(component);
+
   if (nodeId === 'all') {
     component.filteredData = array;
   } else {

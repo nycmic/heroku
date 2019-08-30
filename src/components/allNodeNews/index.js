@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from "react"
+import React, {useEffect, useState, useRef, useMemo} from "react"
 import {useStaticQuery, graphql} from "gatsby"
 import {createCompObj, getPropSafe, htmlIn} from "../../helpers";
 import excerptHtml from "excerpt-html";
@@ -6,7 +6,18 @@ import ReactPaginate from 'react-paginate';
 import _ from 'lodash';
 import SearchInput, {createFilter} from 'react-search-input'
 
-const NodeNews = ({children, currentComponent, numPages, currentPage, perPage, nodeId, location, pageItems, slug}) => {
+const NodeNews = ({
+                    children,
+                    currentComponent,
+                    numPages,
+                    currentPage,
+                    perPage,
+                    nodeId,
+                    location,
+                    pageItems,
+                    slug,
+                    yearVar
+                  }) => {
   const data = useStaticQuery(
     graphql`
       query {
@@ -102,13 +113,12 @@ const NodeNews = ({children, currentComponent, numPages, currentPage, perPage, n
            children={children}
            pageItems={pageItems}
            slug={slug}
+           yearVar={yearVar}
     />
   )
 };
 
-const BNews = ({children, component, numPages, perPage, currentPage, currentComponentData, currentSearch, pageItems, location ,slug}) => {
-
-  console.log(location);
+const BNews = ({children, component, numPages, perPage, currentPage, currentComponentData, currentSearch, pageItems, location ,slug, yearVar}) => {
 
   const NewsItems = ({children, component}) => {
     return (
@@ -212,7 +222,7 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
   const firstUpdate = useRef(true);
   const urlPathname = useRef({
     slug: slug ? slug : '',
-    year: component.year ? `/year-${component.year}` : '',
+    year: yearVar ? `/year-${yearVar}` : '',
     page: currentPage && currentPage !== 1 ? `/page=${currentPage}` : ''
   });
   //endStates
@@ -365,7 +375,9 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
               subContainerClassName={'pages pagination'}
               activeClassName={'pager-current'}
               hrefBuilder={(i) => {
-                return `${window.location.pathname}/page=${i}`;
+                let page = i - 1 ? `/page=${i}` : ''
+                let url = urlPathname.current.slug + urlPathname.current.year + page
+                return `${url}`;
               }}
             />
           </div>
