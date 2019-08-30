@@ -1,5 +1,5 @@
 import React from "react"
-import {graphql} from "gatsby"
+import { graphql } from "gatsby"
 import Layout from "../components/layout"
 import SectionTop from "../components/SectionTop";
 import SectionTitle from "../components/SectionTitle";
@@ -13,8 +13,8 @@ export default ({data: {thisPage: page, thisPage: {fields: {drupalInternalNid: p
 
   return (
     <Layout>
-      <SectionTop imgTop={imgTop.localFile.childImageSharp.fluid} />
-      <SectionTitle title={page.title} breadcrumbs={breadcrumbs} />
+      <SectionTop imgTop={imgTop.localFile.childImageSharp.fluid}/>
+      <SectionTitle title={page.title} breadcrumbs={breadcrumbs}/>
 
       <InnerWrapper>
         <div className="content-inner">
@@ -23,9 +23,7 @@ export default ({data: {thisPage: page, thisPage: {fields: {drupalInternalNid: p
             <ParagraphBasicContactsFieldColl nodeId={pageId}/>
           </div>
         </div>
-
       </InnerWrapper>
-
     </Layout>
   )
 }

@@ -70,23 +70,23 @@ const SimplePage = (props) => {
 export default SimplePage;
 
 export const query = graphql`
-    query($slug: String!) {
-        nodeSimplePage(fields: { slug: { eq: $slug } }) {
-            title
-            body {
-                value
-            }          
-            relationships {
-                field_basic_top_image {
-                    ...ImgLocalFile
-                }
-                field_basic_breadcrumbs_term {
-                    path {
-                        alias
-                    }
-                    name
-                }
-            }
-        }
-    }
-`
+   query($slug: String!) {
+     nodeSimplePage(fields: { slug: { eq: $slug } }) {
+       title
+       body {
+         value
+       }
+       relationships {
+         field_basic_top_image {
+           ...ImgLocalFile
+         }
+         field_basic_breadcrumbs_term {
+           path {
+             alias
+           }
+           name
+         }
+       }
+     }
+   }
+ `

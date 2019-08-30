@@ -52,10 +52,9 @@ exports.onCreateNode = ({node, getNode, actions}) => {
 exports.createPages = ({actions, graphql}) => {
   const {createPage} = actions
 
-  const newsNode =
-    `
-      nodeNewsMain {                     
-        fields {
+  const newsNode = `
+      nodeNewsMain { 
+          fields {
           slug
           drupalInternalNid          
         }

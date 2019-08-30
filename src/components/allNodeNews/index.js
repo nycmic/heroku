@@ -9,23 +9,23 @@ import SearchInput, {createFilter} from 'react-search-input'
 const NodeNews = ({children, currentComponent, numPages, currentPage, perPage, nodeId, location, pageItems, slug}) => {
   const data = useStaticQuery(
     graphql`
-        query {
-            comp: allNodeNews(sort: {order: DESC, fields: field_news_date}) {
-                edges {
-                    node {
-                        title
-                        body {
-                            value
-                        }
-                        field_news_date(formatString: "MMMM DD, YYYY")
-                        years: field_news_date(formatString: "YYYY")
-                        path {
-                            alias
-                        }
-                    }
-                }
+      query {
+        comp: allNodeNews(sort: {order: DESC, fields: field_news_date}) {
+          edges {
+            node {
+              title
+              body {
+                value
+              }
+              field_news_date(formatString: "MMMM DD, YYYY")
+              years: field_news_date(formatString: "YYYY")
+              path {
+                alias
+              }
             }
+          }
         }
+      }
     `
   );
 
@@ -328,7 +328,7 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
       urlArr = urlArr + 'year-' + +years + '/';
     }
 
-    window.history.pushState(null, null, urlArr);
+    window.history.pushState('news111', null, urlArr);
   };
 
 
