@@ -98,15 +98,17 @@ const NodeNews = ({children, currentComponent, numPages, currentPage, perPage, n
            currentComponentData={currentComponentData}
            currentSearch={currentSearch}
            numPages={numPages}
-
+           location={location}
            children={children}
            pageItems={pageItems}
+           slug={slug}
     />
   )
 };
 
-const BNews = ({children, component, numPages, perPage, currentPage, currentComponentData, currentSearch, pageItems, slug}) => {
+const BNews = ({children, component, numPages, perPage, currentPage, currentComponentData, currentSearch, pageItems, location ,slug}) => {
 
+  console.log(location);
 
   const NewsItems = ({children, component}) => {
     return (
@@ -204,13 +206,18 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
     pagState
   );
 
-
-
   // eslint-disable-next-line
   const [inputVal, setInputVal] = useState(initSearchTerm);
   const myRef = useRef(null);
   const firstUpdate = useRef(true);
+  const urlPathname = useRef({
+    slug: slug ? slug : '',
+    year: component.year ? `/year-${component.year}` : '',
+    page: currentPage && currentPage !== 1 ? `/page=${currentPage}` : ''
+  });
   //endStates
+
+  console.log(urlPathname.current);
 
   const scrollToRef = (ref) => {
     window.scrollTo(0, ref.current.getBoundingClientRect().top + window.pageYOffset - 180);
@@ -264,7 +271,12 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
       years: ''
     });
 
-    window.history.pushState(null, null, '?search=' + term);
+    urlPathname.current.page = '';
+    urlPathname.current.year = '';
+
+    let url = urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
+
+    window.history.pushState(null, null, url + '?search=' + term);
   };
 
   const handlePageClick = data => {
@@ -280,17 +292,10 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
       years: pagination.years
     });
 
-    let urlNumberPage = +(selected) + 1;
-    let pathname = window.location.pathname;
-    let urlArr = '';
+    urlPathname.current.page = selected ? `/page=${selected + 1}` : ''
+    let url = urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
 
-    if (~pathname.indexOf('page=')) {
-      urlArr = selected ? pathname.slice(0, pathname.indexOf('page=')) + 'page=' +  urlNumberPage + '/' : pathname;
-    } else {
-      urlArr = selected ? pathname + 'page=' + urlNumberPage + '/' : '';
-    }
-
-    window.history.pushState(null, null, urlArr);
+    window.history.pushState(null, null, url);
   };
 
   const handleYearsClick = e => {
@@ -304,7 +309,6 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
 
     setInputVal('');
 
-
     setPagination({
       forcePage: 0,
       componentData: curDataTemp.slice(offset, offset + perPage),
@@ -313,22 +317,12 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
       years: years
     });
 
-    let urlArr = '';
-    let pathname = window.location.pathname;
+    urlPathname.current.page = '';
+    urlPathname.current.year = `/year-${years}`;
 
-    if (~pathname.indexOf('page=')) {
-      urlArr = pathname.slice(0, pathname.indexOf('page='));
-    } else {
-      urlArr = pathname;
-    }
+    let url = urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
 
-    if (~urlArr.indexOf('year-')) {
-      urlArr = urlArr.slice(0, urlArr.indexOf('year-')) + 'year-' +  +years + '/';
-    } else {
-      urlArr = urlArr + 'year-' + +years + '/';
-    }
-
-    window.history.pushState('news111', null, urlArr);
+    window.history.pushState(null, null, url);
   };
 
 
@@ -371,7 +365,6 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
               subContainerClassName={'pages pagination'}
               activeClassName={'pager-current'}
               hrefBuilder={(i) => {
-                console.log(i);
                 return `${window.location.pathname}/page=${i}`;
               }}
             />

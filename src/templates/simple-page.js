@@ -75,7 +75,7 @@ export const query = graphql`
        title
        body {
          value
-       }
+       }       
        relationships {
          field_basic_top_image {
            ...ImgLocalFile
