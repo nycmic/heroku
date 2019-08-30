@@ -2,6 +2,12 @@ import parse from "html-react-parser";
 // import DOMPurify from "dompurify";
 import _ from 'lodash';
 
+export const consoleLog  = (item) => {
+  if (process.env.NODE_ENV === 'development') {
+    console.log(item)
+  }
+}
+
 export function createCompObj (component, array, nodeId, props) {
 
   if (nodeId === 'all') {

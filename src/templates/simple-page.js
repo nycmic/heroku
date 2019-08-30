@@ -15,7 +15,9 @@ import BlockContentInfoBlock from "../components/BlockContentInfoBlock";
 import BlockContentTeam from "../components/BlockContentTeam";
 
 const SimplePage = (props) => {
-  console.log(props)
+  if (process.env.NODE_ENV === 'development') {
+    console.log(props)
+  }
   let {pageContext: {drupalInternalNid: pageId}} = props;
   let {data: {nodeSimplePage: page}} = props;
   let {relationships: relPage} = page;

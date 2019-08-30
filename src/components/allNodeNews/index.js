@@ -42,9 +42,12 @@ const NodeNews = ({children, currentComponent, numPages, currentPage, perPage, n
   };
 
   component = createCompObj(component, data.comp.edges, nodeId, props);
-  console.log(data.comp.edges, 'comp');
-  console.log(currentComponent.edges, 'curComp');
-  currentComponentData = createCompObj(currentComponentData, currentComponent.edges, nodeId, props);
+
+  if (pageItems) {
+    currentComponentData = createCompObj(currentComponentData, currentComponent.edges, nodeId, props);
+  } else {
+
+  }
 
   let currentSearch = '';
 
@@ -103,14 +106,13 @@ const NodeNews = ({children, currentComponent, numPages, currentPage, perPage, n
 };
 
 const BNews = ({children, component, numPages, perPage, currentPage, currentComponentData, currentSearch, pageItems, slug}) => {
-  console.log(component.dataArrTagsYears, 'component years');
+
 
   const NewsItems = ({children, component}) => {
     return (
       <>
         {/*{component.isdData && component.isAllArrayHasValidProp &&*/}
         <div className="items">
-          {console.log(component, 'component')}
 
           {component.map(({isProp, id, props: item}, i) => (
 
@@ -202,7 +204,7 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
     pagState
   );
 
-  console.log(pagination, 'pagination');
+
 
   // eslint-disable-next-line
   const [inputVal, setInputVal] = useState(initSearchTerm);
@@ -220,7 +222,7 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
       searchUpdated(initSearchTerm);
     }
 
-    console.log('first');
+
 
   }, []);
 
@@ -304,7 +306,6 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
 
     setInputVal('');
 
-    console.log('handleYearsClick');
 
     setPagination({
       forcePage: 0,
@@ -353,7 +354,6 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
           <h5 style={{textAlign: 'center', margin: '70px 0'}}>YOUR SEARCH YIELDED NO RESULTS</h5>
         </div>
         }
-        {console.log(pagination.pageCount, 'pagination.pageCount')}
 
         <div className={`pager-wrapper page-counts-${pagination.pageCount}`}>
           <div className="item-list">

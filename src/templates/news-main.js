@@ -5,9 +5,11 @@ import SectionTop from "../components/SectionTop";
 import SectionTitle from "../components/SectionTitle";
 import InnerWrapper from "../components/InnerWrapper";
 import NodeNews from "../components/allNodeNews";
+import {consoleLog} from "../helpers"
 
 export default (props) => {
-  console.log(props)
+  consoleLog(props , 'props');
+
   let {pageContext} = props;
   let {drupalInternalNid: pageId, currentPage, limit, numPages, slug} = pageContext;
   let {location, data: {nodeNewsMain: page, yearsData}} = props;
