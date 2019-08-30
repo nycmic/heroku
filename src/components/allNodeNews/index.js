@@ -222,8 +222,6 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
       searchUpdated(initSearchTerm);
     }
 
-
-
   }, []);
 
   useEffect(() => {
@@ -372,8 +370,9 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
               containerClassName={'pager'}
               subContainerClassName={'pages pagination'}
               activeClassName={'pager-current'}
-              hrefBuilder={() => {
-                return '#';
+              hrefBuilder={(i) => {
+                console.log(i);
+                return `${window.location.pathname}/page=${i}`;
               }}
             />
           </div>
