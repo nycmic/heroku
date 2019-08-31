@@ -83,7 +83,7 @@ type Directory implements Node {
     locale: String
   ): Date
   ctimeMs: Float
-  dev: Float
+  dev: Int
   dir: String
   ext: String
   extension: String
@@ -220,7 +220,7 @@ type File implements Node {
     locale: String
   ): Date
   ctimeMs: Float
-  dev: Float
+  dev: Int
   dir: String
   ext: String
   extension: String
@@ -513,8 +513,8 @@ type Query {
   blockContentSiteinfo(changed: DateQueryOperatorInput, children: NodeFilterListInput, default_langcode: BooleanQueryOperatorInput, drupal_id: StringQueryOperatorInput, drupal_internal__id: IntQueryOperatorInput, drupal_internal__revision_id: IntQueryOperatorInput, id: StringQueryOperatorInput, info: StringQueryOperatorInput, internal: InternalFilterInput, langcode: StringQueryOperatorInput, logo: block_content__siteinfoLogoFilterInput, parent: NodeFilterInput, relationships: block_content__siteinfoRelationshipsFilterInput, reusable: BooleanQueryOperatorInput, revision_created: DateQueryOperatorInput, revision_translation_affected: BooleanQueryOperatorInput, status: BooleanQueryOperatorInput): block_content__siteinfo
   blockContentTeam(changed: DateQueryOperatorInput, children: NodeFilterListInput, default_langcode: BooleanQueryOperatorInput, drupal_id: StringQueryOperatorInput, drupal_internal__id: IntQueryOperatorInput, drupal_internal__revision_id: IntQueryOperatorInput, id: StringQueryOperatorInput, info: StringQueryOperatorInput, internal: InternalFilterInput, langcode: StringQueryOperatorInput, parent: NodeFilterInput, relationships: block_content__teamRelationshipsFilterInput, reusable: BooleanQueryOperatorInput, revision_created: DateQueryOperatorInput, revision_translation_affected: BooleanQueryOperatorInput, status: BooleanQueryOperatorInput): block_content__team
   dateFormatDateFormat(children: NodeFilterListInput, drupal_id: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, label: StringQueryOperatorInput, parent: NodeFilterInput): date_format__date_format
-  directory(absolutePath: StringQueryOperatorInput, accessTime: DateQueryOperatorInput, atime: DateQueryOperatorInput, atimeMs: FloatQueryOperatorInput, base: StringQueryOperatorInput, birthTime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, blksize: IntQueryOperatorInput, blocks: IntQueryOperatorInput, changeTime: DateQueryOperatorInput, children: NodeFilterListInput, ctime: DateQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, dev: FloatQueryOperatorInput, dir: StringQueryOperatorInput, ext: StringQueryOperatorInput, extension: StringQueryOperatorInput, gid: IntQueryOperatorInput, id: StringQueryOperatorInput, ino: FloatQueryOperatorInput, internal: InternalFilterInput, mode: IntQueryOperatorInput, modifiedTime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, name: StringQueryOperatorInput, nlink: IntQueryOperatorInput, parent: NodeFilterInput, prettySize: StringQueryOperatorInput, rdev: IntQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, root: StringQueryOperatorInput, size: IntQueryOperatorInput, sourceInstanceName: StringQueryOperatorInput, uid: IntQueryOperatorInput): Directory
-  file(absolutePath: StringQueryOperatorInput, accessTime: DateQueryOperatorInput, atime: DateQueryOperatorInput, atimeMs: FloatQueryOperatorInput, base: StringQueryOperatorInput, birthTime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, blksize: IntQueryOperatorInput, blocks: IntQueryOperatorInput, changeTime: DateQueryOperatorInput, children: NodeFilterListInput, ctime: DateQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, dev: FloatQueryOperatorInput, dir: StringQueryOperatorInput, ext: StringQueryOperatorInput, extension: StringQueryOperatorInput, gid: IntQueryOperatorInput, id: StringQueryOperatorInput, ino: FloatQueryOperatorInput, internal: InternalFilterInput, mode: IntQueryOperatorInput, modifiedTime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, name: StringQueryOperatorInput, nlink: IntQueryOperatorInput, parent: NodeFilterInput, prettySize: StringQueryOperatorInput, publicURL: StringQueryOperatorInput, rdev: IntQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, root: StringQueryOperatorInput, size: IntQueryOperatorInput, sourceInstanceName: StringQueryOperatorInput, uid: IntQueryOperatorInput, url: StringQueryOperatorInput): File
+  directory(absolutePath: StringQueryOperatorInput, accessTime: DateQueryOperatorInput, atime: DateQueryOperatorInput, atimeMs: FloatQueryOperatorInput, base: StringQueryOperatorInput, birthTime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, blksize: IntQueryOperatorInput, blocks: IntQueryOperatorInput, changeTime: DateQueryOperatorInput, children: NodeFilterListInput, ctime: DateQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, dev: IntQueryOperatorInput, dir: StringQueryOperatorInput, ext: StringQueryOperatorInput, extension: StringQueryOperatorInput, gid: IntQueryOperatorInput, id: StringQueryOperatorInput, ino: FloatQueryOperatorInput, internal: InternalFilterInput, mode: IntQueryOperatorInput, modifiedTime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, name: StringQueryOperatorInput, nlink: IntQueryOperatorInput, parent: NodeFilterInput, prettySize: StringQueryOperatorInput, rdev: IntQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, root: StringQueryOperatorInput, size: IntQueryOperatorInput, sourceInstanceName: StringQueryOperatorInput, uid: IntQueryOperatorInput): Directory
+  file(absolutePath: StringQueryOperatorInput, accessTime: DateQueryOperatorInput, atime: DateQueryOperatorInput, atimeMs: FloatQueryOperatorInput, base: StringQueryOperatorInput, birthTime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, blksize: IntQueryOperatorInput, blocks: IntQueryOperatorInput, changeTime: DateQueryOperatorInput, children: NodeFilterListInput, ctime: DateQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, dev: IntQueryOperatorInput, dir: StringQueryOperatorInput, ext: StringQueryOperatorInput, extension: StringQueryOperatorInput, gid: IntQueryOperatorInput, id: StringQueryOperatorInput, ino: FloatQueryOperatorInput, internal: InternalFilterInput, mode: IntQueryOperatorInput, modifiedTime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, name: StringQueryOperatorInput, nlink: IntQueryOperatorInput, parent: NodeFilterInput, prettySize: StringQueryOperatorInput, publicURL: StringQueryOperatorInput, rdev: IntQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, root: StringQueryOperatorInput, size: IntQueryOperatorInput, sourceInstanceName: StringQueryOperatorInput, uid: IntQueryOperatorInput, url: StringQueryOperatorInput): File
   fileFile(changed: DateQueryOperatorInput, children: NodeFilterListInput, created: DateQueryOperatorInput, drupal_id: StringQueryOperatorInput, drupal_internal__fid: IntQueryOperatorInput, filemime: StringQueryOperatorInput, filename: StringQueryOperatorInput, filesize: IntQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, langcode: StringQueryOperatorInput, localFile: FileFilterInput, parent: NodeFilterInput, relationships: file__fileRelationshipsFilterInput, status: BooleanQueryOperatorInput, uri: file__fileUriFilterInput): file__file
   imageSharp(children: NodeFilterListInput, fixed: ImageSharpFixedFilterInput, fluid: ImageSharpFluidFilterInput, id: StringQueryOperatorInput, internal: InternalFilterInput, original: ImageSharpOriginalFilterInput, parent: NodeFilterInput, resize: ImageSharpResizeFilterInput, resolutions: ImageSharpResolutionsFilterInput, sizes: ImageSharpSizesFilterInput): ImageSharp
   mediaTypeMediaType(children: NodeFilterListInput, drupal_id: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, label: StringQueryOperatorInput, parent: NodeFilterInput): media_type__media_type
@@ -628,33 +628,12 @@ type SitePageConnection {
 
 type SitePageContext {
   currentPage: Int
-  dateYear: String
   drupalInternalNid: String
-  first: Boolean
-  group: [SitePageContextGroup]
-  index: Int
-  last: Boolean
   limit: Int
   numPages: Int
-  pageCount: Int
-  pathPrefix: String
   skip: Int
   slug: String
   yearVar: String
-}
-
-type SitePageContextGroup {
-  node: SitePageContextGroupNode
-}
-
-type SitePageContextGroupNode {
-  fields: SitePageContextGroupNodeFields
-}
-
-type SitePageContextGroupNodeFields {
-  dateYear: String
-  drupalInternalNid: String
-  slug: String
 }
 
 type SitePageEdge {
@@ -2011,7 +1990,7 @@ type node__newsField_news_image_caption_text {
 }
 
 type node__newsFields {
-  dateYear: String
+  dateYear: [String]
   drupalInternalNid: String
   slug: String
 }
@@ -4792,16 +4771,9 @@ enum SitePageFieldsEnum {
   componentChunkName
   componentPath
   context___currentPage
-  context___dateYear
   context___drupalInternalNid
-  context___first
-  context___group
-  context___index
-  context___last
   context___limit
   context___numPages
-  context___pageCount
-  context___pathPrefix
   context___skip
   context___slug
   context___yearVar
@@ -16777,7 +16749,7 @@ input DirectoryFilterInput {
   children: NodeFilterListInput
   ctime: DateQueryOperatorInput
   ctimeMs: FloatQueryOperatorInput
-  dev: FloatQueryOperatorInput
+  dev: IntQueryOperatorInput
   dir: StringQueryOperatorInput
   ext: StringQueryOperatorInput
   extension: StringQueryOperatorInput
@@ -16828,7 +16800,7 @@ input FileFilterInput {
   children: NodeFilterListInput
   ctime: DateQueryOperatorInput
   ctimeMs: FloatQueryOperatorInput
-  dev: FloatQueryOperatorInput
+  dev: IntQueryOperatorInput
   dir: StringQueryOperatorInput
   ext: StringQueryOperatorInput
   extension: StringQueryOperatorInput
@@ -17020,37 +16992,12 @@ input SiteFilterInput {
 
 input SitePageContextFilterInput {
   currentPage: IntQueryOperatorInput
-  dateYear: StringQueryOperatorInput
   drupalInternalNid: StringQueryOperatorInput
-  first: BooleanQueryOperatorInput
-  group: SitePageContextGroupFilterListInput
-  index: IntQueryOperatorInput
-  last: BooleanQueryOperatorInput
   limit: IntQueryOperatorInput
   numPages: IntQueryOperatorInput
-  pageCount: IntQueryOperatorInput
-  pathPrefix: StringQueryOperatorInput
   skip: IntQueryOperatorInput
   slug: StringQueryOperatorInput
   yearVar: StringQueryOperatorInput
-}
-
-input SitePageContextGroupFilterInput {
-  node: SitePageContextGroupNodeFilterInput
-}
-
-input SitePageContextGroupFilterListInput {
-  elemMatch: SitePageContextGroupFilterInput
-}
-
-input SitePageContextGroupNodeFieldsFilterInput {
-  dateYear: StringQueryOperatorInput
-  drupalInternalNid: StringQueryOperatorInput
-  slug: StringQueryOperatorInput
-}
-
-input SitePageContextGroupNodeFilterInput {
-  fields: SitePageContextGroupNodeFieldsFilterInput
 }
 
 input SitePageFilterInput {

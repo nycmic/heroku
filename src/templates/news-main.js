@@ -12,7 +12,7 @@ export default (props) => {
 
   let {pageContext} = props;
   let {drupalInternalNid: pageId, currentPage, limit, numPages, slug, yearVar} = pageContext;
-  let {location, data: {nodeNewsMain: page, yearsData}} = props;
+  let {location, data: {nodeNewsMain: page, yearsData}, yearsList} = props;
 
   let year = yearVar.split('=')[1] && yearVar.split('=')[1] !== 'all' ? yearVar.split('=')[1] : "";
 
@@ -57,6 +57,11 @@ export const query = graphql`
         field_basic_top_image {
           ...ImgLocalFile
         }
+      }
+    }
+    yearsList: allNodeNews {
+      group(field: fields___dateYear) {
+        fieldValue
       }
     }
     yearsData: allNodeNews(
