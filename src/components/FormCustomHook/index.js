@@ -16,13 +16,13 @@ function encode(data) {
 export default ({children}) => {
   const data = useStaticQuery(
     graphql`
-        query {
-            form: webformWebform {
-                elements
-                title
-            }
+      query {
+        form: webformWebform {
+          elements
+          title
         }
-    `
+      }
+    `,
   )
 
   const formElms = yaml.safeLoad(data.form.elements);
