@@ -333,6 +333,12 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
     window.history.pushState(null, null, urlPathname.current.createUrl());
   };
 
+  //const [statePage, setPage] = useState('')
+
+  // fetch("https://dog.ceo/api/breeds/image/random")
+  //   .then(response => response.json())
+  //   .then(puppets => console.log(puppets))
+  //   .catch(error => console.log(error));
 
   return (
     <div className='b-news'>
