@@ -16,7 +16,8 @@ const NodeNews = ({
                     location,
                     pageItems,
                     slug,
-                    yearVar
+                    yearVar,
+                    yearsList
                   }) => {
   const data = useStaticQuery(
     graphql`
@@ -39,6 +40,8 @@ const NodeNews = ({
       }
     `
   );
+
+  console.log(yearsList);
 
   //const component vars
   let component = {};
