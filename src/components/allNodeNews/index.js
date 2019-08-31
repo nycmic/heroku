@@ -223,7 +223,8 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
   const urlPathname = useRef({
     slug: slug ? slug : '',
     year: yearVar ? `/year-${yearVar}` : '',
-    page: currentPage && currentPage !== 1 ? `/page=${currentPage}` : ''
+    page: currentPage && currentPage !== 1 ? `/page=${currentPage}` : '',
+    createUrl: () => urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
   });
   //endStates
 
@@ -303,9 +304,8 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
     });
 
     urlPathname.current.page = selected ? `/page=${selected + 1}` : ''
-    let url = urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
 
-    window.history.pushState(null, null, url);
+    window.history.pushState(null, null, urlPathname.current.createUrl());
   };
 
   const handleYearsClick = e => {
@@ -330,9 +330,7 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
     urlPathname.current.page = '';
     urlPathname.current.year = `/year-${years}`;
 
-    let url = urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
-
-    window.history.pushState(null, null, url);
+    window.history.pushState(null, null, urlPathname.current.createUrl());
   };
 
 
