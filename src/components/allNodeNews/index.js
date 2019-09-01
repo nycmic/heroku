@@ -58,7 +58,7 @@ const NodeNews = ({
   component = createCompObj(component, data.comp.edges, nodeId, props);
 
   console.log(component);
-  //
+
   // Array.from({length: 1000000}).forEach((test, i) => {
   //   component.dataArr.push(component.dataArr[1]);
   // })
