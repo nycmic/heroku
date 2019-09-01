@@ -12,7 +12,7 @@ export default (props) => {
 
   let {pageContext} = props;
   let {drupalInternalNid: pageId, currentPage, limit, numPages, slug, yearVar} = pageContext;
-  let {location, data: {nodeNewsMain: page, yearsData}, yearsList} = props;
+  let {location, data: {nodeNewsMain: page, yearsData}, data: {yearsList}} = props;
 
   let year = yearVar.split('=')[1] && yearVar.split('=')[1] !== 'all' ? yearVar.split('=')[1] : "";
 
@@ -40,6 +40,7 @@ console.log(year);
               pageItems={true}
               slug={slug}
               yearVar={year}
+              yearsList={yearsList.group}
             />
         </div>
 
