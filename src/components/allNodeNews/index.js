@@ -325,6 +325,11 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
     urlPathname.current.page = selected ? `/page=${selected + 1}` : ''
 
     window.history.pushState(null, null, urlPathname.current.createUrl());
+
+    fetch("https://decoupled.devstages.com/api/node/news")
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.log(error));
   };
 
   const handleYearsClick = e => {
@@ -353,11 +358,6 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
   };
 
   //const [statePage, setPage] = useState('')
-
-  fetch("https://decoupled.devstages.com/api/node/news")
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.log(error));
 
   return (
     <div className='b-news'>
