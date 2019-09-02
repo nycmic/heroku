@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from "react"
 import {useStaticQuery, graphql} from "gatsby"
-import {createCompObj, getPropSafe, htmlIn} from "../../helpers";
+import {createCompObj, createDrupalApiObj, getPropSafe, htmlIn} from "../../helpers";
 import excerptHtml from "excerpt-html";
 import ReactPaginate from 'react-paginate';
 import _ from 'lodash';
@@ -41,7 +41,14 @@ const NodeNews = ({
     `
   );
 
-  console.log(yearsList);
+  let yearsCounts = {};
+
+  yearsList.forEach((item) => {
+    let itemArr = item.fieldValue.split('=');
+    yearsCounts[itemArr[1]] = item.totalCount;
+  });
+
+  console.log(yearsCounts, 'yearsCounts');
 
   //const component vars
   let component = {};
@@ -56,22 +63,6 @@ const NodeNews = ({
   };
 
   component = createCompObj(component, data.comp.edges, nodeId, props);
-
-  console.log(component);
-
-  // Array.from({length: 2000000}).forEach((test, i) => {
-  //   component.dataArr.push({
-  //     id: undefined,
-  //     isProp: true,
-  //     props: {
-  //       date: null,
-  //       desc: '<h4><strong>Gas Extractors</strong></h4><p>OKLAHOMA CITY, OK – Commuter Air Technology (CAT), a global provider of customized aircraft modifications for commercial and government applications, has extended its list of product offerings by receiving design change approval from the European Aviation Safety Agency (EASA).&nbsp; Under the certificate, CAT is now fully authorized to sell their proprietary Exhaust Gas Extractors (EGEs) to European operators of King Air B300 series or B200GT aircraft.&nbsp;</p><p>CAT’s EGEs that are designed to increase fuel efficiency, improve cruise and climb performance, reduce nacelle sooting and virtually eliminate exhaust stack cracking were previously EASA approved for most King Air 100 and 200 series models.&nbsp; With the addition of the B300 audience, CAT will be able to bring European owners a venturi-shaped trailing edge and aerodynamically efficient exhaust gas system that optimizes the performance and functionality of their King Air.</p><p>“We are pleased to expand the offering of our EGEs in Europe,” comments Darryl Wilkerson, CAT President.&nbsp; “CAT has been engineering industry-leading King Air enhancements for customers globally since 1988 and specifically our EGEs have been in service since 1994 with over 150 ship sets operational today,” Wilkerson added.&nbsp;</p><p>CAT continues engineering on several King Air enhancements that are to be announced in 2018.&nbsp;</p><p>&nbsp;</p><p><strong>About Commuter Air Technology</strong></p><p>Commuter Air Technology delivers certified aircraft and customized aircraft modifications for commercial and government applications around the globe. Modifications range from flight performance enhancements and high-density passenger systems to cargo conversions and corporate reconfigurations. With over 30 years of experience, Commuter Air Technology offers a full line of technical support services, such as crew provision, training, program management, aircraft maintenance, engineering as well as STC process management and Airworthiness certifications. Commuter Air Technology is an AGC Aerospace &amp; Defense company.&nbsp; Learn more at&nbsp;<a href="http://www.commuterair.com/">www.commuterair.com</a>.</p><p><strong>About AGC Aerospace &amp; Defense</strong></p><p>AGC Aerospace &amp; Defense, the unifying brand of private equity group Acorn Growth Companies, is a global supplier of technologies, systems and services supporting commercial and military programs. Capabilities within the AGC Aerospace &amp; Defense portfolio range from financing, engineering, and integration services to manufacturing, logistics, and aircraft modifications. AGC Aerospace &amp; Defense is organized into four operating groups: AeroComposites, Finance, Integrated Defense, and Services. &nbsp;Learn more at&nbsp;<a href="http://www.agcaerospace.com/" target="_blank">www.agcaerospace.com</a></p>' + Math.random(),
-  //       path: "/commuter-air-technology-receives-easa-approval-exhaust-gas-extractors",
-  //       title: "Commuter Air Technology receives EASA Approval for Exhaust Gas Extractors"  + Math.random(),
-  //       years: "2017",
-  //     }
-  //   });
-  // })
 
   if (pageItems) {
     currentComponentData = createCompObj(currentComponentData, currentComponent.edges, nodeId, props);
@@ -133,11 +124,12 @@ const NodeNews = ({
            pageItems={pageItems}
            slug={slug}
            yearVar={yearVar}
+           yearsCounts={yearsCounts}
     />
   )
 };
 
-const BNews = ({children, component, numPages, perPage, currentPage, currentComponentData, currentSearch, pageItems, location ,slug, yearVar}) => {
+const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage, currentComponentData, currentSearch, pageItems, location ,slug, yearVar}) => {
 
   const NewsItems = ({children, component}) => {
     return (
@@ -228,7 +220,7 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
     pageCount: numPages,
     curData: component.dataArr,
     componentData: currentComponentData.dataArr,
-    years: component.year
+    years: 'all'
   };
 
   const [pagination, setPagination] = useState(
@@ -246,8 +238,6 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
     createUrl: () => urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
   });
   //endStates
-
-  console.log(urlPathname.current);
 
   const scrollToRef = (ref) => {
     window.scrollTo(0, ref.current.getBoundingClientRect().top + window.pageYOffset - 180);
@@ -314,22 +304,43 @@ const BNews = ({children, component, numPages, perPage, currentPage, currentComp
     let offset = Math.ceil(selected * perPage);
     let curDataTemp = pagination.curData;
 
-    setPagination({
-      forcePage: undefined,
-      pageCount: Math.ceil(curDataTemp.length / perPage),
-      componentData: curDataTemp.slice(offset, offset + perPage),
-      curData: curDataTemp,
-      years: pagination.years
-    });
-
-    urlPathname.current.page = selected ? `/page=${selected + 1}` : ''
-
-    window.history.pushState(null, null, urlPathname.current.createUrl());
-
-    fetch("https://decoupled.devstages.com/api/node/news")
+    fetch(`https://decoupled.devstages.com/api/node/news?page[offset]=${offset}&page[limit]=${perPage}`, {
+      method:'get',
+      headers : {
+        Authorization : "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
+      }
+    })
       .then(response => response.json())
-      .then(data => console.log(data))
+      .then(res => {
+        let componentFetch = {};
+
+        let props = {
+          title: 'title',
+          desc: 'excerpt.body.value',
+          date: 'field_news_date',
+          path: 'path.alias',
+        };
+
+        componentFetch = createDrupalApiObj(componentFetch, res.data, 'all', props);
+
+        console.log(componentFetch, 'componentFetch');
+
+        setPagination({
+          forcePage: undefined,
+          pageCount: Math.ceil(yearsCounts[pagination.years]/perPage),
+          componentData: componentFetch.dataArr,
+          curData: curDataTemp,
+          years: pagination.years
+        });
+
+        urlPathname.current.page = selected ? `/page=${selected + 1}` : '';
+
+        window.history.pushState(null, null, urlPathname.current.createUrl());
+      })
+
       .catch(error => console.log(error));
+
+
   };
 
   const handleYearsClick = e => {

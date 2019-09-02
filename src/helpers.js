@@ -8,9 +8,44 @@ export const consoleLog  = (item) => {
   }
 }
 
-export function createCompObj (component, array, nodeId, props) {
+export function createDrupalApiObj (component, array, nodeId, props) {
 
-  console.log(component);
+  if (nodeId === 'all') {
+    component.filteredData = array;
+  } else {
+    component.filteredData = filterParentData(array, nodeId);
+  }
+
+  component.isdData = !!component.filteredData.length;
+  component.dataArr = [];
+
+  component.filteredData.forEach(({attributes}, i) => {
+
+    let newProps = {};
+
+    _.forOwn(props, function (value, k) {
+      newProps[k] = getData(value);
+    });
+
+    function getData(value){
+      return getProp(attributes, value);
+    }
+
+    component.dataArr[i] = {
+      id: getData('drupal_internal__id'),
+      props: newProps
+    };
+
+    component.dataArr[i].isProp = !checkObjForEmpty(component.dataArr[i].props);
+
+  });
+
+  component.isAllArrayHasValidProp = !!component.dataArr.filter(({isProp}) => {return isProp === true}).length;
+
+  return component;
+}
+
+export function createCompObj (component, array, nodeId, props) {
 
   if (nodeId === 'all') {
     component.filteredData = array;

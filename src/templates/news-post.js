@@ -4,7 +4,7 @@ import Layout from "../components/layout"
 import {getProp} from "../helpers";
 import NodeNews from "../components/allNodeNews";
 
-export default ({location, data: {nodeNews: page}}) => {
+export default ({location, data: {nodeNews: page, yearsList}}) => {
   let imgContentData = page.relationships.field_news_content_image;
   let bodyValue = getProp(page, 'body.value');
 
@@ -16,7 +16,13 @@ export default ({location, data: {nodeNews: page}}) => {
 
           <div className="content-inner">
 
-            <NodeNews location={location} nodeId={'all'} perPage={4} pageItems={false}>
+            <NodeNews
+              location={location}
+              nodeId={'all'}
+              perPage={4}
+              pageItems={false}
+              yearsList={yearsList.group}
+            >
 
               <div className="items">
 
@@ -77,6 +83,12 @@ export const query = graphql`
             publicURL
           }
         }
+      }
+    }
+    yearsList: allNodeNews {
+      group(field: fields___dateYear) {
+        fieldValue
+        totalCount
       }
     }
   }

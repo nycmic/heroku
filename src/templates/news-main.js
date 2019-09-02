@@ -63,6 +63,7 @@ export const query = graphql`
     yearsList: allNodeNews {
       group(field: fields___dateYear) {
         fieldValue
+        totalCount
       }
     }
     yearsData: allNodeNews(
