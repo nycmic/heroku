@@ -4,6 +4,7 @@ import {createCompObj, createDrupalApiObj, getPropSafe, htmlIn} from "../../help
 import excerptHtml from "excerpt-html";
 import ReactPaginate from 'react-paginate';
 import SearchInput, {createFilter} from 'react-search-input'
+import Moment from 'react-moment';
 
 const NodeNews = ({
                     children,
@@ -128,7 +129,10 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
                 <div className="title">
                   <div className="date">
                     {console.log(typeof item.date)}
-                    {item.date}
+                    {/*{item.date}*/}
+
+                    <Moment format="MMMM DD, YYYY" date={item.date} />
+
                   </div>
                   <h4>
                     <a href={item.path}>{item.title}</a>
