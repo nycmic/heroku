@@ -3,7 +3,6 @@ import {useStaticQuery, graphql} from "gatsby"
 import {createCompObj, createDrupalApiObj, getPropSafe, htmlIn} from "../../helpers";
 import excerptHtml from "excerpt-html";
 import ReactPaginate from 'react-paginate';
-import _ from 'lodash';
 import SearchInput, {createFilter} from 'react-search-input'
 
 const NodeNews = ({
@@ -41,14 +40,7 @@ const NodeNews = ({
     `
   );
 
-  let yearsCounts = {};
 
-  yearsList.forEach((item) => {
-    let itemArr = item.fieldValue.split('=');
-    yearsCounts[itemArr[1]] = item.totalCount;
-  });
-
-  console.log(yearsCounts, 'yearsCounts');
 
   //const component vars
   let component = {};
@@ -62,6 +54,18 @@ const NodeNews = ({
     years: 'years'
   };
 
+  let yearsCounts = {};
+  component.dataArrTagsYears = [];
+
+  yearsList.forEach((item) => {
+    let itemArr = item.fieldValue.split('=');
+    yearsCounts[itemArr[1]] = item.totalCount;
+
+    if (itemArr[1] && itemArr[1] !== 'all') {
+      component.dataArrTagsYears.unshift(itemArr[1]);
+    }
+  });
+
   component = createCompObj(component, data.comp.edges, nodeId, props);
 
   if (pageItems) {
@@ -72,25 +76,6 @@ const NodeNews = ({
 
   let currentSearch = '';
 
-  function createArrForYears() {
-    component.dataObjYears = {};
-    component.dataArrTagsYears = [];
-
-    component.dataArr.forEach((item, i) => {
-
-      if (item.props.years) {
-
-        if (!component.dataObjYears[item.props.years]) {
-          component.dataObjYears[item.props.years] = [];
-        }
-
-        component.dataArrTagsYears.push(item.props.years);
-        component.dataObjYears[item.props.years].push(item);
-      }
-    });
-
-    component.dataArrTagsYears = _.sortedUniq(component.dataArrTagsYears);
-  }
   function checkSearchLocation() {
     if (location.search) {
 
@@ -105,11 +90,8 @@ const NodeNews = ({
       });
 
       currentSearch = searchObj.search ? searchObj.search : currentSearch;
-      component.year = searchObj.year ? searchObj.year : '';
     }
   }
-
-  createArrForYears();
   checkSearchLocation();
 
   return (
@@ -199,8 +181,7 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
           <ul className="fblog-archive-list">
             {component.dataArrTagsYears.map((item, i) => (
               <li key={i}>
-
-                <a href={'/news/?year=' + item} data-years={item}
+                <a href={'/news/year-' + item} data-years={item}
                    className={'link-dropdown' + (item === pagination.years ? ' active' : '')} onClick={handleYearsClick}>
                   {item}
                 </a>
@@ -215,16 +196,15 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
 
   let initSearchTerm = currentSearch;
 
-  let pagState = {
-    forcePage: currentPage - 1,
-    pageCount: numPages,
-    curData: component.dataArr,
-    componentData: currentComponentData.dataArr,
-    years: 'all'
-  };
-
+  //States
   const [pagination, setPagination] = useState(
-    pagState
+    {
+      forcePage: currentPage - 1,
+      pageCount: numPages,
+      curData: component.dataArr,
+      componentData: currentComponentData.dataArr,
+      years: yearVar ? yearVar : 'all'
+    }
   );
 
   // eslint-disable-next-line
@@ -232,6 +212,7 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
   const myRef = useRef(null);
   const firstUpdate = useRef(true);
   const urlPathname = useRef({
+    yearData: yearVar,
     slug: slug ? slug : '',
     year: yearVar ? `/year-${yearVar}` : '',
     page: currentPage && currentPage !== 1 ? `/page=${currentPage}` : '',
@@ -304,7 +285,9 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
     let offset = Math.ceil(selected * perPage);
     let curDataTemp = pagination.curData;
 
-    fetch(`https://decoupled.devstages.com/api/node/news?page[offset]=${offset}&page[limit]=${perPage}`, {
+    let yearsQL = urlPathname.current.yearData ? `filter[date_in_pager]=${urlPathname.current.yearData}&` : '';
+
+    fetch(`https://decoupled.devstages.com/api/node/news?${yearsQL}page[offset]=${offset}&page[limit]=${perPage}&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`, {
       method:'get',
       headers : {
         Authorization : "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
@@ -323,8 +306,6 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
 
         componentFetch = createDrupalApiObj(componentFetch, res.data, 'all', props);
 
-        console.log(componentFetch, 'componentFetch');
-
         setPagination({
           forcePage: undefined,
           pageCount: Math.ceil(yearsCounts[pagination.years]/perPage),
@@ -339,8 +320,6 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
       })
 
       .catch(error => console.log(error));
-
-
   };
 
   const handleYearsClick = e => {
@@ -350,25 +329,59 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
 
     let years = e.currentTarget.dataset.years;
     let offset = 0;
-    let curDataTemp = component.dataObjYears[+years];
+
+    let yearsQL = years ? `filter[date_in_pager]=${years}&` : '';
 
     setInputVal('');
 
-    setPagination({
-      forcePage: 0,
-      componentData: curDataTemp.slice(offset, offset + perPage),
-      pageCount: Math.ceil(curDataTemp.length / perPage),
-      curData: curDataTemp,
-      years: years
-    });
+    fetch(`https://decoupled.devstages.com/api/node/news?${yearsQL}&page[offset]=${offset}&page[limit]=${perPage}&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`, {
+      method:'get',
+      headers : {
+        Authorization : "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
+      }
+    })
+      .then(response => response.json())
+      .then(res => {
+        let componentFetch = {};
 
-    urlPathname.current.page = '';
-    urlPathname.current.year = `/year-${years}`;
+        let props = {
+          title: 'title',
+          desc: 'excerpt.body.value',
+          date: 'field_news_date',
+          path: 'path.alias',
+        };
 
-    window.history.pushState(null, null, urlPathname.current.createUrl());
+        componentFetch = createDrupalApiObj(componentFetch, res.data, 'all', props);
+
+        setPagination({
+          forcePage: 0,
+          pageCount: Math.ceil(yearsCounts[years]/perPage),
+          componentData: componentFetch.dataArr,
+          years: years
+        });
+
+        urlPathname.current.yearData = years;
+        urlPathname.current.page = '';
+        urlPathname.current.year = `/year-${years}`;
+
+        window.history.pushState(null, null, urlPathname.current.createUrl());
+      })
+
+      .catch(error => console.log(error));
+
+    // setPagination({
+    //   forcePage: 0,
+    //   componentData: curDataTemp.slice(offset, offset + perPage),
+    //   pageCount: Math.ceil(curDataTemp.length / perPage),
+    //   curData: curDataTemp,
+    //   years: years
+    // });
+    //
+    // urlPathname.current.page = '';
+    // urlPathname.current.year = `/year-${years}`;
+    //
+    // window.history.pushState(null, null, urlPathname.current.createUrl());
   };
-
-  //const [statePage, setPage] = useState('')
 
   return (
     <div className='b-news'>
