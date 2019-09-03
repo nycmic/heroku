@@ -40,8 +40,6 @@ const NodeNews = ({
     `
   );
 
-
-
   //const component vars
   let component = {};
   let currentComponentData = {};
@@ -70,8 +68,6 @@ const NodeNews = ({
 
   if (pageItems) {
     currentComponentData = createCompObj(currentComponentData, currentComponent.edges, nodeId, props);
-  } else {
-
   }
 
   let currentSearch = '';
@@ -131,6 +127,7 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
 
                 <div className="title">
                   <div className="date">
+                    {console.log(typeof item.date)}
                     {item.date}
                   </div>
                   <h4>
@@ -368,19 +365,6 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
       })
 
       .catch(error => console.log(error));
-
-    // setPagination({
-    //   forcePage: 0,
-    //   componentData: curDataTemp.slice(offset, offset + perPage),
-    //   pageCount: Math.ceil(curDataTemp.length / perPage),
-    //   curData: curDataTemp,
-    //   years: years
-    // });
-    //
-    // urlPathname.current.page = '';
-    // urlPathname.current.year = `/year-${years}`;
-    //
-    // window.history.pushState(null, null, urlPathname.current.createUrl());
   };
 
   return (
