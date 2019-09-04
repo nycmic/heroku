@@ -4,6 +4,7 @@ import Layout from "../components/layout"
 import {getProp} from "../helpers";
 import NodeNews from "../components/allNodeNews";
 import YearsTags from "../components/YearList";
+import NewsInputSearch from "../components/NewsInputSearch";
 
 export default ({location, data: {nodeNews: page}}) => {
   let imgContentData = page.relationships.field_news_content_image;
@@ -59,6 +60,13 @@ export default ({location, data: {nodeNews: page}}) => {
 
                 <div className="sidebar">
                  <YearsTags />
+                 <NewsInputSearch
+                   handleSearch={(term) => {
+                      window.history.pushState(null, null, '/news/?search=' + term);
+                      window.location.reload();
+                     }}
+
+                 />
                 </div>
               </div>
             </NodeNews>

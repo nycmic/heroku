@@ -6,7 +6,7 @@ import SectionTitle from "../components/SectionTitle";
 import InnerWrapper from "../components/InnerWrapper";
 import NodeNews from "../components/allNodeNews";
 import {consoleLog} from "../helpers"
-import YearsTags from "../components/YearList";
+import YearsTags from "../components/NewsYearTag";
 
 export default (props) => {
   consoleLog(props , 'props');
