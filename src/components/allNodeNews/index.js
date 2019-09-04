@@ -5,6 +5,7 @@ import ReactPaginate from 'react-paginate';
 import Moment from 'react-moment';
 import {debounce} from 'lodash';
 import YearsTags from "../YearList";
+import {graphql, useStaticQuery} from "gatsby";
 
 const NodeNews = ({
                     children,
@@ -16,9 +17,23 @@ const NodeNews = ({
                     location,
                     pageItems,
                     slug,
-                    yearVar,
-                    yearsList
+                    yearVar
                   }) => {
+  const data = useStaticQuery(
+    graphql`
+      query {
+        yearsList: allNodeNews {
+          group(field: fields___dateYear) {
+            fieldValue
+            totalCount
+          }
+        }
+      }
+    `
+  );
+
+  let {yearsList} = data;
+
   //const component vars
   let component = {};
   let currentComponentData = {};
@@ -32,15 +47,10 @@ const NodeNews = ({
   };
 
   let yearsCounts = {};
-  component.dataArrTagsYears = [];
 
-  yearsList.forEach((item) => {
+  yearsList.group.forEach((item) => {
     let itemArr = item.fieldValue.split('=');
     yearsCounts[itemArr[1]] = item.totalCount;
-
-    if (itemArr[1] && itemArr[1] !== 'all') {
-      component.dataArrTagsYears.unshift(itemArr[1]);
-    }
   });
 
   if (pageItems) {

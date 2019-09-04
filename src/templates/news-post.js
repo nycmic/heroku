@@ -3,8 +3,9 @@ import {graphql} from "gatsby"
 import Layout from "../components/layout"
 import {getProp} from "../helpers";
 import NodeNews from "../components/allNodeNews";
+import YearsTags from "../components/YearList";
 
-export default ({location, data: {nodeNews: page, yearsList}}) => {
+export default ({location, data: {nodeNews: page}}) => {
   let imgContentData = page.relationships.field_news_content_image;
   let bodyValue = getProp(page, 'body.value');
 
@@ -20,7 +21,6 @@ export default ({location, data: {nodeNews: page, yearsList}}) => {
               location={location}
               perPage={4}
               pageItems={false}
-              yearsList={yearsList.group}
             >
 
               <div className="items">
@@ -54,6 +54,13 @@ export default ({location, data: {nodeNews: page, yearsList}}) => {
                 </div>
 
               </div>
+
+              <div className="b-news">
+
+                <div className="sidebar">
+                 <YearsTags />
+                </div>
+              </div>
             </NodeNews>
 
           </div>
@@ -78,16 +85,8 @@ export const query = graphql`
       }         
       relationships {
         field_news_content_image {                   
-          localFile {
-            publicURL
-          }
+          ...ImgLocalFile
         }
-      }
-    }
-    yearsList: allNodeNews {
-      group(field: fields___dateYear) {
-        fieldValue
-        totalCount
       }
     }
   }

@@ -13,7 +13,7 @@ export default (props) => {
 
   let {pageContext} = props;
   let {drupalInternalNid: pageId, currentPage, limit, numPages, slug, yearVar} = pageContext;
-  let {location, data: {nodeNewsMain: page, yearsData}, data: {yearsList}} = props;
+  let {location, data: {nodeNewsMain: page, yearsData}} = props;
 
   let year = yearVar.split('=')[1] && yearVar.split('=')[1] !== 'all' ? yearVar.split('=')[1] : "";
 
@@ -39,7 +39,6 @@ export default (props) => {
               pageItems={true}
               slug={slug}
               yearVar={year}
-              yearsList={yearsList.group}
             />
         </div>
 
@@ -49,7 +48,6 @@ export default (props) => {
           <div className="sidebar">
             <YearsTags />
           </div>
-
 
         </div>
 
@@ -69,13 +67,7 @@ export const query = graphql`
           ...ImgLocalFile
         }
       }
-    }
-    yearsList: allNodeNews {
-      group(field: fields___dateYear) {
-        fieldValue
-        totalCount
-      }
-    }
+    }  
     yearsData: allNodeNews(
       sort: {order: DESC, fields: field_news_date},
       filter: {fields: {dateYear: {in: [$yearVar]}}}

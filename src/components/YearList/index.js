@@ -16,13 +16,10 @@ const YearsTags = ({curYear, handleYearsClick }) => {
   );
 
   let {yearsList} = data;
-
-  let yearsCounts = {};
   let dataArrTagsYears = [];
 
   yearsList.group.forEach((item) => {
     let itemArr = item.fieldValue.split('=');
-    yearsCounts[itemArr[1]] = item.totalCount;
 
     if (itemArr[1] && itemArr[1] !== 'all') {
       dataArrTagsYears.unshift(itemArr[1]);
