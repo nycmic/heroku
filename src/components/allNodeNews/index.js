@@ -1,11 +1,9 @@
 import React, {useEffect, useState, useRef} from "react"
-import {useStaticQuery, graphql} from "gatsby"
 import {createCompObj, createDrupalApiObj, getPropSafe, htmlIn} from "../../helpers";
 import excerptHtml from "excerpt-html";
 import ReactPaginate from 'react-paginate';
-import SearchInput, {createFilter} from 'react-search-input'
 import Moment from 'react-moment';
-import debounce from 'lodash.debounce';
+import {debounce} from 'lodash';
 
 const NodeNews = ({
                     children,
@@ -20,28 +18,6 @@ const NodeNews = ({
                     yearVar,
                     yearsList
                   }) => {
-  const data = useStaticQuery(
-    graphql`
-      query {
-        comp: allNodeNews(sort: {order: DESC, fields: field_news_date}) {
-          edges {
-            node {
-              title
-              body {
-                value
-              }
-              field_news_date(formatString: "MMMM DD, YYYY")
-              years: field_news_date(formatString: "YYYY")
-              path {
-                alias
-              }
-            }
-          }
-        }
-      }
-    `
-  );
-
   //const component vars
   let component = {};
   let currentComponentData = {};
@@ -65,8 +41,6 @@ const NodeNews = ({
       component.dataArrTagsYears.unshift(itemArr[1]);
     }
   });
-
-  component = createCompObj(component, data.comp.edges, nodeId, props);
 
   if (pageItems) {
     currentComponentData = createCompObj(currentComponentData, currentComponent.edges, nodeId, props);
@@ -242,41 +216,6 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
     }
 
   });
-
-  const KEYS_TO_FILTERS = ['props.title', 'props.desc'];
-  let arrForSearch = component.dataArr;
-
-  const searchUpdated = term => {
-
-    if (!term) return;
-
-    if (!pageItems) {
-
-      window.history.pushState(null, null, '/news/?search=' + term);
-      window.location.reload();
-    }
-
-    let searchArr = arrForSearch.filter(createFilter(term, KEYS_TO_FILTERS));
-
-    let offset = 0;
-    let curDataTemp = searchArr;
-
-    setInputVal(term);
-    setPagination({
-      forcePage: 0,
-      componentData: curDataTemp.slice(offset, offset + perPage),
-      pageCount: Math.ceil(curDataTemp.length / perPage),
-      curData: curDataTemp,
-      years: ''
-    });
-
-    urlPathname.current.page = '';
-    urlPathname.current.year = '';
-
-    let url = urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
-
-    window.history.pushState(null, null, url + '?search=' + term);
-  };
 
   const handlePageClick = data => {
     let selected = data.selected;

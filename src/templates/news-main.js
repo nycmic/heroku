@@ -16,8 +16,6 @@ export default (props) => {
 
   let year = yearVar.split('=')[1] && yearVar.split('=')[1] !== 'all' ? yearVar.split('=')[1] : "";
 
-  console.log(yearVar);
-console.log(year);
   let {relationships: relPage} = page;
   let imgTop = relPage.field_basic_top_image;
   let breadcrumbs = relPage.field_basic_breadcrumbs_term;
