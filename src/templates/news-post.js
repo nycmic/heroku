@@ -18,7 +18,6 @@ export default ({location, data: {nodeNews: page, yearsList}}) => {
 
             <NodeNews
               location={location}
-              nodeId={'all'}
               perPage={4}
               pageItems={false}
               yearsList={yearsList.group}

@@ -6,6 +6,7 @@ import SectionTitle from "../components/SectionTitle";
 import InnerWrapper from "../components/InnerWrapper";
 import NodeNews from "../components/allNodeNews";
 import {consoleLog} from "../helpers"
+import YearsTags from "../components/YearList";
 
 export default (props) => {
   consoleLog(props , 'props');
@@ -41,6 +42,17 @@ export default (props) => {
               yearsList={yearsList.group}
             />
         </div>
+
+
+        <div className="b-news">
+
+          <div className="sidebar">
+            <YearsTags />
+          </div>
+
+
+        </div>
+
 
       </InnerWrapper>
 

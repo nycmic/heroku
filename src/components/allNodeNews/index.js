@@ -4,6 +4,7 @@ import excerptHtml from "excerpt-html";
 import ReactPaginate from 'react-paginate';
 import Moment from 'react-moment';
 import {debounce} from 'lodash';
+import YearsTags from "../YearList";
 
 const NodeNews = ({
                     children,
@@ -144,27 +145,7 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
       </>
     )
   };
-  const YearsTags = ({component}) => {
 
-    return (
-      <div className='archive'>
-        <h5>SORT BY YEAR</h5>
-        <div className="fblog-archive">
-          <ul className="fblog-archive-list">
-            {component.dataArrTagsYears.map((item, i) => (
-              <li key={i}>
-                <a href={'/news/year-' + item} data-years={item}
-                   className={'link-dropdown' + (item === pagination.years ? ' active' : '')} onClick={handleYearsClick}>
-                  {item}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-      </div>
-    )
-  };
 
   //States
   const [pagination, setPagination] = useState(
@@ -370,11 +351,9 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
     <div className='b-news'>
       <aside className="sidebar">
         <div className="form form-search">
-          {/*<SearchInput placeholder={'Search News'} className="search-input" onChange={searchUpdated} value={inputVal}/>*/}
-
           <div className='search-input'>
             <label>
-              {console.log(currentSearch, 'currentSearch')}
+
               <input
                 defaultValue={currentSearch}
                 ref={searchInput}
@@ -385,7 +364,9 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
             </label>
           </div>
         </div>
-        <YearsTags component={component}/>
+
+        <YearsTags handleYearsClick={handleYearsClick} curYear={pagination.years} />
+
       </aside>
 
       {children}
