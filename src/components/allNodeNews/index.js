@@ -166,8 +166,6 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
     )
   };
 
-  let initSearchTerm = currentSearch;
-
   //States
   const [pagination, setPagination] = useState(
     {
@@ -179,9 +177,8 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
     }
   );
 
-  // eslint-disable-next-line
-  const [inputVal, setInputVal] = useState(initSearchTerm);
   const myRef = useRef(null);
+  const searchInput = useRef(null);
   const firstUpdate = useRef(true);
   const urlPathname = useRef({
     yearData: yearVar,
@@ -198,8 +195,8 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
 
   useEffect(() => {
 
-    if (initSearchTerm) {
-      handleInputSearch(initSearchTerm);
+    if (currentSearch) {
+      handleInputSearch(currentSearch);
     }
 
   }, []);
@@ -258,7 +255,6 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
 
       .catch(error => console.log(error));
   };
-
   const handleYearsClick = e => {
     if (!pageItems) return;
 
@@ -269,7 +265,7 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
 
     let yearsQL = years ? `filter[date_in_pager]=${years}&` : '';
 
-    setInputVal('');
+    searchInput.current.value ='';
 
     fetch(`https://decoupled.devstages.com/api/node/news?${yearsQL}&page[offset]=${offset}&page[limit]=${perPage}&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`, {
       method:'get',
@@ -309,10 +305,7 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
 
   const handleInputSearch = debounce((term) => {
 
-    if (!term) {
-      setInputVal('');
-      return
-    }
+    if (!term) return;
 
     if (!pageItems) {
 
@@ -370,8 +363,6 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
 
       .catch(error => console.log(error));
 
-    setInputVal(term)
-
     }
     , 500); //debounce end
 
@@ -383,11 +374,12 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
 
           <div className='search-input'>
             <label>
-
+              {console.log(currentSearch, 'currentSearch')}
               <input
+                defaultValue={currentSearch}
+                ref={searchInput}
                 placeholder='Search News'
                 type="search"
-                // value={inputVal}
                 onChange={e => handleInputSearch(e.target.value)}
               />
             </label>
