@@ -5,6 +5,7 @@ import excerptHtml from "excerpt-html";
 import ReactPaginate from 'react-paginate';
 import SearchInput, {createFilter} from 'react-search-input'
 import Moment from 'react-moment';
+import debounce from 'lodash.debounce';
 
 const NodeNews = ({
                     children,
@@ -128,11 +129,7 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
 
                 <div className="title">
                   <div className="date">
-                    {console.log(typeof item.date)}
-                    {/*{item.date}*/}
-
-                    <Moment format="MMMM DD, YYYY" date={item.date} />
-
+                    <Moment format="MMMM DD, YYYY" date={new Date(item.date)} />
                   </div>
                   <h4>
                     <a href={item.path}>{item.title}</a>
@@ -228,7 +225,7 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
   useEffect(() => {
 
     if (initSearchTerm) {
-      searchUpdated(initSearchTerm);
+      handleInputSearch(initSearchTerm);
     }
 
   }, []);
@@ -371,11 +368,91 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
       .catch(error => console.log(error));
   };
 
+  const handleInputSearch = debounce((term) => {
+
+    if (!term) {
+      setInputVal('');
+      return
+    }
+
+    if (!pageItems) {
+
+      window.history.pushState(null, null, '/news/?search=' + term);
+      window.location.reload();
+    }
+
+    let filterBody = `` +
+      `&filter[body_value][condition][path]=body.value` +
+      `&filter[body_value][condition][operator]=CONTAINS` +
+      `&filter[body_value][condition][value]=${term}` +
+      `&filter[body_value][condition][memberOf]=filter-cond`;
+
+    let filterTitle = `` +
+      `&filter[title][condition][path]=title` +
+      `&filter[title][condition][operator]=CONTAINS` +
+      `&filter[title][condition][value]=${term}` +
+      `&filter[title][condition][memberOf]=filter-cond` ;
+
+    let pager = `&page[offset]=0&page[limit]=${perPage}`;
+    let sort = `&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`
+
+    fetch(`https://decoupled.devstages.com/api/node/news?filter[filter-cond][group][conjunction]=OR&${filterBody}${filterTitle}${pager}${sort}`, {
+      method:'get',
+      headers : {
+        Authorization : "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
+      }
+    })
+      .then(response => response.json())
+      .then(res => {
+        let componentFetch = {};
+
+        let props = {
+          title: 'title',
+          desc: 'excerpt.body.value',
+          date: 'field_news_date',
+          path: 'path.alias',
+        };
+        componentFetch = createDrupalApiObj(componentFetch, res.data, 'all', props);
+
+        setPagination({
+          forcePage: 0,
+          pageCount: 10,
+          componentData: componentFetch.dataArr,
+          years: ''
+        });
+
+        urlPathname.current.page = '';
+        urlPathname.current.year = '';
+
+        let url = urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
+
+        window.history.pushState(null, null, url + '?search=' + term);
+      })
+
+      .catch(error => console.log(error));
+
+    setInputVal(term)
+
+    }
+    , 500); //debounce end
+
   return (
     <div className='b-news'>
       <aside className="sidebar">
         <div className="form form-search">
-          <SearchInput placeholder={'Search News'} className="search-input" onChange={searchUpdated} value={inputVal}/>
+          {/*<SearchInput placeholder={'Search News'} className="search-input" onChange={searchUpdated} value={inputVal}/>*/}
+
+          <div className='search-input'>
+            <label>
+
+              <input
+                placeholder='Search News'
+                type="search"
+                // value={inputVal}
+                onChange={e => handleInputSearch(e.target.value)}
+              />
+            </label>
+          </div>
         </div>
         <YearsTags component={component}/>
       </aside>
