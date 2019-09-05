@@ -6,7 +6,6 @@ import SectionTitle from "../components/SectionTitle";
 import InnerWrapper from "../components/InnerWrapper";
 import NodeNews from "../components/allNodeNews";
 import {consoleLog} from "../helpers"
-import YearsTags from "../components/NewsYearTag";
 
 export default (props) => {
   consoleLog(props , 'props');
@@ -30,25 +29,14 @@ export default (props) => {
 
         <div className="content-inner">
             <NodeNews
-              nodeId='all'
               currentComponent={yearsData}
               numPages={numPages}
               currentPage={currentPage}
               perPage={limit}
               location={location}
-              pageItems={true}
               slug={slug}
               yearVar={year}
             />
-        </div>
-
-
-        <div className="b-news">
-
-          <div className="sidebar">
-            <YearsTags />
-          </div>
-
         </div>
 
 

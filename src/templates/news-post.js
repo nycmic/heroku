@@ -2,11 +2,11 @@ import React from "react"
 import {graphql} from "gatsby"
 import Layout from "../components/layout"
 import {getProp} from "../helpers";
-import NodeNews from "../components/allNodeNews";
+import Image from "../components/Image";
 import YearsTags from "../components/NewsYearTag";
 import NewsInputSearch from "../components/NewsInputSearch";
 
-export default ({location, data: {nodeNews: page}}) => {
+export default ({data: {nodeNews: page}}) => {
   let imgContentData = page.relationships.field_news_content_image;
   let bodyValue = getProp(page, 'body.value');
 
@@ -18,11 +18,17 @@ export default ({location, data: {nodeNews: page}}) => {
 
           <div className="content-inner">
 
-            <NodeNews
-              location={location}
-              perPage={4}
-              pageItems={false}
-            >
+            <div className="b-news">
+
+              <div className="sidebar">
+                <NewsInputSearch
+                  handleSearch={(term) => {
+                    window.history.pushState(null, null, '/news/?search=' + term);
+                    window.location.reload();
+                  }}
+                />
+               <YearsTags />
+              </div>
 
               <div className="items">
 
@@ -40,14 +46,14 @@ export default ({location, data: {nodeNews: page}}) => {
 
                   <div className="text">
                     {imgContentData &&
-                    <div className='img-wrap'>
-                      <div className="img">
-                        <img src={imgContentData.localFile.publicURL} alt=""/>
+                      <div className='img-wrap'>
+                        <div className="img">
+                          <Image imgSrc={imgContentData} />
+                        </div>
                       </div>
-                    </div>
                     }
-                    {bodyValue}
 
+                    {bodyValue}
                   </div>
 
                   <a href="/news" className="read-more">Back to News</a>
@@ -55,20 +61,8 @@ export default ({location, data: {nodeNews: page}}) => {
                 </div>
 
               </div>
+            </div>
 
-              <div className="b-news">
-
-                <div className="sidebar">
-                 <YearsTags />
-                 <NewsInputSearch
-                   handleSearch={(term) => {
-                      window.history.pushState(null, null, '/news/?search=' + term);
-                      window.location.reload();
-                     }}
-                 />
-                </div>
-              </div>
-            </NodeNews>
 
           </div>
 

@@ -1,21 +1,18 @@
 import React, {useEffect, useState, useRef} from "react"
 import {createCompObj, createDrupalApiObj, getPropSafe, htmlIn} from "../../helpers";
+import {graphql, useStaticQuery} from "gatsby";
 import excerptHtml from "excerpt-html";
 import ReactPaginate from 'react-paginate';
 import Moment from 'react-moment';
 import YearsTags from "../NewsYearTag";
-import {graphql, useStaticQuery} from "gatsby";
 import NewsInputSearch from "../NewsInputSearch";
 
 const NodeNews = ({
-                    children,
                     currentComponent,
                     numPages,
                     currentPage,
                     perPage,
-                    nodeId,
                     location,
-                    pageItems,
                     slug,
                     yearVar
                   }) => {
@@ -53,9 +50,7 @@ const NodeNews = ({
     yearsCounts[itemArr[1]] = item.totalCount;
   });
 
-  if (pageItems) {
-    currentComponentData = createCompObj(currentComponentData, currentComponent.edges, nodeId, props);
-  }
+  currentComponentData = createCompObj(currentComponentData, currentComponent.edges, 'all', props);
 
   let currentSearch = '';
 
@@ -84,9 +79,6 @@ const NodeNews = ({
            currentComponentData={currentComponentData}
            currentSearch={currentSearch}
            numPages={numPages}
-           location={location}
-           children={children}
-           pageItems={pageItems}
            slug={slug}
            yearVar={yearVar}
            yearsCounts={yearsCounts}
@@ -94,12 +86,12 @@ const NodeNews = ({
   )
 };
 
-const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage, currentComponentData, currentSearch, pageItems, location ,slug, yearVar}) => {
+const BNews = ({yearsCounts, component, numPages, perPage, currentPage, currentComponentData, currentSearch,slug, yearVar}) => {
 
-  const NewsItems = ({children, component}) => {
+  const NewsItems = ({component}) => {
     return (
       <>
-        {/*{component.isdData && component.isAllArrayHasValidProp &&*/}
+
         <div className="items">
 
           {component.map(({isProp, id, props: item}, i) => (
@@ -149,13 +141,9 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
           ))}
 
         </div>
-        {/*}*/}
-
-        {children}
       </>
     )
   };
-
 
   //States
   const [pagination, setPagination] = useState(
@@ -198,11 +186,7 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
       firstUpdate.current = false;
       return;
     }
-
-    if (pageItems) {
       scrollToRef(myRef);
-    }
-
   });
 
   const handlePageClick = data => {
@@ -247,7 +231,6 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
       .catch(error => console.log(error));
   };
   const handleYearsClick = e => {
-    if (!pageItems) return;
 
     e.preventDefault();
 
@@ -293,7 +276,6 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
 
       .catch(error => console.log(error));
   };
-
   const handleInputSearch = (term) => {
 
     if (!term) return;
@@ -354,21 +336,23 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
     <div className='b-news'>
       <aside className="sidebar">
 
-        <NewsInputSearch handleSearch={handleInputSearch} />
+        <NewsInputSearch
+          handleSearch={handleInputSearch}
+          currentSearch={currentSearch}
+          searchInput={searchInput}
+        />
+
         <YearsTags handleYearsClick={handleYearsClick} curYear={pagination.years} />
 
       </aside>
 
-      {children}
-
-      {pageItems &&
       <div className="items-wrap" ref={myRef}>
         <NewsItems component={pagination.componentData}/>
 
         {!pagination.pageCount &&
-        <div>
-          <h5 style={{textAlign: 'center', margin: '70px 0'}}>YOUR SEARCH YIELDED NO RESULTS</h5>
-        </div>
+          <div>
+            <h5 style={{textAlign: 'center', margin: '70px 0'}}>YOUR SEARCH YIELDED NO RESULTS</h5>
+          </div>
         }
 
         <div className={`pager-wrapper page-counts-${pagination.pageCount}`}>
@@ -397,9 +381,6 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
           </div>
         </div>
       </div>
-      }
-
-
     </div>
   )
 }
