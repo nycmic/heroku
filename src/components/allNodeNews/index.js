@@ -168,7 +168,7 @@ const BNews = ({component, slug}) => {
     yearData: component.yearVar,
     slug: slug ? slug : '',
     year: component.yearVar ? `/year-${component.yearVar}` : '',
-    page: component.initialPaginationPage && component.initialPaginationPage !== 1 ? `/page=${component.initialPaginationPage}` : '',
+    page: component.initPagPage && component.initPagPage !== 1 ? `/page=${component.initPagPage}` : '',
     createUrl: () => urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
   });
   //endStates
