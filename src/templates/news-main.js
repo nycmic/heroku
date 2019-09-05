@@ -6,11 +6,14 @@ import SectionTitle from "../components/SectionTitle";
 import InnerWrapper from "../components/InnerWrapper";
 import NodeNews from "../components/allNodeNews";
 import {consoleLog} from "../helpers"
+import SEO from "../components/seo";
 
 export default (props) => {
   consoleLog(props, 'props');
 
-  let {pageContext} = props;
+  let {
+    location,
+  } = props;
 
   let {
     drupalInternalNid: pageId,
@@ -19,15 +22,12 @@ export default (props) => {
     numPages: initNumPages,
     slug,
     yearVar
-  } = pageContext;
+  } = props.pageContext;
 
   let {
-    location,
-    data: {
-      nodeNewsMain: page,
-      yearsData: initPagItems
-    }
-  } = props;
+    nodeNewsMain: page,
+    yearsData: initPagItems
+  } = props.data;
 
   let {
     relationships: relPage
@@ -39,6 +39,7 @@ export default (props) => {
 
   return (
     <Layout nodeId={pageId}>
+      <SEO bodyClass="page" title="Home"/>
       <SectionTop imgTop={imgTop.localFile.childImageSharp.fluid}/>
       <SectionTitle title={page.title} breadcrumbs={breadcrumbs}/>
 
