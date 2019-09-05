@@ -47,18 +47,6 @@ const NodeNews =
     }
   };
 
-  let test = {
-    test: 'test',
-  }
-
-  console.log(test);
-
-  test = {
-    test2: 'test2',
-  }
-
-  console.log(test);
-
   createCompObj(component, initPagItems.edges, 'all', component.props);
 
   component.yearsList.forEach((item) => {
