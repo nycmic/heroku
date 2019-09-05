@@ -34,10 +34,10 @@ const NodeNews =
   let component = {
     yearsCounts: {},
     yearsList: data.yearsList.group,
-    initNumPages: initNumPages,
-    initPagPage: initPagPage,
-    yearVar: yearVar,
-    perPage: perPage,
+    initNumPages,
+    initPagPage,
+    yearVar,
+    perPage,
     props: {
       title: 'title',
       desc: 'excerpt.body.value',
@@ -46,6 +46,18 @@ const NodeNews =
       years: 'years'
     }
   };
+
+  let test = {
+    test: 'test',
+  }
+
+  console.log(test);
+
+  test = {
+    test2: 'test2',
+  }
+
+  console.log(test);
 
   createCompObj(component, initPagItems.edges, 'all', component.props);
 
@@ -198,14 +210,7 @@ const BNews = ({component, slug}) => {
       .then(res => {
         let componentFetch = {};
 
-        let props = {
-          title: 'title',
-          desc: 'excerpt.body.value',
-          date: 'field_news_date',
-          path: 'path.alias',
-        };
-
-        componentFetch = createDrupalApiObj(componentFetch, res.data, 'all', props);
+        createDrupalApiObj(componentFetch, res.data, 'all', component.props);
 
         setPagination({
           forcePage: undefined,
