@@ -8,17 +8,34 @@ import NodeNews from "../components/allNodeNews";
 import {consoleLog} from "../helpers"
 
 export default (props) => {
-  consoleLog(props , 'props');
+  consoleLog(props, 'props');
 
   let {pageContext} = props;
-  let {drupalInternalNid: pageId, currentPage, limit, numPages, slug, yearVar} = pageContext;
-  let {location, data: {nodeNewsMain: page, yearsData}} = props;
 
-  let year = yearVar.split('=')[1] && yearVar.split('=')[1] !== 'all' ? yearVar.split('=')[1] : "";
+  let {
+    drupalInternalNid: pageId,
+    currentPage: initPagPage,
+    limit,
+    numPages: initNumPages,
+    slug,
+    yearVar
+  } = pageContext;
 
-  let {relationships: relPage} = page;
+  let {
+    location,
+    data: {
+      nodeNewsMain: page,
+      yearsData: initPagItems
+    }
+  } = props;
+
+  let {
+    relationships: relPage
+  } = page;
+
   let imgTop = relPage.field_basic_top_image;
   let breadcrumbs = relPage.field_basic_breadcrumbs_term;
+  let year = yearVar.split('=')[1] && yearVar.split('=')[1] !== 'all' ? yearVar.split('=')[1] : "";
 
   return (
     <Layout nodeId={pageId}>
@@ -29,9 +46,9 @@ export default (props) => {
 
         <div className="content-inner">
           <NodeNews
-            initialPaginationItems={yearsData}
-            numPages={numPages}
-            currentPage={currentPage}
+            initPagItems={initPagItems}
+            initNumPages={initNumPages}
+            initPagPage={initPagPage}
             perPage={limit}
             location={location}
             slug={slug}
@@ -55,14 +72,14 @@ export const query = graphql`
           ...ImgLocalFile
         }
       }
-    }  
+    }
     yearsData: allNodeNews(
       sort: {order: DESC, fields: field_news_date},
       filter: {fields: {dateYear: {in: [$yearVar]}}}
       limit: $limit
       skip: $skip
     ) {
-      totalCount      
+      totalCount
       edges {
         node {
           title

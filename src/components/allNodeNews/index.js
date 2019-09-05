@@ -9,9 +9,9 @@ import NewsInputSearch from "../NewsInputSearch";
 
 const NodeNews =
 ({
-   initialPaginationItems,
-   numPages,
-   currentPage,
+   initPagItems,
+   initNumPages,
+   initPagPage,
    perPage,
    location,
    slug,
@@ -34,8 +34,8 @@ const NodeNews =
   let component = {};
   component.yearsCounts = {};
   component.yearsList = data.yearsList.group;
-  component.numPages = numPages;
-  component.currentPage = currentPage;
+  component.initNumPages = initNumPages;
+  component.initPagPage = initPagPage;
   component.yearVar = yearVar;
   component.perPage = perPage;
   component.props = {
@@ -51,7 +51,7 @@ const NodeNews =
     component.yearsCounts[itemArr[1]] = item.totalCount;
   });
 
-  component = createCompObj(component, initialPaginationItems.edges, 'all', component.props);
+  component = createCompObj(component, initPagItems.edges, 'all', component.props);
 
   function checkSearchLocation() {
     if (location.search) {
@@ -141,8 +141,8 @@ const BNews = ({component, slug}) => {
   //States
   const [pagination, setPagination] = useState(
     {
-      forcePage: component.currentPage - 1,
-      pageCount: component.numPages,
+      forcePage: component.initPagPage - 1,
+      pageCount: component.initNumPages,
       componentData: component.dataArr,
       years: component.yearVar ? component.yearVar : 'all'
     }
@@ -155,7 +155,7 @@ const BNews = ({component, slug}) => {
     yearData: component.yearVar,
     slug: slug ? slug : '',
     year: component.yearVar ? `/year-${component.yearVar}` : '',
-    page: component.currentPage && component.currentPage !== 1 ? `/page=${component.currentPage}` : '',
+    page: component.initialPaginationPage && component.initialPaginationPage !== 1 ? `/page=${component.initialPaginationPage}` : '',
     createUrl: () => urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
   });
   //endStates
@@ -336,7 +336,7 @@ const BNews = ({component, slug}) => {
           <div className="item-list">
             <ReactPaginate
               forcePage={pagination.forcePage}
-              initialPage={component.currentPage - 1}
+              initialPage={component.initPagPage - 1}
               disableInitialCallback={true}
               previousLabel={'‹ previous'}
               nextLabel={'next ›'}
