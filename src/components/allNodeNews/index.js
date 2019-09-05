@@ -47,12 +47,12 @@ const NodeNews =
     }
   };
 
+  createCompObj(component, initPagItems.edges, 'all', component.props);
+
   component.yearsList.forEach((item) => {
     let itemArr = item.fieldValue.split('=');
     component.yearsCounts[itemArr[1]] = item.totalCount;
   });
-
-  component = createCompObj(component, initPagItems.edges, 'all', component.props);
 
   function checkSearchLocation() {
     if (location.search) {
