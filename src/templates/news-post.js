@@ -65,7 +65,6 @@ export default ({location, data: {nodeNews: page}}) => {
                       window.history.pushState(null, null, '/news/?search=' + term);
                       window.location.reload();
                      }}
-
                  />
                 </div>
               </div>

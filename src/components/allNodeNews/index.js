@@ -3,9 +3,9 @@ import {createCompObj, createDrupalApiObj, getPropSafe, htmlIn} from "../../help
 import excerptHtml from "excerpt-html";
 import ReactPaginate from 'react-paginate';
 import Moment from 'react-moment';
-import {debounce} from 'lodash';
 import YearsTags from "../NewsYearTag";
 import {graphql, useStaticQuery} from "gatsby";
+import NewsInputSearch from "../NewsInputSearch";
 
 const NodeNews = ({
                     children,
@@ -294,15 +294,9 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
       .catch(error => console.log(error));
   };
 
-  const handleInputSearch = debounce((term) => {
+  const handleInputSearch = (term) => {
 
     if (!term) return;
-
-    if (!pageItems) {
-
-      window.history.pushState(null, null, '/news/?search=' + term);
-      window.location.reload();
-    }
 
     let filterBody = `` +
       `&filter[body_value][condition][path]=body.value` +
@@ -355,26 +349,12 @@ const BNews = ({children, yearsCounts, component, numPages, perPage, currentPage
       .catch(error => console.log(error));
 
     }
-    , 500); //debounce end
 
   return (
     <div className='b-news'>
       <aside className="sidebar">
-        <div className="form form-search">
-          <div className='search-input'>
-            <label>
 
-              <input
-                defaultValue={currentSearch}
-                ref={searchInput}
-                placeholder='Search News'
-                type="search"
-                onChange={e => handleInputSearch(e.target.value)}
-              />
-            </label>
-          </div>
-        </div>
-
+        <NewsInputSearch handleSearch={handleInputSearch} />
         <YearsTags handleYearsClick={handleYearsClick} curYear={pagination.years} />
 
       </aside>
