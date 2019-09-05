@@ -4,7 +4,7 @@ import excerptHtml from "excerpt-html";
 import ReactPaginate from 'react-paginate';
 import Moment from 'react-moment';
 import {debounce} from 'lodash';
-import YearsTags from "../YearList";
+import YearsTags from "../NewsYearTag";
 import {graphql, useStaticQuery} from "gatsby";
 
 const NodeNews = ({

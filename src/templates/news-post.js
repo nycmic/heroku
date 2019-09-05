@@ -3,7 +3,7 @@ import {graphql} from "gatsby"
 import Layout from "../components/layout"
 import {getProp} from "../helpers";
 import NodeNews from "../components/allNodeNews";
-import YearsTags from "../components/YearList";
+import YearsTags from "../components/NewsYearTag";
 import NewsInputSearch from "../components/NewsInputSearch";
 
 export default ({location, data: {nodeNews: page}}) => {
