@@ -29,13 +29,14 @@ const NodeNews = ({
     `
   );
 
-  let {yearsList} = data;
-
-  //const component vars
   let component = {};
-  let currentComponentData = {};
-
-  let props = {
+  component.yearsCounts = {};
+  component.yearsList = data.yearsList;
+  component.numPages = numPages;
+  component.currentPage = currentPage;
+  component.yearVar = yearVar;
+  component.perPage = perPage;
+  component.props = {
     title: 'title',
     desc: 'excerpt.body.value',
     date: 'field_news_date',
@@ -43,16 +44,12 @@ const NodeNews = ({
     years: 'years'
   };
 
-  let yearsCounts = {};
-
-  yearsList.group.forEach((item) => {
+  component.yearsList.group.forEach((item) => {
     let itemArr = item.fieldValue.split('=');
-    yearsCounts[itemArr[1]] = item.totalCount;
+    component.yearsCounts[itemArr[1]] = item.totalCount;
   });
 
-  currentComponentData = createCompObj(currentComponentData, currentComponent.edges, 'all', props);
-
-  let currentSearch = '';
+  component = createCompObj(component, currentComponent.edges, 'all', component.props);
 
   function checkSearchLocation() {
     if (location.search) {
@@ -67,26 +64,20 @@ const NodeNews = ({
         searchObj[itemArr[0]] = itemArr[1];
       });
 
-      currentSearch = searchObj.search ? searchObj.search : currentSearch;
+      component.currentSearch = searchObj.search ? searchObj.search : '';
     }
   }
+
   checkSearchLocation();
 
   return (
     <BNews component={component}
-           perPage={perPage}
-           currentPage={currentPage}
-           currentComponentData={currentComponentData}
-           currentSearch={currentSearch}
-           numPages={numPages}
            slug={slug}
-           yearVar={yearVar}
-           yearsCounts={yearsCounts}
     />
   )
 };
 
-const BNews = ({yearsCounts, component, numPages, perPage, currentPage, currentComponentData, currentSearch,slug, yearVar}) => {
+const BNews = ({component, slug}) => {
 
   const NewsItems = ({component}) => {
     return (
@@ -106,7 +97,7 @@ const BNews = ({yearsCounts, component, numPages, perPage, currentPage, currentC
 
                 <div className="title">
                   <div className="date">
-                    <Moment format="MMMM DD, YYYY" date={new Date(item.date)} />
+                    <Moment format="MMMM DD, YYYY" date={new Date(item.date)}/>
                   </div>
                   <h4>
                     <a href={item.path}>{item.title}</a>
@@ -148,11 +139,10 @@ const BNews = ({yearsCounts, component, numPages, perPage, currentPage, currentC
   //States
   const [pagination, setPagination] = useState(
     {
-      forcePage: currentPage - 1,
-      pageCount: numPages,
-      curData: component.dataArr,
-      componentData: currentComponentData.dataArr,
-      years: yearVar ? yearVar : 'all'
+      forcePage: component.currentPage - 1,
+      pageCount: component.numPages,
+      componentData: component.dataArr,
+      years: component.yearVar ? component.yearVar : 'all'
     }
   );
 
@@ -160,10 +150,10 @@ const BNews = ({yearsCounts, component, numPages, perPage, currentPage, currentC
   const searchInput = useRef(null);
   const firstUpdate = useRef(true);
   const urlPathname = useRef({
-    yearData: yearVar,
+    yearData: component.yearVar,
     slug: slug ? slug : '',
-    year: yearVar ? `/year-${yearVar}` : '',
-    page: currentPage && currentPage !== 1 ? `/page=${currentPage}` : '',
+    year: component.yearVar ? `/year-${component.yearVar}` : '',
+    page: component.currentPage && component.currentPage !== 1 ? `/page=${component.currentPage}` : '',
     createUrl: () => urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
   });
   //endStates
@@ -174,8 +164,8 @@ const BNews = ({yearsCounts, component, numPages, perPage, currentPage, currentC
 
   useEffect(() => {
 
-    if (currentSearch) {
-      handleInputSearch(currentSearch);
+    if (component.currentSearch) {
+      handleInputSearch(component.currentSearch);
     }
 
   }, []);
@@ -186,20 +176,19 @@ const BNews = ({yearsCounts, component, numPages, perPage, currentPage, currentC
       firstUpdate.current = false;
       return;
     }
-      scrollToRef(myRef);
+    scrollToRef(myRef);
   });
 
   const handlePageClick = data => {
     let selected = data.selected;
-    let offset = Math.ceil(selected * perPage);
-    let curDataTemp = pagination.curData;
+    let offset = Math.ceil(selected * component.perPage);
 
     let yearsQL = urlPathname.current.yearData ? `filter[date_in_pager]=${urlPathname.current.yearData}&` : '';
 
-    fetch(`https://decoupled.devstages.com/api/node/news?${yearsQL}page[offset]=${offset}&page[limit]=${perPage}&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`, {
-      method:'get',
-      headers : {
-        Authorization : "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
+    fetch(`https://decoupled.devstages.com/api/node/news?${yearsQL}page[offset]=${offset}&page[limit]=${component.perPage}&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`, {
+      method: 'get',
+      headers: {
+        Authorization: "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
       }
     })
       .then(response => response.json())
@@ -217,9 +206,8 @@ const BNews = ({yearsCounts, component, numPages, perPage, currentPage, currentC
 
         setPagination({
           forcePage: undefined,
-          pageCount: Math.ceil(yearsCounts[pagination.years]/perPage),
+          pageCount: Math.ceil(component.yearsCounts[pagination.years] / component.perPage),
           componentData: componentFetch.dataArr,
-          curData: curDataTemp,
           years: pagination.years
         });
 
@@ -239,30 +227,23 @@ const BNews = ({yearsCounts, component, numPages, perPage, currentPage, currentC
 
     let yearsQL = years ? `filter[date_in_pager]=${years}&` : '';
 
-    searchInput.current.value ='';
+    searchInput.current.value = '';
 
-    fetch(`https://decoupled.devstages.com/api/node/news?${yearsQL}&page[offset]=${offset}&page[limit]=${perPage}&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`, {
-      method:'get',
-      headers : {
-        Authorization : "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
+    fetch(`https://decoupled.devstages.com/api/node/news?${yearsQL}&page[offset]=${offset}&page[limit]=${component.perPage}&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`, {
+      method: 'get',
+      headers: {
+        Authorization: "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
       }
     })
       .then(response => response.json())
       .then(res => {
         let componentFetch = {};
 
-        let props = {
-          title: 'title',
-          desc: 'excerpt.body.value',
-          date: 'field_news_date',
-          path: 'path.alias',
-        };
-
-        componentFetch = createDrupalApiObj(componentFetch, res.data, 'all', props);
+        componentFetch = createDrupalApiObj(componentFetch, res.data, 'all', component.props);
 
         setPagination({
           forcePage: 0,
-          pageCount: Math.ceil(yearsCounts[years]/perPage),
+          pageCount: Math.ceil(component.yearsCounts[years] / component.perPage),
           componentData: componentFetch.dataArr,
           years: years
         });
@@ -290,28 +271,22 @@ const BNews = ({yearsCounts, component, numPages, perPage, currentPage, currentC
       `&filter[title][condition][path]=title` +
       `&filter[title][condition][operator]=CONTAINS` +
       `&filter[title][condition][value]=${term}` +
-      `&filter[title][condition][memberOf]=filter-cond` ;
+      `&filter[title][condition][memberOf]=filter-cond`;
 
-    let pager = `&page[offset]=0&page[limit]=${perPage}`;
+    let pager = `&page[offset]=0&page[limit]=${component.perPage}`;
     let sort = `&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`
 
     fetch(`https://decoupled.devstages.com/api/node/news?filter[filter-cond][group][conjunction]=OR&${filterBody}${filterTitle}${pager}${sort}`, {
-      method:'get',
-      headers : {
-        Authorization : "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
+      method: 'get',
+      headers: {
+        Authorization: "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
       }
     })
       .then(response => response.json())
       .then(res => {
         let componentFetch = {};
 
-        let props = {
-          title: 'title',
-          desc: 'excerpt.body.value',
-          date: 'field_news_date',
-          path: 'path.alias',
-        };
-        componentFetch = createDrupalApiObj(componentFetch, res.data, 'all', props);
+        componentFetch = createDrupalApiObj(componentFetch, res.data, 'all', component.props);
 
         setPagination({
           forcePage: 0,
@@ -330,7 +305,7 @@ const BNews = ({yearsCounts, component, numPages, perPage, currentPage, currentC
 
       .catch(error => console.log(error));
 
-    }
+  }
 
   return (
     <div className='b-news'>
@@ -338,11 +313,11 @@ const BNews = ({yearsCounts, component, numPages, perPage, currentPage, currentC
 
         <NewsInputSearch
           handleSearch={handleInputSearch}
-          currentSearch={currentSearch}
+          currentSearch={component.currentSearch}
           searchInput={searchInput}
         />
 
-        <YearsTags handleYearsClick={handleYearsClick} curYear={pagination.years} />
+        <YearsTags handleYearsClick={handleYearsClick} curYear={pagination.years}/>
 
       </aside>
 
@@ -350,16 +325,16 @@ const BNews = ({yearsCounts, component, numPages, perPage, currentPage, currentC
         <NewsItems component={pagination.componentData}/>
 
         {!pagination.pageCount &&
-          <div>
-            <h5 style={{textAlign: 'center', margin: '70px 0'}}>YOUR SEARCH YIELDED NO RESULTS</h5>
-          </div>
+        <div>
+          <h5 style={{textAlign: 'center', margin: '70px 0'}}>YOUR SEARCH YIELDED NO RESULTS</h5>
+        </div>
         }
 
         <div className={`pager-wrapper page-counts-${pagination.pageCount}`}>
           <div className="item-list">
             <ReactPaginate
               forcePage={pagination.forcePage}
-              initialPage={currentPage - 1}
+              initialPage={component.currentPage - 1}
               disableInitialCallback={true}
               previousLabel={'‹ previous'}
               nextLabel={'next ›'}

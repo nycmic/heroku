@@ -39,7 +39,6 @@ export default (props) => {
             />
         </div>
 
-
       </InnerWrapper>
 
     </Layout>
