@@ -28,15 +28,16 @@ export default (props) => {
       <InnerWrapper>
 
         <div className="content-inner">
-            <NodeNews
-              currentComponent={yearsData}
-              numPages={numPages}
-              currentPage={currentPage}
-              perPage={limit}
-              location={location}
-              slug={slug}
-              yearVar={year}
-            />
+          <NodeNews
+            initialPaginationItems={yearsData}
+            numPages={numPages}
+            currentPage={currentPage}
+            perPage={limit}
+            location={location}
+            slug={slug}
+            yearVar={year}
+          />
+
         </div>
 
       </InnerWrapper>

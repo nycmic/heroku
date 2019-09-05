@@ -7,15 +7,17 @@ import Moment from 'react-moment';
 import YearsTags from "../NewsYearTag";
 import NewsInputSearch from "../NewsInputSearch";
 
-const NodeNews = ({
-                    currentComponent,
-                    numPages,
-                    currentPage,
-                    perPage,
-                    location,
-                    slug,
-                    yearVar
-                  }) => {
+const NodeNews =
+({
+   initialPaginationItems,
+   numPages,
+   currentPage,
+   perPage,
+   location,
+   slug,
+   yearVar,
+ }) => {
+
   const data = useStaticQuery(
     graphql`
       query {
@@ -31,7 +33,7 @@ const NodeNews = ({
 
   let component = {};
   component.yearsCounts = {};
-  component.yearsList = data.yearsList;
+  component.yearsList = data.yearsList.group;
   component.numPages = numPages;
   component.currentPage = currentPage;
   component.yearVar = yearVar;
@@ -44,12 +46,12 @@ const NodeNews = ({
     years: 'years'
   };
 
-  component.yearsList.group.forEach((item) => {
+  component.yearsList.forEach((item) => {
     let itemArr = item.fieldValue.split('=');
     component.yearsCounts[itemArr[1]] = item.totalCount;
   });
 
-  component = createCompObj(component, currentComponent.edges, 'all', component.props);
+  component = createCompObj(component, initialPaginationItems.edges, 'all', component.props);
 
   function checkSearchLocation() {
     if (location.search) {
