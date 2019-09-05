@@ -30,18 +30,19 @@ export default (props) => {
   } = props.data;
 
   let {
-    relationships: relPage
+    rel,
+    title,
   } = page;
 
-  let imgTop = relPage.field_basic_top_image;
-  let breadcrumbs = relPage.field_basic_breadcrumbs_term;
+  let imgTop = rel.field_basic_top_image;
+  let breadcrumbs = rel.field_basic_breadcrumbs_term;
   let year = yearVar.split('=')[1] && yearVar.split('=')[1] !== 'all' ? yearVar.split('=')[1] : "";
 
   return (
     <Layout nodeId={pageId}>
-      <SEO bodyClass="page" title="Home"/>
+      <SEO bodyClass="page" title={title}/>
       <SectionTop imgTop={imgTop.localFile.childImageSharp.fluid}/>
-      <SectionTitle title={page.title} breadcrumbs={breadcrumbs}/>
+      <SectionTitle title={title} breadcrumbs={breadcrumbs}/>
 
       <InnerWrapper>
 
@@ -68,7 +69,7 @@ export const query = graphql`
   query($slug: String!, $skip: Int!, $limit: Int!, $yearVar: String!) {
     nodeNewsMain(fields: { slug: { eq: $slug } }) {
       title
-      relationships {
+      rel: relationships {
         field_basic_top_image {
           ...ImgLocalFile
         }

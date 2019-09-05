@@ -31,19 +31,20 @@ const NodeNews =
     `
   );
 
-  let component = {};
-  component.yearsCounts = {};
-  component.yearsList = data.yearsList.group;
-  component.initNumPages = initNumPages;
-  component.initPagPage = initPagPage;
-  component.yearVar = yearVar;
-  component.perPage = perPage;
-  component.props = {
-    title: 'title',
-    desc: 'excerpt.body.value',
-    date: 'field_news_date',
-    path: 'path.alias',
-    years: 'years'
+  let component = {
+    yearsCounts: {},
+    yearsList: data.yearsList.group,
+    initNumPages: initNumPages,
+    initPagPage: initPagPage,
+    yearVar: yearVar,
+    perPage: perPage,
+    props: {
+      title: 'title',
+      desc: 'excerpt.body.value',
+      date: 'field_news_date',
+      path: 'path.alias',
+      years: 'years'
+    }
   };
 
   component.yearsList.forEach((item) => {
