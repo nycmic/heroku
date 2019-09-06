@@ -39,6 +39,7 @@ const NodeNews =
 		initPagPage,
 		yearVar,
 		perPage,
+		slug,
 		props: {
 			title: 'title',
 			desc: 'excerpt.body.value',
@@ -57,17 +58,17 @@ const NodeNews =
 	checkSearchLocation(comp, location);
 
 	return (
-		<BNews comp={comp}
-		       slug={slug}
-		/>
+		<BNews comp={comp}/>
 	)
 };
 
-const BNews = ({comp, slug}) => {
+const BNews = ({comp}) => {
 
 	//States
 	const [pagination, setPagination] = useState(
 		{
+			error: null,
+			isLoaded: false,
 			forcePage: comp.initPagPage - 1,
 			pageCount: comp.initNumPages,
 			compData: comp.dataArr,
@@ -80,7 +81,7 @@ const BNews = ({comp, slug}) => {
 	const firstUpdate = useRef(true);
 	const urlPathname = useRef({
 		yearData: comp.yearVar !== 'all' ? comp.yearVar : '',
-		slug: slug ? slug : '',
+		slug: comp.slug ? comp.slug : '',
 		year: comp.yearVar ? `/year-${comp.yearVar}` : '',
 		page: comp.initPagPage && comp.initPagPage !== 1 ? `/page=${comp.initPagPage}` : '',
 		createUrl: () => urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
@@ -114,31 +115,47 @@ const BNews = ({comp, slug}) => {
 
 		let yearsQL = urlPathname.current.yearData ? `filter[date_in_pager]=${urlPathname.current.yearData}&` : '';
 
+		setPagination({
+			isLoaded: true,
+			forcePage: pagination.forcePage,
+			pageCount: pagination.pageCount,
+			compData: pagination.compData,
+			years: pagination.years
+		});
+
 		fetch(`https://decoupled.devstages.com/api/node/news?${yearsQL}page[offset]=${offset}&page[limit]=${comp.perPage}&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`, {
-			method: 'get',
 			headers: {
 				Authorization: "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
 			}
 		})
 			.then(response => response.json())
 			.then(res => {
-				let compFetch = {};
+					let compFetch = {};
 
-				createDrupalApiObj(compFetch, res.data, 'all', comp.props);
+					createDrupalApiObj(compFetch, res.data, 'all', comp.props);
 
-				setPagination({
-					forcePage: undefined,
-					pageCount: Math.ceil(comp.yearsCounts[pagination.years] / comp.perPage),
-					compData: compFetch.dataArr,
-					years: pagination.years
-				});
+					setPagination({
+						isLoaded: false,
+						forcePage: undefined,
+						pageCount: Math.ceil(comp.yearsCounts[pagination.years] / comp.perPage),
+						compData: compFetch.dataArr,
+						years: pagination.years
+					});
 
-				urlPathname.current.page = selected ? `/page=${selected + 1}` : '';
+					urlPathname.current.page = selected ? `/page=${selected + 1}` : '';
 
-				window.history.pushState(null, null, urlPathname.current.createUrl());
-			})
+					window.history.pushState(null, null, urlPathname.current.createUrl());
+				},
+				(error) => {
+					console.log(error, 'react error')
 
-			.catch(error => console.log(error));
+					setPagination({
+						isLoaded: false,
+						error
+					})
+				}
+			)
+			.catch(error => console.log(error, 'catch error'));
 	};
 	const handleYearsClick = e => {
 
@@ -230,7 +247,7 @@ const BNews = ({comp, slug}) => {
 	}
 
 	return (
-		<div className='b-news'>
+		<div className={'b-news' + (pagination.isLoaded ? ' b-news_loader-active': '')}>
 			<aside className="sidebar">
 
 				<NewsInputSearch
@@ -246,10 +263,16 @@ const BNews = ({comp, slug}) => {
 			<div className="items-wrap" ref={myRef}>
 				<NewsItems comp={pagination.compData}/>
 
+				{pagination.error &&
+					<div>
+						{pagination.error}
+					</div>
+				}
+
 				{!pagination.pageCount &&
-				<div>
-					<h5 style={{textAlign: 'center', margin: '70px 0'}}>YOUR SEARCH YIELDED NO RESULTS</h5>
-				</div>
+					<div>
+						<h5 style={{textAlign: 'center', margin: '70px 0'}}>YOUR SEARCH YIELDED NO RESULTS</h5>
+					</div>
 				}
 
 				<div className={`pager-wrapper page-counts-${pagination.pageCount}`}>
