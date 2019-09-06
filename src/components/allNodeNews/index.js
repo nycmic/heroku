@@ -161,7 +161,7 @@ const BNews = ({comp, slug}) => {
 			.then(res => {
 				let compFetch = {};
 
-				compFetch = createDrupalApiObj(compFetch, res.data, 'all', comp.props);
+				createDrupalApiObj(compFetch, res.data, 'all', comp.props);
 
 				setPagination({
 					forcePage: 0,
