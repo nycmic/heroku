@@ -9,60 +9,60 @@ import {consoleLog} from "../helpers"
 import SEO from "../components/seo";
 
 export default (props) => {
-  consoleLog(props, 'props');
+	consoleLog(props, 'props');
 
-  let {
-    location,
-  } = props;
+	let {
+		location,
+	} = props;
 
-  let {
-    drupalInternalNid: pageId,
-    currentPage: initPagPage,
-    limit,
-    numPages: initNumPages,
-    slug,
-    yearVar
-  } = props.pageContext;
+	let {
+		drupalInternalNid: pageId,
+		currentPage: initPagPage,
+		limit,
+		numPages: initNumPages,
+		slug,
+		yearVar
+	} = props.pageContext;
 
-  let {
-    nodeNewsMain: page,
-    yearsData: initPagItems
-  } = props.data;
+	let {
+		nodeNewsMain: page,
+		yearsData: initPagItems
+	} = props.data;
 
-  let {
-    rel,
-    title,
-  } = page;
+	let {
+		rel,
+		title,
+	} = page;
 
-  let imgTop = rel.field_basic_top_image;
-  let breadcrumbs = rel.field_basic_breadcrumbs_term;
-  let year = yearVar.split('=')[1] && yearVar.split('=')[1] !== 'all' ? yearVar.split('=')[1] : "";
+	let imgTop = rel.field_basic_top_image;
+	let breadcrumbs = rel.field_basic_breadcrumbs_term;
+	let [, year = ''] = yearVar.split('=');
 
-  return (
-    <Layout nodeId={pageId}>
-      <SEO bodyClass="page" title={title}/>
-      <SectionTop imgTop={imgTop.localFile.childImageSharp.fluid}/>
-      <SectionTitle title={title} breadcrumbs={breadcrumbs}/>
+	return (
+		<Layout nodeId={pageId}>
+			<SEO bodyClass="page" title={title}/>
+			<SectionTop imgTop={imgTop.localFile.childImageSharp.fluid}/>
+			<SectionTitle title={title} breadcrumbs={breadcrumbs}/>
 
-      <InnerWrapper>
+			<InnerWrapper>
 
-        <div className="content-inner">
-          <NodeNews
-            initPagItems={initPagItems}
-            initNumPages={initNumPages}
-            initPagPage={initPagPage}
-            perPage={limit}
-            location={location}
-            slug={slug}
-            yearVar={year}
-          />
+				<div className="content-inner">
+					<NodeNews
+						initPagItems={initPagItems}
+						initNumPages={initNumPages}
+						initPagPage={initPagPage}
+						perPage={limit}
+						location={location}
+						slug={slug}
+						yearVar={year}
+					/>
 
-        </div>
+				</div>
 
-      </InnerWrapper>
+			</InnerWrapper>
 
-    </Layout>
-  )
+		</Layout>
+	)
 }
 
 export const query = graphql`

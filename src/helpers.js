@@ -125,3 +125,12 @@ export function getProp (obg, el) {
 export function getPropSafe (obg, el) {
   return _.get(obg, el);
 }
+
+export function checkSearchLocation(comp, location) {
+  let search = location.search ? location.search.replace('?', ''): '';
+
+  search.split('&').forEach((item) => {
+    let [key, value] = item.split('=');
+    comp.locSearch[key] = value;
+  });
+}

@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from "react"
-import {createCompObj, createDrupalApiObj, getPropSafe, htmlIn} from "../../helpers";
+import {createCompObj, createDrupalApiObj, getPropSafe, htmlIn, checkSearchLocation} from "../../helpers";
 import {graphql, useStaticQuery} from "gatsby";
 import excerptHtml from "excerpt-html";
 import ReactPaginate from 'react-paginate';
@@ -9,17 +9,17 @@ import NewsInputSearch from "../NewsInputSearch";
 
 const NodeNews =
 ({
-   initPagItems,
-   initNumPages,
-   initPagPage,
-   perPage,
-   location,
-   slug,
-   yearVar,
+	 initPagItems,
+	 initNumPages,
+	 initPagPage,
+	 perPage,
+	 location,
+	 slug,
+	 yearVar,
  }) => {
 
-  const data = useStaticQuery(
-    graphql`
+	const data = useStaticQuery(
+		graphql`
       query {
         yearsList: allNodeNews {
           group(field: fields___dateYear) {
@@ -28,333 +28,316 @@ const NodeNews =
           }
         }
       }
-    `
-  );
+		`
+	);
 
-  let component = {
-    yearsCounts: {},
-    yearsList: data.yearsList.group,
-    initNumPages,
-    initPagPage,
-    yearVar,
-    perPage,
-    props: {
-      title: 'title',
-      desc: 'excerpt.body.value',
-      date: 'field_news_date',
-      path: 'path.alias',
-      years: 'years'
-    }
-  };
+	let comp = {
+		yearsCounts: {},
+		locSearch: {},
+		yearsList: data.yearsList.group,
+		initNumPages,
+		initPagPage,
+		yearVar,
+		perPage,
+		props: {
+			title: 'title',
+			desc: 'excerpt.body.value',
+			date: 'field_news_date',
+			path: 'path.alias',
+			years: 'years'
+		}
+	};
 
-  createCompObj(component, initPagItems.edges, 'all', component.props);
+	comp.yearsList.forEach((item) => {
+		let [, curYear] = item.fieldValue.split('=');
+		comp.yearsCounts[curYear] = item.totalCount;
+	});
 
-  component.yearsList.forEach((item) => {
-    let itemArr = item.fieldValue.split('=');
-    component.yearsCounts[itemArr[1]] = item.totalCount;
-  });
+	createCompObj(comp, initPagItems.edges, 'all', comp.props);
+	checkSearchLocation(comp, location);
 
-  function checkSearchLocation() {
-    if (location.search) {
-
-      let search = location.search.replace('?', '');
-      let searchObj = {};
-
-      let searchArr = search.split('&');
-
-      searchArr.forEach((item) => {
-        let itemArr = item.split('=');
-        searchObj[itemArr[0]] = itemArr[1];
-      });
-
-      component.currentSearch = searchObj.search ? searchObj.search : '';
-    }
-  }
-
-  checkSearchLocation();
-
-  return (
-    <BNews component={component}
-           slug={slug}
-    />
-  )
+	return (
+		<BNews comp={comp}
+		       slug={slug}
+		/>
+	)
 };
 
-const BNews = ({component, slug}) => {
+const BNews = ({comp, slug}) => {
 
-  const NewsItems = ({component}) => {
-    return (
-      <>
+	//States
+	const [pagination, setPagination] = useState(
+		{
+			forcePage: comp.initPagPage - 1,
+			pageCount: comp.initNumPages,
+			compData: comp.dataArr,
+			years: comp.yearVar
+		}
+	);
 
-        <div className="items">
+	const myRef = useRef(null);
+	const searchInput = useRef(null);
+	const firstUpdate = useRef(true);
+	const urlPathname = useRef({
+		yearData: comp.yearVar !== 'all' ? comp.yearVar : '',
+		slug: slug ? slug : '',
+		year: comp.yearVar ? `/year-${comp.yearVar}` : '',
+		page: comp.initPagPage && comp.initPagPage !== 1 ? `/page=${comp.initPagPage}` : '',
+		createUrl: () => urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
+	});
+	//endStates
 
-          {component.map(({isProp, id, props: item}, i) => (
+	const scrollToRef = (ref) => {
+		window.scrollTo(0, ref.current.getBoundingClientRect().top + window.pageYOffset - 180);
+	};
 
-            <div key={i} className="item">
+	useEffect(() => {
 
-              {isProp &&
+		if (comp.locSearch.search) {
+			handleInputSearch(comp.locSearch.search);
+		}
 
-              <>
+	}, []);
 
-                {/*component html start*/}
+	useEffect(() => {
 
-                <div className="title">
-                  <div className="date">
-                    <Moment format="MMMM DD, YYYY" date={new Date(item.date)}/>
-                  </div>
-                  <h4>
-                    <a href={item.path}>{item.title}</a>
-                  </h4>
-                </div>
+		if (firstUpdate.current) {
+			firstUpdate.current = false;
+			return;
+		}
+		scrollToRef(myRef);
+	});
 
-                <div className="teaser">
+	const handlePageClick = data => {
+		let selected = data.selected;
+		let offset = Math.ceil(selected * comp.perPage);
 
-                  {htmlIn(excerptHtml(getPropSafe(item, 'desc'), {
-                    moreRegExp: /\s*<!--\s*more\s*-->/i,  // Search for the slug
-                    stripTags: true, // Set to false to get html code
-                    pruneLength: 149, // Amount of characters that the excerpt should contain
-                    pruneString: ' ', // Character that will be added to the pruned string
-                    pruneSeparator: ' ', // Separator to be used to separate words
-                  }))}
-                </div>
+		let yearsQL = urlPathname.current.yearData ? `filter[date_in_pager]=${urlPathname.current.yearData}&` : '';
 
-                <div className="btn-wrap">
-                  <a href={item.path} className="read-more">
-                    read full story
-                  </a>
-                </div>
+		fetch(`https://decoupled.devstages.com/api/node/news?${yearsQL}page[offset]=${offset}&page[limit]=${comp.perPage}&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`, {
+			method: 'get',
+			headers: {
+				Authorization: "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
+			}
+		})
+			.then(response => response.json())
+			.then(res => {
+				let compFetch = {};
 
+				createDrupalApiObj(compFetch, res.data, 'all', comp.props);
 
-                {/*component html end*/}
+				setPagination({
+					forcePage: undefined,
+					pageCount: Math.ceil(comp.yearsCounts[pagination.years] / comp.perPage),
+					compData: compFetch.dataArr,
+					years: pagination.years
+				});
 
-              </>
+				urlPathname.current.page = selected ? `/page=${selected + 1}` : '';
 
-              }
+				window.history.pushState(null, null, urlPathname.current.createUrl());
+			})
 
-            </div>
-          ))}
+			.catch(error => console.log(error));
+	};
+	const handleYearsClick = e => {
 
-        </div>
-      </>
-    )
-  };
+		e.preventDefault();
 
-  //States
-  const [pagination, setPagination] = useState(
-    {
-      forcePage: component.initPagPage - 1,
-      pageCount: component.initNumPages,
-      componentData: component.dataArr,
-      years: component.yearVar ? component.yearVar : 'all'
-    }
-  );
+		let years = e.currentTarget.dataset.years;
+		let offset = 0;
 
-  const myRef = useRef(null);
-  const searchInput = useRef(null);
-  const firstUpdate = useRef(true);
-  const urlPathname = useRef({
-    yearData: component.yearVar,
-    slug: slug ? slug : '',
-    year: component.yearVar ? `/year-${component.yearVar}` : '',
-    page: component.initPagPage && component.initPagPage !== 1 ? `/page=${component.initPagPage}` : '',
-    createUrl: () => urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
-  });
-  //endStates
+		let yearsQL = years ? `filter[date_in_pager]=${years}&` : '';
 
-  const scrollToRef = (ref) => {
-    window.scrollTo(0, ref.current.getBoundingClientRect().top + window.pageYOffset - 180);
-  };
+		searchInput.current.value = '';
 
-  useEffect(() => {
+		fetch(`https://decoupled.devstages.com/api/node/news?${yearsQL}&page[offset]=${offset}&page[limit]=${comp.perPage}&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`, {
+			method: 'get',
+			headers: {
+				Authorization: "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
+			}
+		})
+			.then(response => response.json())
+			.then(res => {
+				let compFetch = {};
 
-    if (component.currentSearch) {
-      handleInputSearch(component.currentSearch);
-    }
+				compFetch = createDrupalApiObj(compFetch, res.data, 'all', comp.props);
 
-  }, []);
+				setPagination({
+					forcePage: 0,
+					pageCount: Math.ceil(comp.yearsCounts[years] / comp.perPage),
+					compData: compFetch.dataArr,
+					years: years
+				});
 
-  useEffect(() => {
+				urlPathname.current.yearData = years;
+				urlPathname.current.page = '';
+				urlPathname.current.year = `/year-${years}`;
 
-    if (firstUpdate.current) {
-      firstUpdate.current = false;
-      return;
-    }
-    scrollToRef(myRef);
-  });
+				window.history.pushState(null, null, urlPathname.current.createUrl());
+			})
 
-  const handlePageClick = data => {
-    let selected = data.selected;
-    let offset = Math.ceil(selected * component.perPage);
+			.catch(error => console.log(error));
+	};
+	const handleInputSearch = (term) => {
 
-    let yearsQL = urlPathname.current.yearData ? `filter[date_in_pager]=${urlPathname.current.yearData}&` : '';
+		if (!term) return;
 
-    fetch(`https://decoupled.devstages.com/api/node/news?${yearsQL}page[offset]=${offset}&page[limit]=${component.perPage}&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`, {
-      method: 'get',
-      headers: {
-        Authorization: "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
-      }
-    })
-      .then(response => response.json())
-      .then(res => {
-        let componentFetch = {};
+		let filterBody = `` +
+			`&filter[body_value][condition][path]=body.value` +
+			`&filter[body_value][condition][operator]=CONTAINS` +
+			`&filter[body_value][condition][value]=${term}` +
+			`&filter[body_value][condition][memberOf]=filter-cond`;
 
-        createDrupalApiObj(componentFetch, res.data, 'all', component.props);
+		let filterTitle = `` +
+			`&filter[title][condition][path]=title` +
+			`&filter[title][condition][operator]=CONTAINS` +
+			`&filter[title][condition][value]=${term}` +
+			`&filter[title][condition][memberOf]=filter-cond`;
 
-        setPagination({
-          forcePage: undefined,
-          pageCount: Math.ceil(component.yearsCounts[pagination.years] / component.perPage),
-          componentData: componentFetch.dataArr,
-          years: pagination.years
-        });
+		let pager = `&page[offset]=0&page[limit]=${comp.perPage}`;
+		let sort = `&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`
 
-        urlPathname.current.page = selected ? `/page=${selected + 1}` : '';
+		fetch(`https://decoupled.devstages.com/api/node/news?filter[filter-cond][group][conjunction]=OR&${filterBody}${filterTitle}${pager}${sort}`, {
+			method: 'get',
+			headers: {
+				Authorization: "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
+			}
+		})
+			.then(response => response.json())
+			.then(res => {
+				let compFetch = {};
 
-        window.history.pushState(null, null, urlPathname.current.createUrl());
-      })
+				compFetch = createDrupalApiObj(compFetch, res.data, 'all', comp.props);
 
-      .catch(error => console.log(error));
-  };
-  const handleYearsClick = e => {
+				setPagination({
+					forcePage: 0,
+					pageCount: 10,
+					compData: compFetch.dataArr,
+					years: ''
+				});
 
-    e.preventDefault();
+				urlPathname.current.page = '';
+				urlPathname.current.year = '';
 
-    let years = e.currentTarget.dataset.years;
-    let offset = 0;
+				let url = urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
 
-    let yearsQL = years ? `filter[date_in_pager]=${years}&` : '';
+				window.history.pushState(null, null, url + '?search=' + term);
+			})
 
-    searchInput.current.value = '';
+			.catch(error => console.log(error));
 
-    fetch(`https://decoupled.devstages.com/api/node/news?${yearsQL}&page[offset]=${offset}&page[limit]=${component.perPage}&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`, {
-      method: 'get',
-      headers: {
-        Authorization: "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
-      }
-    })
-      .then(response => response.json())
-      .then(res => {
-        let componentFetch = {};
+	}
 
-        componentFetch = createDrupalApiObj(componentFetch, res.data, 'all', component.props);
+	return (
+		<div className='b-news'>
+			<aside className="sidebar">
 
-        setPagination({
-          forcePage: 0,
-          pageCount: Math.ceil(component.yearsCounts[years] / component.perPage),
-          componentData: componentFetch.dataArr,
-          years: years
-        });
+				<NewsInputSearch
+					handleSearch={handleInputSearch}
+					currentSearch={comp.locSearch.search}
+					searchInput={searchInput}
+				/>
 
-        urlPathname.current.yearData = years;
-        urlPathname.current.page = '';
-        urlPathname.current.year = `/year-${years}`;
+				<YearsTags handleYearsClick={handleYearsClick} curYear={pagination.years}/>
 
-        window.history.pushState(null, null, urlPathname.current.createUrl());
-      })
+			</aside>
 
-      .catch(error => console.log(error));
-  };
-  const handleInputSearch = (term) => {
+			<div className="items-wrap" ref={myRef}>
+				<NewsItems comp={pagination.compData}/>
 
-    if (!term) return;
+				{!pagination.pageCount &&
+				<div>
+					<h5 style={{textAlign: 'center', margin: '70px 0'}}>YOUR SEARCH YIELDED NO RESULTS</h5>
+				</div>
+				}
 
-    let filterBody = `` +
-      `&filter[body_value][condition][path]=body.value` +
-      `&filter[body_value][condition][operator]=CONTAINS` +
-      `&filter[body_value][condition][value]=${term}` +
-      `&filter[body_value][condition][memberOf]=filter-cond`;
-
-    let filterTitle = `` +
-      `&filter[title][condition][path]=title` +
-      `&filter[title][condition][operator]=CONTAINS` +
-      `&filter[title][condition][value]=${term}` +
-      `&filter[title][condition][memberOf]=filter-cond`;
-
-    let pager = `&page[offset]=0&page[limit]=${component.perPage}`;
-    let sort = `&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`
-
-    fetch(`https://decoupled.devstages.com/api/node/news?filter[filter-cond][group][conjunction]=OR&${filterBody}${filterTitle}${pager}${sort}`, {
-      method: 'get',
-      headers: {
-        Authorization: "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
-      }
-    })
-      .then(response => response.json())
-      .then(res => {
-        let componentFetch = {};
-
-        componentFetch = createDrupalApiObj(componentFetch, res.data, 'all', component.props);
-
-        setPagination({
-          forcePage: 0,
-          pageCount: 10,
-          componentData: componentFetch.dataArr,
-          years: ''
-        });
-
-        urlPathname.current.page = '';
-        urlPathname.current.year = '';
-
-        let url = urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
-
-        window.history.pushState(null, null, url + '?search=' + term);
-      })
-
-      .catch(error => console.log(error));
-
-  }
-
-  return (
-    <div className='b-news'>
-      <aside className="sidebar">
-
-        <NewsInputSearch
-          handleSearch={handleInputSearch}
-          currentSearch={component.currentSearch}
-          searchInput={searchInput}
-        />
-
-        <YearsTags handleYearsClick={handleYearsClick} curYear={pagination.years}/>
-
-      </aside>
-
-      <div className="items-wrap" ref={myRef}>
-        <NewsItems component={pagination.componentData}/>
-
-        {!pagination.pageCount &&
-        <div>
-          <h5 style={{textAlign: 'center', margin: '70px 0'}}>YOUR SEARCH YIELDED NO RESULTS</h5>
-        </div>
-        }
-
-        <div className={`pager-wrapper page-counts-${pagination.pageCount}`}>
-          <div className="item-list">
-            <ReactPaginate
-              forcePage={pagination.forcePage}
-              initialPage={component.initPagPage - 1}
-              disableInitialCallback={true}
-              previousLabel={'‹ previous'}
-              nextLabel={'next ›'}
-              breakLabel={'...'}
-              breakClassName={'break-me'}
-              pageCount={pagination.pageCount}
-              marginPagesDisplayed={1}
-              pageRangeDisplayed={5}
-              onPageChange={handlePageClick}
-              containerClassName={'pager'}
-              subContainerClassName={'pages pagination'}
-              activeClassName={'pager-current'}
-              hrefBuilder={(i) => {
-                let page = i - 1 ? `/page=${i}` : ''
-                let url = urlPathname.current.slug + urlPathname.current.year + page
-                return `${url}`;
-              }}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+				<div className={`pager-wrapper page-counts-${pagination.pageCount}`}>
+					<div className="item-list">
+						<ReactPaginate
+							forcePage={pagination.forcePage}
+							initialPage={comp.initPagPage - 1}
+							disableInitialCallback={true}
+							previousLabel={'‹ previous'}
+							nextLabel={'next ›'}
+							breakLabel={'...'}
+							breakClassName={'break-me'}
+							pageCount={pagination.pageCount}
+							marginPagesDisplayed={1}
+							pageRangeDisplayed={5}
+							onPageChange={handlePageClick}
+							containerClassName={'pager'}
+							subContainerClassName={'pages pagination'}
+							activeClassName={'pager-current'}
+							hrefBuilder={(i) => {
+								let page = i - 1 ? `/page=${i}` : ''
+								let url = urlPathname.current.slug + urlPathname.current.year + page
+								return `${url}`;
+							}}
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+	)
 }
+
+const NewsItems = ({comp}) => {
+	return (
+		<>
+
+			<div className="items">
+
+				{comp.map(({isProp, id, props: item}, i) => (
+
+					<div key={i} className="item">
+
+						{isProp &&
+
+						<>
+
+							{/*comp html start*/}
+
+							<div className="title">
+								<div className="date">
+									<Moment format="MMMM DD, YYYY" date={new Date(item.date)}/>
+								</div>
+								<h4>
+									<a href={item.path}>{item.title}</a>
+								</h4>
+							</div>
+
+							<div className="teaser">
+
+								{htmlIn(excerptHtml(getPropSafe(item, 'desc'), {
+									moreRegExp: /\s*<!--\s*more\s*-->/i,  // Search for the slug
+									stripTags: true, // Set to false to get html code
+									pruneLength: 149, // Amount of characters that the excerpt should contain
+									pruneString: ' ', // Character that will be added to the pruned string
+									pruneSeparator: ' ', // Separator to be used to separate words
+								}))}
+							</div>
+
+							<div className="btn-wrap">
+								<a href={item.path} className="read-more">
+									read full story
+								</a>
+							</div>
+
+
+							{/*comp html end*/}
+
+						</>
+
+						}
+
+					</div>
+				))}
+
+			</div>
+		</>
+	)
+};
 
 
 export default NodeNews;
