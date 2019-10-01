@@ -8,6 +8,7 @@
     `gatsby-plugin-sass`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-lodash`,
+    `gatsby-plugin-styled-components`,
     {
       resolve: `gatsby-source-drupal`,
       options: {
@@ -18,6 +19,7 @@
         },
       },
     },
+
     {
       resolve: `gatsby-source-filesystem`,
       options: {

@@ -232,6 +232,8 @@ const BNews = ({comp}) => {
 		let pager = `&page[offset]=0&page[limit]=${comp.perPage}`;
 		let sort = `&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`
 
+		let count = 0;
+
 		fetch(`https://decoupled.devstages.com/api/search?_format=json&text=${term}`, {
 			headers: {
 				Authorization: "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
@@ -240,39 +242,58 @@ const BNews = ({comp}) => {
 			.then(response => response.json())
 			.then(res => {
 
-				console.log(res);
-			})
+				if (res.entries_count) {
+					count = +res.entries_count;
+				}
+
+					fetch(`https://decoupled.devstages.com/api/node/news?filter[filter-cond][group][conjunction]=OR&${filterBody}${filterTitle}${pager}${sort}`, {
+						method: 'get',
+						headers: {
+							Authorization: "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
+						}
+					})
+						.then(response => response.json())
+						.then(res => {
+								let compFetch = {};
+
+								compFetch = createDrupalApiObj(compFetch, res.data, 'all', comp.props);
+
+								setPagination({
+									forcePage: 0,
+									pageCount: count,
+									compData: compFetch.dataArr,
+									years: ''
+								});
+
+								urlPathname.current.page = '';
+								urlPathname.current.year = '';
+
+								let url = urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
+
+								window.history.pushState(null, null, url + '?search=' + term);
+							},
+							(error) => {
+								console.log(error, 'react error')
+
+								setPagination({
+									isLoaded: false,
+									error
+								})
+							})
+
+						.catch(error => console.log(error));
+			},
+				(error) => {
+					console.log(error, 'react error')
+
+					setPagination({
+						isLoaded: false,
+						error
+					})
+				})
 
 			.catch(error => console.log(error));
 
-		fetch(`https://decoupled.devstages.com/api/node/news?filter[filter-cond][group][conjunction]=OR&${filterBody}${filterTitle}${pager}${sort}`, {
-			method: 'get',
-			headers: {
-				Authorization: "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
-			}
-		})
-			.then(response => response.json())
-			.then(res => {
-				let compFetch = {};
-
-				compFetch = createDrupalApiObj(compFetch, res.data, 'all', comp.props);
-
-				setPagination({
-					forcePage: 0,
-					pageCount: 10,
-					compData: compFetch.dataArr,
-					years: ''
-				});
-
-				urlPathname.current.page = '';
-				urlPathname.current.year = '';
-
-				let url = urlPathname.current.slug + urlPathname.current.year + urlPathname.current.page
-
-				window.history.pushState(null, null, url + '?search=' + term);
-			})
-
-			.catch(error => console.log(error));
 
 	}
 
