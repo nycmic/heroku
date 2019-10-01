@@ -234,6 +234,14 @@ const BNews = ({comp}) => {
 
 		let count = 0;
 
+		setPagination({
+			isLoaded: true,
+			forcePage: pagination.forcePage,
+			pageCount: pagination.pageCount,
+			compData: pagination.compData,
+			years: pagination.years
+		});
+
 		fetch(`https://decoupled.devstages.com/api/search?_format=json&text=${term}`, {
 			headers: {
 				Authorization: "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
