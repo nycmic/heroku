@@ -11,7 +11,7 @@ import ParagraphHomeTopLinksFieldColl from "../components/ParagraphHomeTopLinksF
 import SectionTitle from "../components/SectionTitle";
 import {getProp} from "../helpers";
 import InnerWrapper from "../components/InnerWrapper";
-import SectionTop from "../components/SectionTop";
+import SectionTop from "../components/SectionTop/SectionTop";
 
 const IndexPage = ({data: {nodeHomepage: page}}) => {
 

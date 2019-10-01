@@ -2,7 +2,7 @@ import React from "react"
 import {graphql} from "gatsby"
 import Layout from "../components/layout"
 import {getProp} from '../helpers'
-import SectionTop from "../components/SectionTop";
+import SectionTop from "../components/SectionTop/SectionTop";
 import SectionTitle from "../components/SectionTitle";
 import ParagraphTwoImagesInColumns from "../components/ParagraphTwoImagesInColumns";
 import ParagraphSimplePageInfo from "../components/ParagraphSimplePageInfo";
