@@ -1,5 +1,6 @@
 import React from "react"
 import styled from "styled-components"
+import settings from "../../settings";
 // import Img from "gatsby-image"
 
 const SectionTop = ({children, imgTop}) => {
@@ -10,7 +11,11 @@ const SectionTop = ({children, imgTop}) => {
   height: 240px;
   line-height: 1.2;
   text-align: center;
-  z-index: 1; 
+  z-index: 1;  
+  
+   @media(min-width: ${settings.bp.sm.view}) {
+    height: 322px;
+  }
 `;
 
 	const StyledBgWrap = styled.div`
