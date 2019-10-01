@@ -45,7 +45,6 @@ const SectionTop = ({children, imgTop}) => {
 
 	return (
 		<StyledContainer>
-
 			{imgTop &&
 			<StyledBgWrap>
 				<StyledBg style={{backgroundImage: `url(${imgTop.src})`}}>
