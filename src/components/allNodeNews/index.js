@@ -168,6 +168,14 @@ const BNews = ({comp}) => {
 
 		searchInput.current.value = '';
 
+		setPagination({
+			isLoaded: true,
+			forcePage: pagination.forcePage,
+			pageCount: pagination.pageCount,
+			compData: pagination.compData,
+			years: pagination.years
+		});
+
 		fetch(`https://decoupled.devstages.com/api/node/news?${yearsQL}&page[offset]=${offset}&page[limit]=${comp.perPage}&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`, {
 			method: 'get',
 			headers: {
@@ -181,6 +189,7 @@ const BNews = ({comp}) => {
 				createDrupalApiObj(compFetch, res.data, 'all', comp.props);
 
 				setPagination({
+					isLoaded: false,
 					forcePage: 0,
 					pageCount: Math.ceil(comp.yearsCounts[years] / comp.perPage),
 					compData: compFetch.dataArr,
@@ -192,7 +201,15 @@ const BNews = ({comp}) => {
 				urlPathname.current.year = `/year-${years}`;
 
 				window.history.pushState(null, null, urlPathname.current.createUrl());
-			})
+			},
+				(error) => {
+					console.log(error, 'react error')
+
+					setPagination({
+						isLoaded: false,
+						error
+					})
+				})
 
 			.catch(error => console.log(error));
 	};
@@ -214,6 +231,19 @@ const BNews = ({comp}) => {
 
 		let pager = `&page[offset]=0&page[limit]=${comp.perPage}`;
 		let sort = `&sort[sort-created][path]=field_news_date&sort[sort-created][direction]=DESC`
+
+		fetch(`https://decoupled.devstages.com/api/search?_format=json&text=${term}`, {
+			headers: {
+				Authorization: "Basic ZnJvbnRlbmQtYXBwOmZyb250ZW5k"
+			}
+		})
+			.then(response => response.json())
+			.then(res => {
+
+				console.log(res);
+			})
+
+			.catch(error => console.log(error));
 
 		fetch(`https://decoupled.devstages.com/api/node/news?filter[filter-cond][group][conjunction]=OR&${filterBody}${filterTitle}${pager}${sort}`, {
 			method: 'get',
