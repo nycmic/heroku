@@ -251,7 +251,7 @@ const BNews = ({comp}) => {
 			.then(res => {
 
 				if (res.entries_count) {
-					count = +res.entries_count;
+					count = Math.ceil(res.entries_count / comp.perPage);
 				}
 
 					fetch(`https://decoupled.devstages.com/api/node/news?filter[filter-cond][group][conjunction]=OR&${filterBody}${filterTitle}${pager}${sort}`, {
