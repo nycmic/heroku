@@ -2,27 +2,54 @@ import React from "react"
 import styled from "styled-components"
 // import Img from "gatsby-image"
 
-const SectionTop = styled.section.attrs(props => ({
-  className: 'section section-top',
-}))`
+const SectionTop = ({children, imgTop}) => {
+
+	const StyledContainer = styled.section.attrs(props => ({
+		className: 'section section-top',
+	}))`
   height: 240px;
   line-height: 1.2;
   text-align: center;
   z-index: 1; 
 `;
 
-export default ({children,imgTop}) => {
-  return (
-    <SectionTop>
+	const StyledBgWrap = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+    overflow: hidden;
+`;
 
-      {imgTop &&
-        <div className="bg-wrap">
-          <div className="bg"
-               style={{backgroundImage: `url(${imgTop.src})`}}>
-          </div>
-        </div>
-      }
-      {children}
-    </SectionTop>
-  )
+	const StyledBg = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+    background-size: cover;
+    background-position: 50% 50%;  
+`;
+
+	return (
+		<StyledContainer>
+
+			{imgTop &&
+			<StyledBgWrap>
+				<StyledBg style={{backgroundImage: `url(${imgTop.src})`}}>
+				</StyledBg>
+			</StyledBgWrap>
+			}
+			{children}
+		</StyledContainer>
+	)
 }
+
+export default SectionTop;
