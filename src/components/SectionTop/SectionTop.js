@@ -6,20 +6,22 @@ import bgImage from './img/bg-img-2.png'
 
 const SectionTop = ({children, imgTop}) => {
 	return (
-		<StyledContainer>
+		<S.SectionTop>
 			{imgTop &&
-				<StyledBgWrap>
-					<StyledBg imgTop={imgTop} />
-				</StyledBgWrap>
+				<S.BgWrap>
+					<S.Bg imgTop={imgTop} />
+				</S.BgWrap>
 			}
 			{children}
-		</StyledContainer>
+		</S.SectionTop>
 	)
 };
 
 export default SectionTop;
 
-const StyledContainer = styled.section.attrs(() => ({
+const S = {};
+
+S.SectionTop = styled.section.attrs(() => ({
 	className: 'section section-top',
 }))`
   height: 240px;
@@ -48,7 +50,7 @@ const StyledContainer = styled.section.attrs(() => ({
   }
 `;
 
-const StyledBgWrap = styled.div`
+S.BgWrap = styled.div`
     position: absolute;
     width: 100%;
     height: 100%;
@@ -60,7 +62,15 @@ const StyledBgWrap = styled.div`
     overflow: hidden; 
 `;
 
-const StyledBg = styled(StyledBgWrap)`
+S.Bg = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
     background-size: cover;
     background-position: 50% 50%;
     
