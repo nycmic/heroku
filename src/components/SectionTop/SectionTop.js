@@ -1,13 +1,26 @@
 import React from "react"
-import styled from "styled-components"
+import styled from "styled-components";
 import settings from "../../settings";
 // import Img from "gatsby-image"
 
 const SectionTop = ({children, imgTop}) => {
+	return (
+		<StyledContainer>
+			{imgTop &&
+				<StyledBgWrap>
+					<StyledBg imgTop={imgTop} />
+				</StyledBgWrap>
+			}
+			{children}
+		</StyledContainer>
+	)
+};
 
-	const StyledContainer = styled.section.attrs(props => ({
-		className: 'section section-top',
-	}))`
+export default SectionTop;
+
+const StyledContainer = styled.section.attrs(() => ({
+	className: 'section section-top',
+}))`
   height: 240px;
   line-height: 1.2;
   text-align: center;
@@ -18,7 +31,7 @@ const SectionTop = ({children, imgTop}) => {
   }
 `;
 
-	const StyledBgWrap = styled.div`
+const StyledBgWrap = styled.div`
     position: absolute;
     width: 100%;
     height: 100%;
@@ -30,30 +43,11 @@ const SectionTop = ({children, imgTop}) => {
     overflow: hidden;
 `;
 
-	const StyledBg = styled.div`
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: -1;
+const StyledBg = styled(StyledBgWrap)`
     background-size: cover;
-    background-position: 50% 50%;  
+    background-position: 50% 50%;
+    ${props => props.imgTop && `
+			background-image: url(${props.imgTop.src});
+		`}
 `;
 
-	return (
-		<StyledContainer>
-			{imgTop &&
-			<StyledBgWrap>
-				<StyledBg style={{backgroundImage: `url(${imgTop.src})`}}>
-				</StyledBg>
-			</StyledBgWrap>
-			}
-			{children}
-		</StyledContainer>
-	)
-}
-
-export default SectionTop;
