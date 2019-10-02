@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components";
+import styled, { css }  from "styled-components";
 import settings from "../../settings";
 // import Img from "gatsby-image"
 
@@ -46,7 +46,8 @@ const StyledBgWrap = styled.div`
 const StyledBg = styled(StyledBgWrap)`
     background-size: cover;
     background-position: 50% 50%;
-    ${props => props.imgTop && `
+    
+    ${props => props.imgTop && css`
 			background-image: url(${props.imgTop.src});
 		`}
 `;
