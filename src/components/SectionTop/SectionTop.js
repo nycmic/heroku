@@ -1,6 +1,7 @@
 import React from "react"
 import styled, { css }  from "styled-components";
 import settings from "../../settings";
+import bgImage from './img/bg-img-2.png'
 // import Img from "gatsby-image"
 
 const SectionTop = ({children, imgTop}) => {
@@ -28,6 +29,22 @@ const StyledContainer = styled.section.attrs(() => ({
   
    @media(min-width: ${settings.bp.sm.view}) {
     height: 322px;
+  }
+  
+  &:after {    
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 91px;
+    background: url(${bgImage}) no-repeat;
+    background-size: 100% 100%;
+    display: none;
+
+    @media (min-width: ${settings.bp.sm.view}) {
+      display: block;
+    }
   }
 `;
 
