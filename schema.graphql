@@ -499,6 +499,7 @@ type Query {
   allParagraphTopSlider(filter: paragraph__top_sliderFilterInput, limit: Int, skip: Int, sort: paragraph__top_sliderSortInput): paragraph__top_sliderConnection
   allParagraphTwoImagesInColumns(filter: paragraph__two_images_in_columnsFilterInput, limit: Int, skip: Int, sort: paragraph__two_images_in_columnsSortInput): paragraph__two_images_in_columnsConnection
   allParagraphsTypeParagraphsType(filter: paragraphs_type__paragraphs_typeFilterInput, limit: Int, skip: Int, sort: paragraphs_type__paragraphs_typeSortInput): paragraphs_type__paragraphs_typeConnection
+  allSearchPageSearchPage(filter: search_page__search_pageFilterInput, limit: Int, skip: Int, sort: search_page__search_pageSortInput): search_page__search_pageConnection
   allSite(filter: SiteFilterInput, limit: Int, skip: Int, sort: SiteSortInput): SiteConnection
   allSitePage(filter: SitePageFilterInput, limit: Int, skip: Int, sort: SitePageSortInput): SitePageConnection
   allSitePlugin(filter: SitePluginFilterInput, limit: Int, skip: Int, sort: SitePluginSortInput): SitePluginConnection
@@ -523,7 +524,7 @@ type Query {
   nodeCareers(body: node__careersBodyFilterInput, changed: DateQueryOperatorInput, children: NodeFilterListInput, created: DateQueryOperatorInput, default_langcode: BooleanQueryOperatorInput, drupal_id: StringQueryOperatorInput, drupal_internal__nid: IntQueryOperatorInput, drupal_internal__vid: IntQueryOperatorInput, field_basic_contacts_text: node__careersField_basic_contacts_textFilterInput, field_basic_top_image: node__careersField_basic_top_imageFilterInput, field_home_contact_button_link: node__careersField_home_contact_button_linkFilterInput, field_simple_columns_paragraph: node__careersField_simple_columns_paragraphFilterInput, fields: node__careersFieldsFilterInput, id: StringQueryOperatorInput, internal: InternalFilterInput, langcode: StringQueryOperatorInput, parent: NodeFilterInput, path: node__careersPathFilterInput, promote: BooleanQueryOperatorInput, relationships: node__careersRelationshipsFilterInput, revision_timestamp: DateQueryOperatorInput, revision_translation_affected: BooleanQueryOperatorInput, status: BooleanQueryOperatorInput, sticky: BooleanQueryOperatorInput, title: StringQueryOperatorInput): node__careers
   nodeContacts(body: node__contactsBodyFilterInput, changed: DateQueryOperatorInput, children: NodeFilterListInput, created: DateQueryOperatorInput, default_langcode: BooleanQueryOperatorInput, drupal_id: StringQueryOperatorInput, drupal_internal__nid: IntQueryOperatorInput, drupal_internal__vid: IntQueryOperatorInput, field_basic_top_image: node__contactsField_basic_top_imageFilterInput, field_contact_column_paragraph: node__contactsField_contact_column_paragraphFilterListInput, fields: node__contactsFieldsFilterInput, id: StringQueryOperatorInput, internal: InternalFilterInput, langcode: StringQueryOperatorInput, parent: NodeFilterInput, path: node__contactsPathFilterInput, promote: BooleanQueryOperatorInput, relationships: node__contactsRelationshipsFilterInput, revision_timestamp: DateQueryOperatorInput, revision_translation_affected: BooleanQueryOperatorInput, status: BooleanQueryOperatorInput, sticky: BooleanQueryOperatorInput, title: StringQueryOperatorInput): node__contacts
   nodeHomepage(body: node__homepageBodyFilterInput, changed: DateQueryOperatorInput, children: NodeFilterListInput, contact_sales: node__homepageContact_salesFilterInput, created: DateQueryOperatorInput, default_langcode: BooleanQueryOperatorInput, drupal_id: StringQueryOperatorInput, drupal_internal__nid: IntQueryOperatorInput, drupal_internal__vid: IntQueryOperatorInput, field_basic_bottom_links_fc: node__homepageField_basic_bottom_links_fcFilterListInput, field_basic_contacts_text: node__homepageField_basic_contacts_textFilterInput, field_home_body_title_text: StringQueryOperatorInput, field_home_contact_button_link: node__homepageField_home_contact_button_linkFilterInput, field_home_newsletter_subsc_link: node__homepageField_home_newsletter_subsc_linkFilterInput, field_home_newsletter_subsc_text: node__homepageField_home_newsletter_subsc_textFilterInput, field_home_top_links_field_coll: node__homepageField_home_top_links_field_collFilterListInput, field_top_slider: node__homepageField_top_sliderFilterListInput, id: StringQueryOperatorInput, internal: InternalFilterInput, langcode: StringQueryOperatorInput, parent: NodeFilterInput, path: node__homepagePathFilterInput, promote: BooleanQueryOperatorInput, relationships: node__homepageRelationshipsFilterInput, revision_timestamp: DateQueryOperatorInput, revision_translation_affected: BooleanQueryOperatorInput, status: BooleanQueryOperatorInput, sticky: BooleanQueryOperatorInput, title: StringQueryOperatorInput): node__homepage
-  nodeNews(body: node__newsBodyFilterInput, changed: DateQueryOperatorInput, children: NodeFilterListInput, created: DateQueryOperatorInput, default_langcode: BooleanQueryOperatorInput, drupal_id: StringQueryOperatorInput, drupal_internal__nid: IntQueryOperatorInput, drupal_internal__vid: IntQueryOperatorInput, field_news_content_image: node__newsField_news_content_imageFilterInput, field_news_date: DateQueryOperatorInput, field_news_gallery_image: node__newsField_news_gallery_imageFilterListInput, field_news_image_caption_text: node__newsField_news_image_caption_textFilterInput, fields: node__newsFieldsFilterInput, id: StringQueryOperatorInput, internal: InternalFilterInput, langcode: StringQueryOperatorInput, parent: NodeFilterInput, path: node__newsPathFilterInput, promote: BooleanQueryOperatorInput, relationships: node__newsRelationshipsFilterInput, revision_timestamp: DateQueryOperatorInput, revision_translation_affected: BooleanQueryOperatorInput, status: BooleanQueryOperatorInput, sticky: BooleanQueryOperatorInput, title: StringQueryOperatorInput): node__news
+  nodeNews(body: node__newsBodyFilterInput, changed: DateQueryOperatorInput, children: NodeFilterListInput, created: DateQueryOperatorInput, date_in_pager: IntQueryOperatorInput, default_langcode: BooleanQueryOperatorInput, drupal_id: StringQueryOperatorInput, drupal_internal__nid: IntQueryOperatorInput, drupal_internal__vid: IntQueryOperatorInput, field_news_content_image: node__newsField_news_content_imageFilterInput, field_news_date: DateQueryOperatorInput, field_news_gallery_image: node__newsField_news_gallery_imageFilterListInput, field_news_image_caption_text: node__newsField_news_image_caption_textFilterInput, fields: node__newsFieldsFilterInput, id: StringQueryOperatorInput, internal: InternalFilterInput, langcode: StringQueryOperatorInput, parent: NodeFilterInput, path: node__newsPathFilterInput, promote: BooleanQueryOperatorInput, relationships: node__newsRelationshipsFilterInput, revision_timestamp: DateQueryOperatorInput, revision_translation_affected: BooleanQueryOperatorInput, status: BooleanQueryOperatorInput, sticky: BooleanQueryOperatorInput, title: StringQueryOperatorInput): node__news
   nodeNewsMain(changed: DateQueryOperatorInput, children: NodeFilterListInput, created: DateQueryOperatorInput, default_langcode: BooleanQueryOperatorInput, drupal_id: StringQueryOperatorInput, drupal_internal__nid: IntQueryOperatorInput, drupal_internal__vid: IntQueryOperatorInput, field_basic_top_image: node__news_mainField_basic_top_imageFilterInput, fields: node__news_mainFieldsFilterInput, id: StringQueryOperatorInput, internal: InternalFilterInput, langcode: StringQueryOperatorInput, parent: NodeFilterInput, path: node__news_mainPathFilterInput, promote: BooleanQueryOperatorInput, relationships: node__news_mainRelationshipsFilterInput, revision_timestamp: DateQueryOperatorInput, status: BooleanQueryOperatorInput, sticky: BooleanQueryOperatorInput, title: StringQueryOperatorInput): node__news_main
   nodePartners(changed: DateQueryOperatorInput, children: NodeFilterListInput, created: DateQueryOperatorInput, default_langcode: BooleanQueryOperatorInput, drupal_id: StringQueryOperatorInput, drupal_internal__nid: IntQueryOperatorInput, drupal_internal__vid: IntQueryOperatorInput, field_basic_contacts_field_coll: node__partnersField_basic_contacts_field_collFilterInput, field_basic_top_image: node__partnersField_basic_top_imageFilterInput, field_partners_products_link_fc: node__partnersField_partners_products_link_fcFilterListInput, fields: node__partnersFieldsFilterInput, id: StringQueryOperatorInput, internal: InternalFilterInput, langcode: StringQueryOperatorInput, parent: NodeFilterInput, path: node__partnersPathFilterInput, promote: BooleanQueryOperatorInput, relationships: node__partnersRelationshipsFilterInput, revision_timestamp: DateQueryOperatorInput, revision_translation_affected: BooleanQueryOperatorInput, status: BooleanQueryOperatorInput, sticky: BooleanQueryOperatorInput, title: StringQueryOperatorInput): node__partners
   nodeSimplePage(body: node__simple_pageBodyFilterInput, changed: DateQueryOperatorInput, children: NodeFilterListInput, created: DateQueryOperatorInput, default_langcode: BooleanQueryOperatorInput, drupal_id: StringQueryOperatorInput, drupal_internal__nid: IntQueryOperatorInput, drupal_internal__vid: IntQueryOperatorInput, entity_list: StringQueryOperatorInput, field_basic_contacts_field_coll: node__simple_pageField_basic_contacts_field_collFilterInput, field_basic_top_image: node__simple_pageField_basic_top_imageFilterInput, field_home_top_links_field_coll: node__simple_pageField_home_top_links_field_collFilterListInput, field_simple_columns_paragraph: node__simple_pageField_simple_columns_paragraphFilterInput, field_simple_logo_field_coll: node__simple_pageField_simple_logo_field_collFilterListInput, field_simple_page_info_paragraph: node__simple_pageField_simple_page_info_paragraphFilterListInput, fields: node__simple_pageFieldsFilterInput, id: StringQueryOperatorInput, internal: InternalFilterInput, langcode: StringQueryOperatorInput, parent: NodeFilterInput, path: node__simple_pagePathFilterInput, promote: BooleanQueryOperatorInput, relationships: node__simple_pageRelationshipsFilterInput, revision_timestamp: DateQueryOperatorInput, revision_translation_affected: BooleanQueryOperatorInput, status: BooleanQueryOperatorInput, sticky: BooleanQueryOperatorInput, title: StringQueryOperatorInput): node__simple_page
@@ -546,6 +547,7 @@ type Query {
   paragraphTopSlider(children: NodeFilterListInput, created: DateQueryOperatorInput, default_langcode: BooleanQueryOperatorInput, drupal_id: StringQueryOperatorInput, drupal_internal__id: IntQueryOperatorInput, drupal_internal__revision_id: IntQueryOperatorInput, field_top_slider_fc_image: paragraph__top_sliderField_top_slider_fc_imageFilterInput, field_top_slider_fc_link: paragraph__top_sliderField_top_slider_fc_linkFilterInput, field_top_slider_fc_text: paragraph__top_sliderField_top_slider_fc_textFilterInput, id: StringQueryOperatorInput, internal: InternalFilterInput, langcode: StringQueryOperatorInput, parent: NodeFilterInput, parent_field_name: StringQueryOperatorInput, parent_id: StringQueryOperatorInput, parent_type: StringQueryOperatorInput, relationships: paragraph__top_sliderRelationshipsFilterInput, revision_translation_affected: BooleanQueryOperatorInput, status: BooleanQueryOperatorInput): paragraph__top_slider
   paragraphTwoImagesInColumns(children: NodeFilterListInput, created: DateQueryOperatorInput, default_langcode: BooleanQueryOperatorInput, drupal_id: StringQueryOperatorInput, drupal_internal__id: IntQueryOperatorInput, drupal_internal__revision_id: IntQueryOperatorInput, field_careers_body_title_text: paragraph__two_images_in_columnsField_careers_body_title_textFilterInput, field_columns_images: paragraph__two_images_in_columnsField_columns_imagesFilterListInput, field_print_border_line_checkbox: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, langcode: StringQueryOperatorInput, parent: NodeFilterInput, parent_field_name: StringQueryOperatorInput, parent_id: StringQueryOperatorInput, parent_type: StringQueryOperatorInput, relationships: paragraph__two_images_in_columnsRelationshipsFilterInput, revision_translation_affected: BooleanQueryOperatorInput, status: BooleanQueryOperatorInput): paragraph__two_images_in_columns
   paragraphsTypeParagraphsType(children: NodeFilterListInput, drupal_id: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, label: StringQueryOperatorInput, parent: NodeFilterInput, relationships: paragraphs_type__paragraphs_typeRelationshipsFilterInput): paragraphs_type__paragraphs_type
+  searchPageSearchPage(children: NodeFilterListInput, configuration: search_page__search_pageConfigurationFilterInput, dependencies: search_page__search_pageDependenciesFilterInput, drupal_id: StringQueryOperatorInput, drupal_internal__id: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, label: StringQueryOperatorInput, langcode: StringQueryOperatorInput, parent: NodeFilterInput, path: StringQueryOperatorInput, plugin: StringQueryOperatorInput, status: BooleanQueryOperatorInput, weight: IntQueryOperatorInput): search_page__search_page
   site(buildTime: DateQueryOperatorInput, children: NodeFilterListInput, host: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, parent: NodeFilterInput, pathPrefix: StringQueryOperatorInput, polyfill: BooleanQueryOperatorInput, port: IntQueryOperatorInput, siteMetadata: SiteSiteMetadataFilterInput): Site
   sitePage(children: NodeFilterListInput, component: StringQueryOperatorInput, componentChunkName: StringQueryOperatorInput, componentPath: StringQueryOperatorInput, context: SitePageContextFilterInput, id: StringQueryOperatorInput, internal: InternalFilterInput, internalComponentName: StringQueryOperatorInput, isCreatedByStatefulCreatePages: BooleanQueryOperatorInput, parent: NodeFilterInput, path: StringQueryOperatorInput, pluginCreator: SitePluginFilterInput, pluginCreatorId: StringQueryOperatorInput): SitePage
   sitePlugin(children: NodeFilterListInput, id: StringQueryOperatorInput, internal: InternalFilterInput, name: StringQueryOperatorInput, nodeAPIs: StringQueryOperatorInput, packageJson: SitePluginPackageJsonFilterInput, parent: NodeFilterInput, pluginFilepath: StringQueryOperatorInput, pluginOptions: SitePluginPluginOptionsFilterInput, resolve: StringQueryOperatorInput, ssrAPIs: StringQueryOperatorInput, version: StringQueryOperatorInput): SitePlugin
@@ -723,6 +725,8 @@ type SitePluginPluginOptions {
   baseUrl: String
   defaultQuality: Int
   display: String
+  displayName: Boolean
+  fileName: Boolean
   headers: SitePluginPluginOptionsHeaders
   icon: String
   name: String
@@ -1910,6 +1914,7 @@ type node__news implements Node {
     #Configures the locale Moment.js will use to format the date.
     locale: String
   ): Date
+  date_in_pager: Int
   default_langcode: Boolean
   drupal_id: String
   drupal_internal__nid: Int
@@ -3750,6 +3755,59 @@ type paragraphs_type__paragraphs_typeRelationships {
   paragraph__two_images_in_columns: [paragraph__two_images_in_columns]
 }
 
+type search_page__search_page implements Node {
+  children: [Node!]!
+  configuration: search_page__search_pageConfiguration
+  dependencies: search_page__search_pageDependencies
+  drupal_id: String
+  drupal_internal__id: String
+  id: ID!
+  internal: Internal!
+  label: String
+  langcode: String
+  parent: Node
+  path: String
+  plugin: String
+  status: Boolean
+  weight: Int
+}
+
+type search_page__search_pageConfiguration {
+  rankings: search_page__search_pageConfigurationRankings
+}
+
+type search_page__search_pageConfigurationRankings {
+  relevance: Int
+}
+
+type search_page__search_pageConnection {
+  distinct(field: search_page__search_pageFieldsEnum!): [String!]!
+  edges: [search_page__search_pageEdge!]!
+  group(field: search_page__search_pageFieldsEnum!, limit: Int, skip: Int): [search_page__search_pageGroupConnection!]!
+  nodes: [search_page__search_page!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type search_page__search_pageDependencies {
+  module: [String]
+}
+
+type search_page__search_pageEdge {
+  next: search_page__search_page
+  node: search_page__search_page!
+  previous: search_page__search_page
+}
+
+type search_page__search_pageGroupConnection {
+  edges: [search_page__search_pageEdge!]!
+  field: String!
+  fieldValue: String
+  nodes: [search_page__search_page!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
 type taxonomy_term__breadcrumbs implements Node {
   changed(
     #Returns the difference between this date and the current time. Defaults to \"milliseconds\" but you can also pass in as the measurement \"years\", \"months\", \"weeks\", \"days\", \"hours\", \"minutes\", and \"seconds\".
@@ -4889,6 +4947,8 @@ enum SitePageFieldsEnum {
   pluginCreator___pluginOptions___baseUrl
   pluginCreator___pluginOptions___defaultQuality
   pluginCreator___pluginOptions___display
+  pluginCreator___pluginOptions___displayName
+  pluginCreator___pluginOptions___fileName
   pluginCreator___pluginOptions___headers___Authorization
   pluginCreator___pluginOptions___icon
   pluginCreator___pluginOptions___name
@@ -5013,6 +5073,8 @@ enum SitePluginFieldsEnum {
   pluginOptions___baseUrl
   pluginOptions___defaultQuality
   pluginOptions___display
+  pluginOptions___displayName
+  pluginOptions___fileName
   pluginOptions___headers___Authorization
   pluginOptions___icon
   pluginOptions___name
@@ -6550,6 +6612,7 @@ enum file__fileFieldsEnum {
   relationships___node__news___children___children
   relationships___node__news___children___id
   relationships___node__news___created
+  relationships___node__news___date_in_pager
   relationships___node__news___default_langcode
   relationships___node__news___drupal_id
   relationships___node__news___drupal_internal__nid
@@ -8591,6 +8654,7 @@ enum node__newsFieldsEnum {
   children___parent___parent___children
   children___parent___parent___id
   created
+  date_in_pager
   default_langcode
   drupal_id
   drupal_internal__nid
@@ -10771,6 +10835,7 @@ enum node_type__node_typeFieldsEnum {
   relationships___node__news___children___children
   relationships___node__news___children___id
   relationships___node__news___created
+  relationships___node__news___date_in_pager
   relationships___node__news___default_langcode
   relationships___node__news___drupal_id
   relationships___node__news___drupal_internal__nid
@@ -15544,6 +15609,105 @@ enum paragraphs_type__paragraphs_typeFieldsEnum {
   relationships___paragraph__two_images_in_columns___status
 }
 
+enum search_page__search_pageFieldsEnum {
+  children
+  children___children
+  children___children___children
+  children___children___children___children
+  children___children___children___id
+  children___children___id
+  children___children___internal___content
+  children___children___internal___contentDigest
+  children___children___internal___description
+  children___children___internal___fieldOwners
+  children___children___internal___ignoreType
+  children___children___internal___mediaType
+  children___children___internal___owner
+  children___children___internal___type
+  children___children___parent___children
+  children___children___parent___id
+  children___id
+  children___internal___content
+  children___internal___contentDigest
+  children___internal___description
+  children___internal___fieldOwners
+  children___internal___ignoreType
+  children___internal___mediaType
+  children___internal___owner
+  children___internal___type
+  children___parent___children
+  children___parent___children___children
+  children___parent___children___id
+  children___parent___id
+  children___parent___internal___content
+  children___parent___internal___contentDigest
+  children___parent___internal___description
+  children___parent___internal___fieldOwners
+  children___parent___internal___ignoreType
+  children___parent___internal___mediaType
+  children___parent___internal___owner
+  children___parent___internal___type
+  children___parent___parent___children
+  children___parent___parent___id
+  configuration___rankings___relevance
+  dependencies___module
+  drupal_id
+  drupal_internal__id
+  id
+  internal___content
+  internal___contentDigest
+  internal___description
+  internal___fieldOwners
+  internal___ignoreType
+  internal___mediaType
+  internal___owner
+  internal___type
+  label
+  langcode
+  parent___children
+  parent___children___children
+  parent___children___children___children
+  parent___children___children___id
+  parent___children___id
+  parent___children___internal___content
+  parent___children___internal___contentDigest
+  parent___children___internal___description
+  parent___children___internal___fieldOwners
+  parent___children___internal___ignoreType
+  parent___children___internal___mediaType
+  parent___children___internal___owner
+  parent___children___internal___type
+  parent___children___parent___children
+  parent___children___parent___id
+  parent___id
+  parent___internal___content
+  parent___internal___contentDigest
+  parent___internal___description
+  parent___internal___fieldOwners
+  parent___internal___ignoreType
+  parent___internal___mediaType
+  parent___internal___owner
+  parent___internal___type
+  parent___parent___children
+  parent___parent___children___children
+  parent___parent___children___id
+  parent___parent___id
+  parent___parent___internal___content
+  parent___parent___internal___contentDigest
+  parent___parent___internal___description
+  parent___parent___internal___fieldOwners
+  parent___parent___internal___ignoreType
+  parent___parent___internal___mediaType
+  parent___parent___internal___owner
+  parent___parent___internal___type
+  parent___parent___parent___children
+  parent___parent___parent___id
+  path
+  plugin
+  status
+  weight
+}
+
 enum taxonomy_term__breadcrumbsFieldsEnum {
   changed
   children
@@ -16182,6 +16346,7 @@ enum user__userFieldsEnum {
   relationships___node__news___children___children
   relationships___node__news___children___id
   relationships___node__news___created
+  relationships___node__news___date_in_pager
   relationships___node__news___default_langcode
   relationships___node__news___drupal_id
   relationships___node__news___drupal_internal__nid
@@ -17081,6 +17246,8 @@ input SitePluginPluginOptionsFilterInput {
   baseUrl: StringQueryOperatorInput
   defaultQuality: IntQueryOperatorInput
   display: StringQueryOperatorInput
+  displayName: BooleanQueryOperatorInput
+  fileName: BooleanQueryOperatorInput
   headers: SitePluginPluginOptionsHeadersFilterInput
   icon: StringQueryOperatorInput
   name: StringQueryOperatorInput
@@ -17888,6 +18055,7 @@ input node__newsFilterInput {
   changed: DateQueryOperatorInput
   children: NodeFilterListInput
   created: DateQueryOperatorInput
+  date_in_pager: IntQueryOperatorInput
   default_langcode: BooleanQueryOperatorInput
   drupal_id: StringQueryOperatorInput
   drupal_internal__nid: IntQueryOperatorInput
@@ -19110,6 +19278,40 @@ input paragraphs_type__paragraphs_typeRelationshipsFilterInput {
 
 input paragraphs_type__paragraphs_typeSortInput {
   fields: [paragraphs_type__paragraphs_typeFieldsEnum]
+  order: [SortOrderEnum] = [ASC]
+}
+
+input search_page__search_pageConfigurationFilterInput {
+  rankings: search_page__search_pageConfigurationRankingsFilterInput
+}
+
+input search_page__search_pageConfigurationRankingsFilterInput {
+  relevance: IntQueryOperatorInput
+}
+
+input search_page__search_pageDependenciesFilterInput {
+  module: StringQueryOperatorInput
+}
+
+input search_page__search_pageFilterInput {
+  children: NodeFilterListInput
+  configuration: search_page__search_pageConfigurationFilterInput
+  dependencies: search_page__search_pageDependenciesFilterInput
+  drupal_id: StringQueryOperatorInput
+  drupal_internal__id: StringQueryOperatorInput
+  id: StringQueryOperatorInput
+  internal: InternalFilterInput
+  label: StringQueryOperatorInput
+  langcode: StringQueryOperatorInput
+  parent: NodeFilterInput
+  path: StringQueryOperatorInput
+  plugin: StringQueryOperatorInput
+  status: BooleanQueryOperatorInput
+  weight: IntQueryOperatorInput
+}
+
+input search_page__search_pageSortInput {
+  fields: [search_page__search_pageFieldsEnum]
   order: [SortOrderEnum] = [ASC]
 }
 

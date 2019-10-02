@@ -8,9 +8,9 @@ const SectionTop = ({children, imgTop}) => {
 	return (
 		<StSectionTop>
 			{imgTop &&
-			<StBgWrap>
-				<StBg imgTop={imgTop}/>
-			</StBgWrap>
+				<StBgWrap>
+					<StBg imgTop={imgTop}/>
+				</StBgWrap>
 			}
 			{children}
 		</StSectionTop>
