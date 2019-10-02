@@ -8,9 +8,9 @@ const SectionTop = ({children, imgTop}) => {
 	return (
 		<StSectionTop>
 			{imgTop &&
-				<StBgWrap>
-					<StBg imgTop={imgTop}/>
-				</StBgWrap>
+			<StBgWrap>
+				<StBg imgTop={imgTop}/>
+			</StBgWrap>
 			}
 			{children}
 		</StSectionTop>
@@ -72,7 +72,7 @@ const StBg = styled.div`
     background-size: cover;
     background-position: 50% 50%;
     
-    ${({imgTop}) =>
+  ${({imgTop}) =>
 	imgTop &&
 	css`
 			background-image: url(${imgTop.src});
